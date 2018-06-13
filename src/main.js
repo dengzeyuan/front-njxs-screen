@@ -7,7 +7,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from './axios/axios.js';
 import qs from 'qs';
-import '../src/assets/css/common.css';
+// import '../src/assets/css/common.css';
 // import '../src/assets/css/reset.css';
 // import '../src/assets/iconfont/iconfont.css';
 import echarts from 'echarts'
@@ -18,6 +18,12 @@ Vue.prototype.axios = axios;
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$d3 = d3;
 Vue.use(ElementUI);
+
+var basePercent = "100%"
+var baseWidthRate = window.innerWidth/1920;
+var baseHeightRate = window.innerHeight/1688;
+var baseScreenRate = (baseWidthRate>baseHeightRate)?baseHeightRate:baseWidthRate;
+Vue.prototype.baseScreenRate = baseScreenRate;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

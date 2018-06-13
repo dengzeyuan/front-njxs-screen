@@ -2,20 +2,19 @@
   <div class="container">
     <Header class="header"/>
     <div class='container-home'>
-      <!-- <Left class="aside"/> -->
-      <div class = 'view'>
-        <router-view></router-view>
-      </div>
+         <router-view></router-view> 
     </div>
   </div>
 </template>
 <script>
 import Header from "../components/Header.vue";
-import Left from "../components/Left.vue";
+// import Left from "../components/Left.vue";
+// import editecharts from "./editecharts/editecharts.vue";
 export default {
   components: {
-    Header,
-    Left
+    Header
+    // Left,
+    // editecharts
   }
 };
 </script>
@@ -28,15 +27,17 @@ export default {
   box-sizing: border-box;
   min-width: 0;
   height: 100vh;
+  .container-home{
+    height: 100%;
+  }
   .header {
     background-color: #b3c0d1;
     color: #333;
-    line-height: 60px;
     width: 100%;
-    height: 60px;
+    // height: "Math.ceil(64*this.baseScreenRate)";
     box-sizing: border-box;
     flex-shrink: 0;
-    padding: 0 20px;
+    // padding: 0 20px;
   }
   .container-home {
     display: flex;
