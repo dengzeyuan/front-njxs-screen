@@ -8,7 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from './axios/axios.js';
 import qs from 'qs';
 // import '../src/assets/css/common.css';
-// import '../src/assets/css/reset.css';
+import '../src/assets/css/reset.css';
 // import '../src/assets/iconfont/iconfont.css';
 import echarts from 'echarts'
 import * as d3 from 'd3'

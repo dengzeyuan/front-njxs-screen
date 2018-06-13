@@ -175,3 +175,19 @@ a, button, input, optgroup, select, textarea {
     font-size: 0;
     margin-left: 42px;
 }
+.el-table th, .el-table tr {
+    background-color: #141313;
+}
+.el-table td, .el-table th.is-leaf {
+    border-bottom: 1px solid #343344;
+}
+.el-table thead {
+    color: #537F8C;
+    font-weight: 500;
+}
+.el-table{
+    color: #fff;
+}
+.el-table td, .el-table th{
+    padding: 0;
+}

@@ -1,11 +1,17 @@
 <template>
   <div class="editecharts">
       <div class="leftside" :style="{paddingLeft:sideleftpad,paddingTop:sidetoppad}">
-            <div class="manage" :style="{height:manageheight}"> </div>
-            <div class="target" :style="target"></div>
+            <div class="manage" :style="{height:manageheight}">
+              <BusinessProfile/>
+            </div>
+            <div class="target" :style="target">
+                  <KeyIndicators/>
+            </div>
       </div>
       <div class="rightside" :style="rightside">
-            <div class="sell" :style="sell"></div>
+            <div class="sell" :style="sell">
+                  <Sales/>
+            </div>
             <div class="efficiency" :style="efficiency"></div>
             <div class="competive" :style="competive"></div>
       </div>
@@ -13,6 +19,9 @@
 </template>
 
 <script type="text/ecmascript-6">
+import BusinessProfile from '../businessProfile/business.vue';
+import KeyIndicators from '../keyIndicators/key.vue';
+import Sales from '../sales/sales.vue';
 export default {
   data() {
     return {
@@ -40,7 +49,11 @@ export default {
       }
     };
   },
-  components: {}
+  components: {
+    BusinessProfile,
+    KeyIndicators,
+    Sales
+  }
 };
 </script>
 
