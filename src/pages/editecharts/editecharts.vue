@@ -24,6 +24,7 @@
 <script type="text/ecmascript-6">
 import BusinessProfile from '../businessProfile/business.vue';
 import KeyIndicators from '../keyIndicators/key.vue';
+import Sales from '../sales/sales.vue';
 import efficiency from "../efficiency/efficiency.vue";
 import competive from "../competive/competive.vue";export default {
   data() {
