@@ -6,13 +6,18 @@
       </div>
       <div class="rightside" :style="rightside">
             <div class="sell" :style="sell"></div>
-            <div class="efficiency" :style="efficiency"></div>
-            <div class="competive" :style="competive"></div>
+            <div class="efficiency" :style="efficiency">
+                <efficiency />
+            </div>
+            <div class="competive" :style="competive">
+                <competive />
+            </div>
       </div>
   </div>
 </template>
-
 <script type="text/ecmascript-6">
+import efficiency from "../efficiency/efficiency.vue";
+import competive from "../competive/competive.vue";
 export default {
   data() {
     return {
@@ -28,7 +33,7 @@ export default {
         paddingTop: Math.ceil(40 * this.baseScreenRate) + "px"
       },
       sell: {
-        height: Math.ceil(414 * this.baseScreenRate) + "px",
+        height: Math.ceil(414 * this.baseScreenRate) + "px"
       },
       efficiency: {
         height: Math.ceil(368 * this.baseScreenRate) + "px",
@@ -40,7 +45,10 @@ export default {
       }
     };
   },
-  components: {}
+  components: {
+    efficiency,
+    competive
+  }
 };
 </script>
 
@@ -49,6 +57,7 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
+  background-color: #201F2D;
   .leftside,
   .rightside {
     height: 100%;
@@ -67,6 +76,7 @@ export default {
   }
   .rightside {
     width: 40.36%;
+    padding-right: 0.3%;
     .sell {
       width: 100%;
       border: 1px solid #312f46;
