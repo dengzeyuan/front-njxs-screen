@@ -1,8 +1,6 @@
 <template>
     <div class="content">
-            <div id = 'main'>
-        
-             </div>
+         <div id = 'main'> </div>
     </div>
 </template>
 <script>
@@ -30,15 +28,14 @@ export default {
             ress[0].singleList.map(val =>{
                 this.timeDate.push(val.date)
                 this.valDate.push(val.value)
-                // console.log(this.timeDate)
+                // this.valDate.push(Number(val.value).toFixed(2))
+                console.log(this.valDate)
             }) 
             ress[1].singleList.map(val =>{
                 this.valDate1.push(val.value)
-                // console.log(this.timeDate)
             }) 
             ress[2].singleList.map(val =>{
                 this.valDate2.push(val.value)
-                // console.log(this.timeDate)
             })       
                 // 基于准备好的dom，初始化echarts实例
                 let myMain =this.$echarts.init(document.getElementById('main'))
@@ -50,7 +47,7 @@ export default {
                         textStyle: {  
                             fontWeight: 'normal',              //标题颜色  
                             color: '#75becb',
-                            fontSize: 18,  
+                            fontSize: 12,  
                         },
                     },
                     tooltip : {
@@ -62,7 +59,7 @@ export default {
                         //     }
                         // }
                     },
-                    // color: ['#FF3D7A99','#FFDD6C51','#FF706AAF'],
+                    // color: ['#3D7A99','#DD6C51','#706AAF'],
                     legend: {
                         data:this.textDate,
                         textStyle: {  
@@ -135,20 +132,30 @@ export default {
                             name:'销售收入',
                             type:'line',
                             stack: '总量',
-                            smooth:true,
-                            areaStyle: {normal: {}},
+                            // smooth:true,
+                            // areaStyle: {normal: {}},
                             data:this.valDate,
-                            areaStyle: {
+                            // areaStyle: {
+                            //     normal: {
+                            //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            //             offset: 0,
+                            //             color: '#8ec6ad'
+                            //         }, {
+                            //             offset: 1,
+                            //             color: '#FF3D7A99'
+                            //         }])
+                            //     }
+                            // },
+                            itemStyle: {
                                 normal: {
-                                    color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                        offset: 0,
-                                        color: '#8ec6ad'
-                                    }, {
-                                        offset: 1,
-                                        color: '#FF3D7A99'
-                                    }])
-                                }
+                                    color: 'rgba(61, 122, 153, 0.1)',
+                                },
                             },
+                            lineStyle: {
+                                normal: {
+                                    color: 'rgba(61, 122, 153, 1)',
+                                },
+                            }
                         },
                         {
                             name:'毛利',
@@ -157,17 +164,27 @@ export default {
                             smooth:true,
                             areaStyle: {normal: {}},
                             data:this.valDate1,
-                            areaStyle: {
+                            // areaStyle: {
+                            //     normal: {
+                            //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            //             offset: 0,
+                            //             color: '#8ec6ad'
+                            //         }, {
+                            //             offset: 1,
+                            //             color: '#FFDD6C51'
+                            //         }])
+                            //     }
+                            // },
+                            itemStyle: {
                                 normal: {
-                                    color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                        offset: 0,
-                                        color: '#8ec6ad'
-                                    }, {
-                                        offset: 1,
-                                        color: '#FFDD6C51'
-                                    }])
-                                }
+                                    color: 'rgba(221, 108, 81, 0.1)',
+                                },
                             },
+                            lineStyle: {
+                                normal: {
+                                    color: 'rgba(221, 108, 81, 1)',
+                                },
+                            }
                         },
                         {
                             name:'采购成本',
@@ -176,17 +193,28 @@ export default {
                             smooth:true,
                             areaStyle: {normal: {}},
                             data:this.valDate2,
-                            areaStyle: {
+                            // areaStyle: {
+                            //     normal: {
+                            //         color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            //             offset: 0,
+                            //             color: '#8ec6ad'
+                            //         }, {
+                            //             offset: 1,
+                            //             color: '#FF706AAF'
+                            //         }])
+                            //     }
+                            // },
+                            itemStyle: {
                                 normal: {
-                                    color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                        offset: 0,
-                                        color: '#8ec6ad'
-                                    }, {
-                                        offset: 1,
-                                        color: '#FF706AAF'
-                                    }])
-                                }
+                                    color: 'rgba(112, 106, 175, 0.1)',
+                                },
                             },
+                            lineStyle: {
+                                normal: {
+                                    color: 'rgba(112, 106, 175, 1)',
+                                },
+                            },
+                            
                         }
                     ]
                 };

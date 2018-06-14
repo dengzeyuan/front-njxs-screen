@@ -1,0 +1,23 @@
+.el-table th, .el-table tr {
+    background-color: #141313;
+}
+.el-table td, .el-table th.is-leaf {
+    border-bottom: 1px solid #343344;
+}
+.el-table thead {
+    color: #537F8C;
+    font-weight: 500;
+}
+.el-table{
+    color: #fff;
+    font-size: 9%;
+}
+.el-table td, .el-table th{
+    padding: 0;
+}
+.el-table--enable-row-hover .el-table__body tr:hover>td{
+    background-color: none; 
+}
+.el-table--enable-row-hover .el-table__body tr:hover>td{
+    background-color: none;
+}
