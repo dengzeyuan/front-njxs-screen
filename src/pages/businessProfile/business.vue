@@ -50,7 +50,7 @@ export default {
                         textStyle: {  
                             fontWeight: 'normal',              //标题颜色  
                             color: '#75becb',
-                            fontSize: 30,  
+                            fontSize: 18,  
                         },
                     },
                     tooltip : {
@@ -66,7 +66,7 @@ export default {
                     legend: {
                         data:this.textDate,
                         textStyle: {  
-                            color: '#000',
+                            color: '#fff',
                         },
                         left: 'right',
                         top: 20

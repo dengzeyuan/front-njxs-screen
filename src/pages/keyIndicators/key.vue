@@ -118,7 +118,7 @@ export default {
                 itemHeight:5, //图例标记的图形高度
                 data:['线上'+'20%','线下'+'10%'],
                 textStyle:{    //图例文字的样式
-                    color:'#000',  //文字颜色
+                    color:'#fff',  //文字颜色
                     fontSize:16,    //文字大小
                 }
             },
@@ -129,7 +129,7 @@ export default {
                 style:{
                     text:this.dateValue.name,
                     textAlign:'left',
-                    fill:'#000',
+                    fill:'#fff',
                     width:50,
                     height:50
                 }
@@ -186,7 +186,7 @@ export default {
                 itemHeight:5, //图例标记的图形高度
                 data:['线上'+'30%','线下'+'10%'],
                 textStyle:{    //图例文字的样式
-                    color:'#000',  //文字颜色
+                    color:'#fff',  //文字颜色
                     fontSize:16,    //文字大小
                 }
             },
@@ -197,7 +197,7 @@ export default {
                 style:{
                     text:this.dateValue1.name,
                     textAlign:'left',
-                    fill:'#000',
+                    fill:'#fff',
                     width:50,
                     height:50
                 }
