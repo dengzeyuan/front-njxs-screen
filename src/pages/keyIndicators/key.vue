@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="textd">
-           <div id="main3" style="width: 250px;height:132px"></div>
+           <div id="main3" style="width: 230px;height:132px"></div>
             <div class="table-data">
                 <el-table
                 :data="textValue3"

@@ -29,7 +29,7 @@ export default {
                 this.timeDate.push(val.date)
                 this.valDate.push(val.value)
                 // this.valDate.push(Number(val.value).toFixed(2))
-                console.log(this.valDate)
+			    console.log(this.valDate)
             }) 
             ress[1].singleList.map(val =>{
                 this.valDate1.push(val.value)
@@ -131,7 +131,7 @@ export default {
                         {
                             name:'销售收入',
                             type:'line',
-                            stack: '总量',
+                            // stack: '总量',
                             // smooth:true,
                             // areaStyle: {normal: {}},
                             data:this.valDate,
@@ -148,7 +148,7 @@ export default {
                             // },
                             itemStyle: {
                                 normal: {
-                                    color: 'rgba(61, 122, 153, 0.1)',
+                                    color: 'rgba(61, 122, 153, 0.4)',
                                 },
                             },
                             lineStyle: {
@@ -160,7 +160,7 @@ export default {
                         {
                             name:'毛利',
                             type:'line',
-                            stack: '总量',
+                            // stack: '总量',
                             smooth:true,
                             areaStyle: {normal: {}},
                             data:this.valDate1,
@@ -177,7 +177,7 @@ export default {
                             // },
                             itemStyle: {
                                 normal: {
-                                    color: 'rgba(221, 108, 81, 0.1)',
+                                    color: 'rgba(221, 108, 81, 0.4)',
                                 },
                             },
                             lineStyle: {
@@ -189,7 +189,7 @@ export default {
                         {
                             name:'采购成本',
                             type:'line',
-                            stack: '总量',
+                            // stack: '总量',
                             smooth:true,
                             areaStyle: {normal: {}},
                             data:this.valDate2,
@@ -206,7 +206,7 @@ export default {
                             // },
                             itemStyle: {
                                 normal: {
-                                    color: 'rgba(112, 106, 175, 0.1)',
+                                    color: 'rgba(112, 106, 175, 0.4)',
                                 },
                             },
                             lineStyle: {
