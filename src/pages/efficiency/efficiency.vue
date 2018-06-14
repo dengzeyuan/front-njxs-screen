@@ -1,17 +1,19 @@
 <template>
   <div class="efficiency-page" :style="pagestyle">
-        <div class="head" :style="headstyle"><h4>经营效率</h4>
-        <span class="el-icon-more" style="cursor:pointer;" :style="{opacity:opacitys}"
-          @click="clickdit()" @mouseover="hoveredit(1)"   @mouseout="hoveredit(0)"></span></div>
-        <div class="content-left">
+        <div class="head" :style="headstyle">
+            <h4 :style="headtitle">经营效率</h4>
+            <span class="el-icon-more" style="cursor:pointer;" :style="{opacity:opacitys}"
+            @click="clickdit()" @mouseover="hoveredit(1)"   @mouseout="hoveredit(0)"></span>
+        </div>
+        <div class="content-left" :style="contentleft">
             <div :style="contentTitle">线下</div>
             <div class="contentfirst" :style="contentfirst"><span :style="leftContent">均效</span><span :style="leftContent">888/平</span></div>
             <div class="contentsecond" :style="contentsecond"><span :style="leftContent">人效</span><span :style="leftContent">888/人</span></div>
         </div>
         <div class="content-right" :style="cententRight">
             <div :style="contentTitle">线下</div>
-            <div class="contentfirst" :style="contentfirst"><span :style="leftContent">配送及时率</span><span :style="leftContent">客户满意度</span></div>
-            <div class="contentfirst" :style="contentfirst">
+            <div class="contentfirst" :style="contentfirst"><span :style="sendrate">配送及时率</span><span :style="customer">客户满意度</span></div>
+            <div class="contentfirst">
                 <span><div id="main-first" :style="echartstyle"></div></span>
                 <span><div id="main-two" :style="echartstyle"></div></span>
             </div>
@@ -19,9 +21,17 @@
 
         <div v-show="hidefromfalg" class="hideform" :style="formstyle">
             <form>
-                <div class="form-group">
+              <table border="1" cellpadding=0 cellspacing=0 style="color:#ffffff;">
+                <tr><td>坪效</td><td><input type="number"></td></tr>
+                <tr><td>人效</td><td><input type="number"></td></tr>
+                <tr><td>配送及时率</td><td><input type="number"></td></tr>
+                <tr><td>客户满意度</td><td><input type="number"></td></tr>
+              </table>
+              <button>确定</button>
+
+                <!-- <div class="form-group">
                     <label for="average">
-                       <span>均效</span> 
+                       <span>坪效</span> 
                     </label>
                     <input id="average" type="number">
                 </div>
@@ -44,8 +54,8 @@
                     <input id="customer" type="number">
                 </div>
                 <div class="form-group" style="text-align:right;padding-top:1%;">
-                  <el-button class="button"size="mini" type="primary" plain>确定</el-button>
-                </div>
+                  <el-button class="submitefficty" size="mini" type="primary" :style="submitefficty" plain>确定</el-button>
+                </div> -->
             </form>
             <span class="closeform el-icon-close" @click="clickdit()"></span>
         </div>
@@ -57,44 +67,70 @@
 export default {
   data() {
     return {
+      contentleft: {
+        paddingLeft: Math.ceil(67 * this.baseScreenRate) + "px"
+      },
+      headtitle: {
+        fontSize: Math.ceil(22 * this.baseScreenRate) + "px"
+      },
       headstyle: {
-        fontSize: Math.ceil(30 * this.baseScreenRate) + "px",
-        height: Math.ceil(44 * this.baseScreenRate) + "px",
+        fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
+        height: Math.ceil(22 * this.baseScreenRate) + "px",
+        paddingLeft: Math.ceil(40 * this.baseScreenRate) + "px",
+        marginBottom: Math.ceil(10 * this.baseScreenRate) + "px"
       },
       pagestyle: {
-        paddingLeft: Math.ceil(40 * this.baseScreenRate) + "px",
         paddingTop: Math.ceil(23 * this.baseScreenRate) + "px"
       },
       contentTitle: {
-        fontSize: Math.ceil(24 * this.baseScreenRate) + "px",
+        fontSize: Math.ceil(20 * this.baseScreenRate) + "px",
         color: "#537F8C",
         paddingBottom: Math.ceil(20 * this.baseScreenRate) + "px"
       },
       leftContent: {
-        fontSize: Math.ceil(20 * this.baseScreenRate) + "px"
+        fontSize: Math.ceil(20 * this.baseScreenRate) + "px",
+        textAlign: "right"
+      },
+      rightContent: {
+        fontSize: Math.ceil(20 * this.baseScreenRate) + "px",
+        textAlign: "center"
+      },
+      sendrate: {
+        fontSize: Math.ceil(20 * this.baseScreenRate) + "px",
+        textAlign: "center"
+        // width:Math.ceil(100 * this.baseScreenRate) + "px",
+        // marginRight:Math.ceil(60 * this.baseScreenRate) + "px",
+      },
+      customer: {
+        fontSize: Math.ceil(20 * this.baseScreenRate) + "px",
+        textAlign: "center"
+        // width:Math.ceil(100 * this.baseScreenRate) + "px",
       },
       contentfirst: {
-        color: "#537F8C"
+        color: "#537F8C",
+        height: Math.ceil(19 * this.baseScreenRate) + "px"
       },
       contentsecond: {
         fontSize: Math.ceil(24 * this.baseScreenRate) + "px",
         color: "#537F8C",
-        paddingTop: Math.ceil(50 * this.baseScreenRate) + "px"
+        paddingTop: Math.ceil(45 * this.baseScreenRate) + "px"
       },
       cententRight: {
         paddingRight: Math.ceil(50 * this.baseScreenRate) + "px"
       },
       echartstyle: {
-        // width: Math.ceil(77 * this.baseScreenRate) + "px",
-        // height: Math.ceil(77 * this.baseScreenRate) + "px",
-        width: "60%",
-        height: "60%",
+        width: Math.ceil(80 * this.baseScreenRate) + "px",
+        height: Math.ceil(80 * this.baseScreenRate) + "px",
         margin: "0 auto"
       },
       formstyle: {
         fontSize: Math.ceil(24 * this.baseScreenRate) + "px",
         paddingTop: Math.ceil(30 * this.baseScreenRate) + "px"
       },
+      // submitefficty: {
+      //   padding: "1% 2%",
+      //   fontSize: Math.ceil(18 * this.baseScreenRate) + "px"
+      // },
       opacitys: 0,
       hidefromfalg: false
     };
@@ -130,6 +166,19 @@ export default {
         },
         series: [
           {
+            color:id == "main-first"?[
+              "#4f4f56",
+              new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: "#1C0C99" },
+                { offset: 1, color: "#49F9FF" }
+              ])
+            ]:[
+              "#4f4f56",
+              new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: "#BA51E9" },
+                { offset: 1, color: "#E852B0" }
+              ])
+            ],
             name: "访问来源",
             type: "pie",
             radius: ["50%", "70%"],
@@ -147,10 +196,7 @@ export default {
             },
             data: [
               { value: 335, name: "直接访问" },
-              { value: 310, name: "邮件营销" },
-              { value: 234, name: "联盟广告" },
-              { value: 135, name: "视频广告" },
-              { value: 1548, name: "搜索引擎" }
+              { value: 310, name: "邮件营销" }
             ]
           }
         ]
@@ -166,7 +212,7 @@ export default {
 <style scoped lang="less">
 .efficiency-page {
   position: relative;
-  padding-right: 10px;
+  // padding-right: 10px;
   width: 100%;
   height: 100%;
   clear: both;
@@ -220,9 +266,10 @@ export default {
     }
   }
   .content-right {
-    width: 60%;
+    max-width: 60%;
+    width: 50%;
     height: 80%;
-    float: left;
+    float: right;
     text-align: center;
     overflow: hidden;
     .contentfirst {
@@ -264,21 +311,44 @@ export default {
       cursor: pointer;
     }
     form {
-      width: 80%;
+      width: 90%;
       min-height: 0;
       margin: 0 auto;
       //   border:1px solid #fff;
-      .form-group {
+      // .form-group {
+      //   width: 100%;
+      //   padding-bottom: 1%;
+      //   label,
+      //   input {
+      //     width: 49%;
+      //     display: inline-block;
+      //   }
+      //   label {
+      //     text-align: right;
+      //   }
+      //   .submitefficty.el-button.is-plain{
+
+      //   }
+      // }
+      table {
         width: 100%;
-        padding-bottom: 1%;
-        label,
-        input {
-          width: 49%;
-          display: inline-block;
+        td {
+          width: 50%;
+          input {
+            background: none;
+            color: #ffffff;
+            border: 0;
+          }
         }
-        label {
-          text-align: right;
-        }
+      }
+      button {
+        width: 100%;
+        border-radius: 4px;
+        background: #537f8c;
+        outline: 0;
+        box-shadow: none;
+        border: 1px solid transparent;
+        color: #ffffff;
       }
     }
   }
