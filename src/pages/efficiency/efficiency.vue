@@ -12,8 +12,8 @@
             <div :style="contentTitle">线下</div>
             <div class="contentfirst" :style="contentfirst"><span :style="leftContent">配送及时率</span><span :style="leftContent">客户满意度</span></div>
             <div class="contentfirst" :style="contentfirst">
-                <span><div id="main" :style="echartstyle"></div></span>
-                <span><div id="maintwo" :style="echartstyle"></div></span>
+                <span><div id="main-first" :style="echartstyle"></div></span>
+                <span><div id="main-two" :style="echartstyle"></div></span>
             </div>
         </div>
 
@@ -86,7 +86,7 @@ export default {
       },
       echartstyle: {
         // width: Math.ceil(77 * this.baseScreenRate) + "px",
-        // height: Math.ceil(77 * this.baseScreenRate) + "px"
+        // height: Math.ceil(77 * this.baseScreenRate) + "px",
         width: "80%",
         height: "80%",
         margin: "0 auto"
@@ -102,13 +102,12 @@ export default {
   components: {},
   mounted: function() {
     this.$nextTick(function() {
-      this.initleftecharts("main");
-      this.initleftecharts("maintwo");
+      this.initleftecharts("main-first");
+      this.initleftecharts("main-two");
     });
   },
   methods: {
     clickdit: function() {
-      console.log(1111);
       this.hidefromfalg = !this.hidefromfalg;
     },
     hoveredit: function(num) {
