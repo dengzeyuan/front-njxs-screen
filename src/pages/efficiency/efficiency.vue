@@ -7,8 +7,8 @@
         </div>
         <div class="content-left" :style="contentleft">
             <div :style="contentTitle">线下</div>
-            <div class="contentfirst" :style="contentfirst"><span :style="leftContent">均效</span><span :style="leftContent">888/平</span></div>
-            <div class="contentsecond" :style="contentsecond"><span :style="leftContent">人效</span><span :style="leftContent">888/人</span></div>
+            <div class="contentfirst" :style="contentfirst"><span :style="leftContent">坪效</span><span :style="leftContent">{{responseDate.avgEfficiency}}</span></div>
+            <div class="contentsecond" :style="contentsecond"><span :style="leftContent">人效</span><span :style="leftContent">{{responseDate.personEfficiency}}</span></div>
         </div>
         <div class="content-right" :style="cententRight">
             <div :style="contentTitle">线下</div>
@@ -119,8 +119,8 @@ export default {
         paddingRight: Math.ceil(50 * this.baseScreenRate) + "px"
       },
       echartstyle: {
-        width: Math.ceil(80 * this.baseScreenRate) + "px",
-        height: Math.ceil(80 * this.baseScreenRate) + "px",
+        width: Math.ceil(77 * this.baseScreenRate) + "px",
+        height: Math.ceil(77 * this.baseScreenRate) + "px",
         margin: "0 auto"
       },
       formstyle: {
@@ -132,14 +132,28 @@ export default {
       //   fontSize: Math.ceil(18 * this.baseScreenRate) + "px"
       // },
       opacitys: 0,
-      hidefromfalg: false
+      hidefromfalg: false,
+      responseDate: {
+        avgEfficiency: "",
+        personEfficiency: "",
+        distributionRate: "",
+        customerRate: ""
+      }
     };
   },
   components: {},
   mounted: function() {
     this.$nextTick(function() {
-      this.initleftecharts("main-first");
-      this.initleftecharts("main-two");
+      this.axios
+        .get("http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency")
+        .then(res => {
+          if (res.data.data) {
+            this.responseDate = res.data.data;
+            this.initleftecharts("main-first", res.data.data.distributionRate);
+            this.initleftecharts("main-two", res.data.data.customerRate);
+          }
+        })
+        .catch(res => {});
     });
   },
   methods: {
@@ -149,13 +163,19 @@ export default {
     hoveredit: function(num) {
       this.opacitys = num;
     },
-    initleftecharts: function(id) {
+    initleftecharts: function(id, data) {
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.getElementById(id));
       // 指定图表的配置项和数据
       var option = {
+        grid: {
+          left: 0,
+          bottom: 0,
+          top: 0,
+          right: 0
+        },
         title: {
-          text: "80%",
+          text: data,
           x: "center",
           y: "center",
           textStyle: {
@@ -166,22 +186,25 @@ export default {
         },
         series: [
           {
-            color:id == "main-first"?[
-              "#4f4f56",
-              new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: "#1C0C99" },
-                { offset: 1, color: "#49F9FF" }
-              ])
-            ]:[
-              "#4f4f56",
-              new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: "#BA51E9" },
-                { offset: 1, color: "#E852B0" }
-              ])
-            ],
+            color:
+              id == "main-first"
+                ? [
+                    "#4f4f56",
+                    new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      { offset: 0, color: "#1C0C99" },
+                      { offset: 1, color: "#49F9FF" }
+                    ])
+                  ]
+                : [
+                    "#4f4f56",
+                    new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      { offset: 0, color: "#BA51E9" },
+                      { offset: 1, color: "#E852B0" }
+                    ])
+                  ],
             name: "访问来源",
             type: "pie",
-            radius: ["50%", "70%"],
+            radius: ["60%", "80%"],
             avoidLabelOverlap: false,
             hoverAnimation: false,
             label: {

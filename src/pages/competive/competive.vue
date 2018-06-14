@@ -82,7 +82,28 @@ export default {
   components: {},
   mounted: function() {
     this.$nextTick(function() {
-      this.initleftecharts("efficienct-radar");
+      this.axios
+        .get(
+          "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/competition"
+        )
+        .then(res => {
+          if (res.data.data) {
+            this.responseDate = res.data.data;
+            let yxis = [];
+            let namelists = [];
+            res.data.data.forEach(function(value, index) {
+              if (namelists.indexOf(value.businessName) == -1) {
+                namelists.push(value.businessName);
+              }
+              if (yxis.indexOf(value.targetName) == -1) {
+                yxis.push({text:value.targetName,max:"100"});
+              }
+            });
+
+            this.initleftecharts("efficienct-radar", namelists,yxis);
+          }
+        })
+        .catch(res => {});
     });
   },
   methods: {
@@ -92,7 +113,7 @@ export default {
     hoveredit: function(num) {
       this.opacitys = num;
     },
-    initleftecharts: function(id) {
+    initleftecharts: function(id, namelists) {
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.getElementById(id));
       // 指定图表的配置项和数据
@@ -113,7 +134,7 @@ export default {
             fontSize: Math.ceil(18 * this.baseScreenRate),
             color: "#ffffff"
           },
-          data: ["宁家鲜生", "河马鲜生", "沃尔玛"]
+          data: namelists
         },
         radar: [
           {
@@ -184,14 +205,14 @@ export default {
               lineStyle: {
                 type: "dashed",
                 color: "#4C545C",
-                width:  Math.ceil(5 * this.baseScreenRate),
+                width: Math.ceil(5 * this.baseScreenRate)
               }
             },
             splitLine: {
               lineStyle: {
                 type: "dashed",
                 color: "#4C545C",
-                width:  Math.ceil(5 * this.baseScreenRate),
+                width: Math.ceil(5 * this.baseScreenRate)
               }
             }
           }

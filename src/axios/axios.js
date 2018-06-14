@@ -20,7 +20,7 @@ if (urls != null) {
 sessionStorage.setItem('sessionId', url);
 
 var $axios = axios.create({
-    baseURL: 'http://10.0.0.128:8112/njxs-backend',
+    baseURL: 'http://suneee.dcp.weilian.cn',
     // timeout: 5000,
     headers: {
         'Content-type': 'application/x-www-form-urlencoded',
