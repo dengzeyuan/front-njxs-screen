@@ -3,17 +3,15 @@
     <!-- <Header class="header"/> -->
     <div class="header" :style="headerheight">
       <span :style="headertitltstyle"> <span class="trigon" :style="trigonleft"></span>宁家鲜生运营数据展示<span class="trigon" :style="trigonright"></span></span>
-      <!-- <template>
-        <el-select v-model="value" placeholder="请选择"   size="mini" class="timechange" :style="timechange" >
+      
+        <el-select v-model="value"  size="mini" class="timechange" name="timechange">
           <el-option
-          style="width:125px;height:35px;"
             v-for="item in options"
             :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
         </el-select>
-      </template> -->
    </div>
     <div class='container-home'>
          <router-view></router-view> 
@@ -46,10 +44,25 @@ export default {
         borderBottom: Math.ceil(64 * this.baseScreenRate) + "px solid #1a1a29",
         borderTop: "0px"
       },
-      timechange:{
-        width:Math.ceil(128 * this.baseScreenRate) + "px",
-        height:Math.ceil(40 * this.baseScreenRate) + "px",
-      }
+      timechange: {
+        width: Math.ceil(128 * this.baseScreenRate) + "px",
+        height: Math.ceil(35 * this.baseScreenRate) + "px"
+      },
+      options: [
+        {
+          value: "WEEK ",
+          label: "the week"
+        },
+        {
+          value: "MONTH",
+          label: "the month"
+        },
+        {
+          value: "QUARTER",
+          label: "the quarter"
+        }
+      ],
+      value: "the week"
     };
   },
   components: {
@@ -59,6 +72,14 @@ export default {
   }
 };
 </script>
+<style>
+.timechange .el-input>input[name="timechange"]{
+  background: rgba(45, 44, 63, 1);
+  border-radius: 4px;
+  color:#7A7899;
+  border:1px solid #2D2C3F;
+}
+</style>
 <style lang="less" scoped>
 .container {
   display: flex;
@@ -78,6 +99,7 @@ export default {
     box-sizing: border-box;
     flex-shrink: 0;
     text-align: center;
+    position: relative;
     span {
       display: inline-block;
       width: 42.23%;
@@ -102,11 +124,10 @@ export default {
     }
     .timechange {
       overflow: hidden;
-      vertical-align: baseline;
-      *{
-        width:100%;
-        height:100%;
-      }
+      position: absolute;
+      right: 4%;
+      top: 0;
+      width: 128px;
     }
   }
   .container-home {
