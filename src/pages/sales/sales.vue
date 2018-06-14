@@ -1,5 +1,11 @@
 <template>
     <div class = 'content'>
+        <!-- <div class="same">
+            <select name="" id="">
+                <option value="1">同比</option><i class="el-icon-arrow-down el-icon--right"></i>
+                <option value="0">环比</option><i class="el-icon-arrow-down el-icon--right"></i>
+            </select>
+         </div> -->
         <div id="saldata"></div>
     </div>
 </template>
@@ -7,16 +13,27 @@
 export default {
     data() {
         return {
-
+            names: '',
+            timeDate: [],
+            amountDate: [],
+            amountDate1: []
         }
     },
     mounted() {
         this.axios
         .get(
-          "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/kpi/WEEK"
+          "http://suneee.dcp.weilian.cn/njxs-demo/operationData/saleRate/data/QUARTER/1"
         )
         .then(res => {
-            
+            //  console.log(res)
+            res.data.data.dataCurrentWeek.map(val => {
+                this.timeDate.push(val.time)
+                this.amountDate.push(val.amount)
+            })
+            res.data.data.dataPreWeek.map(val => {
+                this.amountDate1.push(val.amount)
+                // console.log(this.amountDate)
+            })
         })
         .catch(res =>{
             console.log('请求失败')
@@ -28,12 +45,15 @@ export default {
         // 指定图表的配置项和数据
         let option = {
             title : {
-                text: '销售同环画',
+                text: '销售同环比',
                 textStyle: {  
                     fontWeight: 'normal',              //标题颜色  
                     color: '#75becb',
-                    fontSize: 18,  
+                    fontSize: 12,  
                 },
+            },
+            tooltip : {
+                trigger: 'axis'
             },
             // color:['#FECC44','#5EFCF6'],
             xAxis : [
@@ -87,8 +107,8 @@ export default {
                 {
                     name:'蒸发量',
                     type:'bar',
-                    data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7],
-                    barWidth: 20,//柱宽
+                    data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7],
+                    barWidth: 12,//柱宽
                     itemStyle: {
                         normal: {
                             color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -105,7 +125,7 @@ export default {
                     name:'降水量',
                     type:'bar',
                     data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7],
-                    barWidth: 20,//柱宽
+                    barWidth: 12,//柱宽
                     itemStyle: {
                         normal: {
                             color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -136,10 +156,26 @@ export default {
     .content{
         width:100%;
         height: 100%;
+        // position: relative;
+        .same {
+            // position: absolute;
+            // right: 30px;
+            // top: 10px;
+            float: right;
+        }
     }
     #saldata {
         width: 100%;
         height: 100%;
+    }
+    .el-dropdown {
+        vertical-align: top;
+    }
+    .el-dropdown + .el-dropdown {
+        margin-left: 15px;
+    }
+    .el-icon-arrow-down {
+        font-size: 12px;
     }
 </style>
 
