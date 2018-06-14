@@ -38,12 +38,12 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../front-njsx-screen/index.html'),
+    index: path.resolve(__dirname, '../njxs-freshs-screen/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../front-njsx-screen'),
+    assetsRoot: path.resolve(__dirname, '../njxs-freshs-screen'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/front-njsx-screen/',
+    assetsPublicPath: '/njxs-freshs-screen/',
 
     /**
      * Source Maps

@@ -43,8 +43,8 @@
                     </label>
                     <input id="customer" type="number">
                 </div>
-                <div class="form-group" style="text-align:right;padding-top:4%;">
-                  <el-button size="mini" type="primary" plain>确定</el-button>
+                <div class="form-group" style="text-align:right;padding-top:1%;">
+                  <el-button class="button"size="mini" type="primary" plain>确定</el-button>
                 </div>
             </form>
             <span class="closeform el-icon-close" @click="clickdit()"></span>
@@ -87,8 +87,8 @@ export default {
       echartstyle: {
         // width: Math.ceil(77 * this.baseScreenRate) + "px",
         // height: Math.ceil(77 * this.baseScreenRate) + "px",
-        width: "80%",
-        height: "80%",
+        width: "60%",
+        height: "60%",
         margin: "0 auto"
       },
       formstyle: {
