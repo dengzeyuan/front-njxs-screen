@@ -20,10 +20,12 @@ if (urls != null) {
 sessionStorage.setItem('sessionId', url);
 
 var $axios = axios.create({
-    baseURL: 'http://suneee.dcp.weilian.cn',
+    // baseURL: 'http://suneee.dcp.weilian.cn',
     // timeout: 5000,
     headers: {
-        'Content-type': 'application/x-www-form-urlencoded',
+        // 'Content-type': 'application/x-www-form-urlencoded',//form 表单
+        // 'Content-type': 'text/plain',//raw
+        'Content-type': 'application/json',   
         // 'Authorization':'wn-jnq_user_session_idd2239db2-d01d-47b6-bf55-8c24aae4101c'
         // "sessionId": url
     }

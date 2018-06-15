@@ -20,42 +20,14 @@
         </div>
 
         <div v-show="hidefromfalg" class="hideform" :style="formstyle">
-            <form>
+            <form action="" ref="forms" novalidate>
               <table border="1" cellpadding=0 cellspacing=0 style="color:#ffffff;">
-                <tr><td>坪效</td><td><input type="number"></td></tr>
-                <tr><td>人效</td><td><input type="number"></td></tr>
-                <tr><td>配送及时率</td><td><input type="number"></td></tr>
-                <tr><td>客户满意度</td><td><input type="number"></td></tr>
+                <tr><td>坪效</td><td><input name="avgEfficiency" type="number" v-model="responseDate.avgEfficiency"></td></tr>
+                <tr><td>人效</td><td><input name="personEfficiency" type="number" v-model="responseDate.personEfficiency"></td></tr>
+                <tr><td>配送及时率</td><td><input name="distributionRate" type="number" v-model="responseDate.distributionRate"></td></tr>
+                <tr><td>客户满意度</td><td><input name="customerRate" type="number" v-model="responseDate.customerRate"></td></tr>
               </table>
-              <button>确定</button>
-
-                <!-- <div class="form-group">
-                    <label for="average">
-                       <span>坪效</span> 
-                    </label>
-                    <input id="average" type="number">
-                </div>
-                <div class="form-group">
-                    <label for="people">
-                       <span>人效</span> 
-                    </label>
-                    <input id="people" type="number">
-                </div>
-                <div class="form-group">
-                    <label for="distribute">
-                        <span>配送及时率</span> 
-                    </label>
-                    <input id="distribute" type="number">
-                </div>
-                <div class="form-group">
-                    <label for="customer">
-                     <span>客户满意度</span> 
-                    </label>
-                    <input id="customer" type="number">
-                </div>
-                <div class="form-group" style="text-align:right;padding-top:1%;">
-                  <el-button class="submitefficty" size="mini" type="primary" :style="submitefficty" plain>确定</el-button>
-                </div> -->
+              <input @click.stop="submitefficty" class="submit" type="button" readonly="readonly" value="确定" />
             </form>
             <span class="closeform el-icon-close" @click="clickdit()"></span>
         </div>
@@ -144,6 +116,12 @@ export default {
   components: {},
   mounted: function() {
     this.$nextTick(function() {
+      this.initdata();
+    });
+  },
+  methods: {
+    //初始化
+    initdata() {
       this.axios
         .get("http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency")
         .then(res => {
@@ -152,11 +130,44 @@ export default {
             this.initleftecharts("main-first", res.data.data.distributionRate);
             this.initleftecharts("main-two", res.data.data.customerRate);
           }
-        })
-        .catch(res => {});
-    });
-  },
-  methods: {
+        });
+    },
+    //提交
+    submitefficty: function() {
+      let param = JSON.stringify({
+        avgEfficiency: this.responseDate.avgEfficiency,
+        personEfficiency: this.responseDate.personEfficiency,
+        distributionRate: this.responseDate.distributionRate,
+        customerRate: this.responseDate.customerRate
+      });
+      this.axios({
+        method: "post",
+        url: "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
+        data: param
+      }) .then(res => {
+          if (res.data.status == "SUCCESS") {
+            this.clickdit();
+            this.initdata();
+          }
+        });
+
+      // this.axios
+      //   .post(
+      //     "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
+      //     {
+      //       "avgEfficiency": String(this.responseDate.avgEfficiency),
+      //       "personEfficiency": String(this.responseDate.personEfficiency),
+      //       "distributionRate": String(this.responseDate.distributionRate),
+      //       "customerRate": String(this.responseDate.customerRate)
+      //     }
+      //   )
+      //   .then(res => {
+      //     if (res.data.status == "SUCCESS") {
+      //       this.clickdit();
+      //       this.initdata();
+      //     }
+      //   });
+    },
     clickdit: function() {
       this.hidefromfalg = !this.hidefromfalg;
     },
@@ -364,7 +375,7 @@ export default {
           }
         }
       }
-      button {
+      .submit {
         width: 100%;
         border-radius: 4px;
         background: #537f8c;

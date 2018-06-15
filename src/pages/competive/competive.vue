@@ -5,42 +5,27 @@
           @mouseover="hoveredit(1)" @mouseout="hoveredit(0)"></span></div>
         <div id="efficienct-radar" :style="echartstyle"></div>
         <div v-show="hidefromfalg" class="hideform" :style="formstyle">
-            <form>
-              <table border="1" cellpadding=0 cellspacing=0 style="color:#ffffff;">
-                <tr><td></td><td>指标一</td><td>指标二</td><td>指标三</td><td>指标四</td><td>指标五</td><td>指标六</td><td>指标七</td></tr>
+            <!-- <form> -->
+              <!-- <table border="1" cellpadding=0 cellspacing=0 style="color:#ffffff;"> -->
+                <!-- <tr><td>&nbsp;</td><td>指标一</td><td>指标二</td><td>指标三</td><td>指标四</td><td>指标五</td><td>指标六</td><td>指标七</td></tr>
                 <tr><td>河马鲜生</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr>
                 <tr><td>宁家鲜生</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr>
-                <tr><td>沃尔玛</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr>
-                <tr><td>等等</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr>
+                <tr><td>沃尔玛</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr> -->
+                <!-- <tr><td>等等</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr> -->
+              <!-- </table> -->
+              <!-- <button>确定</button> -->
+            <!-- </form> -->
+            <form>
+              <table border="1" cellpadding=0 cellspacing=0>
+                <tr>
+                  <td>&nbsp;</td><td v-for="(y,index) in radardata.yxisobj" :key="index"><input type="text" v-model="y.title" /></td>
+                </tr>
+                <tr v-for="(tr,index) in radardata.legnedlistobj" :key="index">
+                  <td><input type="text" v-model="tr.title"  /></td>
+                  <td v-for="(td,index) in radardata.rowcolobj[index]" :key="index"><input type="number" v-model="td.value"></td>
+                </tr>
               </table>
-              <button>确定</button>
-                <!-- <div class="form-group">
-                    <label for="average">
-                       <span>均效</span> 
-                    </label>
-                    <input id="average" type="number">
-                </div>
-                <div class="form-group">
-                    <label for="people">
-                       <span>人效</span> 
-                    </label>
-                    <input id="people" type="number">
-                </div>
-                <div class="form-group">
-                    <label for="distribute">
-                        <span>配送及时率</span> 
-                    </label>
-                    <input id="distribute" type="number">
-                </div>
-                <div class="form-group">
-                    <label for="customer">
-                     <span>客户满意度</span> 
-                    </label>
-                    <input id="customer" type="number">
-                </div>
-                <div class="form-group" style="text-align:right;padding-top:1%;">
-                  <el-button class="submitefficty" size="mini" type="primary" :style="submitefficty" plain>确定</el-button>
-                </div> -->
+               <input @click.stop="submitcompetive" class="submit" type="button" readonly="readonly" value="确定" />
             </form>
             <span class="closeform el-icon-close" @click="clickdit()"></span>
         </div>
@@ -76,53 +61,169 @@ export default {
         fontSize: Math.ceil(18 * this.baseScreenRate) + "px"
       },
       opacitys: 0,
-      hidefromfalg: false
+      hidefromfalg: false,
+      radardata: {
+        yxis: [], //分类值
+        yxislist: [],
+        legnedlist: [],
+        legnedvalue: [],
+        serieslist: [],
+        yxismax: [],
+        legnedlistobj: [], //提交
+        yxisobj: [],
+        rowcolobj: []   //最终提交结果
+      }
     };
   },
   components: {},
   mounted: function() {
     this.$nextTick(function() {
+      let that = this;
       this.axios
         .get(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/competition"
         )
         .then(res => {
           if (res.data.data) {
-            this.responseDate = res.data.data;
-            let yxis = [];
-            let namelists = [];
+            let colorobj = [
+              "rgb(192,87,96)",
+              "rgb(186,126,182)",
+              "rgb(105,98,164)"
+            ];
             res.data.data.forEach(function(value, index) {
-              if (namelists.indexOf(value.businessName) == -1) {
-                namelists.push(value.businessName);
+              //获取指标和标识名称
+              if (that.radardata.legnedlist.indexOf(value.businessName) == -1) {
+                that.radardata.legnedlist.push(value.businessName);
+                that.radardata.legnedlistobj.push({
+                  title: value.businessName
+                });
               }
-              if (yxis.indexOf(value.targetName) == -1) {
-                yxis.push({text:value.targetName,max:"100"});
+              if (that.radardata.yxis.indexOf(value.targetName) == -1) {
+                that.radardata.yxis.push(value.targetName);
+                that.radardata.yxislist.push({
+                  text: value.targetName,
+                  max: that.radardata.yxismax[value.targetName]
+                });
+                that.radardata.yxisobj.push({ title: value.targetName });
+                // that.radardata.rowcolvalue.push({ value: "" });
               }
             });
 
-            this.initleftecharts("efficienct-radar", namelists,yxis);
+            //根据行和列计算table中的二维数据,并且添加分类和指标放在最后提交使用
+            that.radardata.legnedlist.forEach(function(value, index) {
+              that.radardata.rowcolobj[index] = [];
+              that.radardata.yxis.forEach(function(val, ind) {
+                that.radardata.rowcolobj[index].push({
+                  value: "",
+                  businessName: value,
+                  targetName: val
+                });
+              });
+            });
+
+            that.radardata.yxis.forEach(function(value, index) {
+              //获取指标最大值
+              that.radardata.yxismax[value] = [];
+              var max = 0;
+              res.data.data.forEach(function(val, ind) {
+                if (value == val.targetName) {
+                  if (max < val.targetValue) {
+                    max = val.targetValue;
+                  }
+                }
+              });
+              that.radardata.yxismax[value] = Number(max);
+            });
+            that.radardata.yxislist.forEach(function(value, index) {
+              value.max = that.radardata.yxismax[value.text];
+            });
+            // let color
+            that.radardata.legnedlist.forEach(function(value, index) {
+              //获取分类下的所有指标值
+              that.radardata.legnedvalue[value] = [];
+              res.data.data.forEach(function(val, ind) {
+                if (val.businessName == value) {
+                  that.radardata.legnedvalue[value].push(
+                    Number(val.targetValue)
+                  );
+                }
+              });
+              that.radardata.serieslist.push({
+                name: value,
+                value: that.radardata.legnedvalue[value],
+                areaStyle: {
+                  normal: {
+                    color: colorobj[index],
+                    opacity:0.4
+                  }
+                },
+                symbolSize: 2.5,
+                itemStyle: {
+                  normal: {
+                    borderColor: colorobj[index],
+                    borderWidth: 2.5
+                  }
+                },
+                lineStyle: {
+                  normal: {
+                    opacity: 0.5
+                  }
+                }
+              });
+            });
+            that.initleftecharts("efficienct-radar", that.radardata, colorobj);
           }
         })
         .catch(res => {});
     });
   },
   methods: {
+    //提交
+    submitcompetive: function() {
+      let array = [];
+      console.log(this.radardata.rowcolobj);
+      // let param = JSON.stringify({
+      //   avgEfficiency: this.responseDate.avgEfficiency,
+      //   personEfficiency: this.responseDate.personEfficiency,
+      //   distributionRate: this.responseDate.distributionRate,
+      //   customerRate: this.responseDate.customerRate
+      // });
+      // axios({
+      //   method: "post",
+      //   url: "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
+      //   data: param
+      // }) .then(res => {
+      //     if (res.data.status == "SUCCESS") {
+      //       this.clickdit();
+      //       this.initdata();
+      //     }
+      //   });
+
+      this.axios
+        .post(
+          "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/competition",
+          []
+        )
+        .then(res => {
+          if (res.data.status == "SUCCESS") {
+            this.clickdit();
+            this.initdata();
+          }
+        });
+    },
     clickdit: function() {
       this.hidefromfalg = !this.hidefromfalg;
     },
     hoveredit: function(num) {
       this.opacitys = num;
     },
-    initleftecharts: function(id, namelists) {
+    initleftecharts: function(id, radardata, colorobj) {
+      console.log(radardata);
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.getElementById(id));
       // 指定图表的配置项和数据
       var option = {
-        color: [
-          "rgba(192,87,96,1)",
-          "rgba(186,126,182,1)",
-          "rgba(105,98,164,1)"
-        ],
+        color: colorobj,
         legend: {
           show: true,
           icon: "circle",
@@ -134,40 +235,11 @@ export default {
             fontSize: Math.ceil(18 * this.baseScreenRate),
             color: "#ffffff"
           },
-          data: namelists
+          data: radardata.legnedlist
         },
         radar: [
           {
-            indicator: [
-              {
-                text: "指标一",
-                max: 100
-              },
-              {
-                text: "指标二",
-                max: 100
-              },
-              {
-                text: "指标三",
-                max: 100
-              },
-              {
-                text: "指标四",
-                max: 100
-              },
-              {
-                text: "指标五",
-                max: 100
-              },
-              {
-                text: "指标六",
-                max: 100
-              },
-              {
-                text: "指标七",
-                max: 100
-              }
-            ],
+            indicator: radardata.yxislist, //坐标轴和最大值
             textStyle: {
               color: "red"
             },
@@ -175,9 +247,6 @@ export default {
             radius: Math.ceil(120 * this.baseScreenRate),
             startAngle: 90,
             splitNumber: 3,
-            // backgroundColor: {
-            //   image: imgPath[0]
-            // },
             name: {
               formatter: "{value}",
               textStyle: {
@@ -228,71 +297,7 @@ export default {
                 }
               }
             },
-            data: [
-              {
-                name: "宁家鲜生",
-                value: [50, 50, 50, 50, 50, 80, 90],
-                areaStyle: {
-                  normal: {
-                    color: "rgba(192,87,96,0.4)"
-                  }
-                },
-                symbolSize: 2.5,
-                itemStyle: {
-                  normal: {
-                    borderColor: "rgba(192,87,96,1)",
-                    borderWidth: 2.5
-                  }
-                },
-                lineStyle: {
-                  normal: {
-                    opacity: 0.5
-                  }
-                }
-              },
-              {
-                name: "河马鲜生",
-                value: [30, 60, 55, 60, 70, 80, 90],
-                symbolSize: 2.5,
-                itemStyle: {
-                  normal: {
-                    borderColor: "rgba(186,126,182,1)",
-                    borderWidth: 2.5
-                  }
-                },
-                areaStyle: {
-                  normal: {
-                    color: "rgba(186,126,182,0.5)"
-                  }
-                },
-                lineStyle: {
-                  normal: {
-                    opacity: 0.5
-                  }
-                }
-              },
-              {
-                name: "沃尔玛",
-                value: [30, 60, 55, 60, 70, 80, 90],
-                symbolSize: 2.5,
-                itemStyle: {
-                  normal: {
-                    borderColor: "rgba(105,98,164,1)",
-                    borderWidth: 2.5
-                  }
-                },
-                areaStyle: {
-                  normal: {
-                    color: "rgba(105,98,164,0.5)"
-                  }
-                },
-                lineStyle: {
-                  normal: {
-                    opacity: 0.5
-                  }
-                }
-              }
-            ]
+            data: radardata.serieslist
           }
         ]
       };
@@ -341,32 +346,40 @@ export default {
     }
     form {
       width: 90%;
+      height: 100%;
       min-height: 0;
       margin: 0 auto;
-      //   border:1px solid #fff;
-      // .form-group {
-      //   width: 100%;
-      //   padding-bottom: 1%;
-      //   label,
-      //   input {
-      //     width: 49%;
-      //     display: inline-block;
-      //   }
-      //   label {
-      //     text-align: right;
-      //   }
-      //   .submitefficty.el-button.is-plain {
-      //   }
-      // }
       table {
         width: 100%;
+        min-height: 0%;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        color: #ffffff;
+        tr {
+          height: 20%;
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          td {
+            width: 10%;
+            height: 100%;
+            overflow: hidden;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 1;
+            flex-grow: 1;
+          }
+        }
         input {
           background: none;
           color: #ffffff;
           border: 0;
         }
       }
-      button {
+      .submit {
         width: 100%;
         border-radius: 4px;
         background: #537f8c;
