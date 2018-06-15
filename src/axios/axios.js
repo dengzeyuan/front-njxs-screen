@@ -25,7 +25,7 @@ var $axios = axios.create({
     headers: {
         // 'Content-type': 'application/x-www-form-urlencoded',//form 表单
         // 'Content-type': 'text/plain',//raw
-        'Content-type': 'application/json',   
+        // 'Content-type': 'application/json',   
         // 'Authorization':'wn-jnq_user_session_idd2239db2-d01d-47b6-bf55-8c24aae4101c'
         // "sessionId": url
     }
@@ -34,7 +34,7 @@ var $axios = axios.create({
 //POST传参序列化
 $axios.interceptors.request.use((config) => {
     if (config.method === 'post') {
-        config.data = qs.stringify(config.data);
+        config.data = config.data;
     }
     return config;
 }, (error) => {

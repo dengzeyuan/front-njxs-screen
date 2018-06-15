@@ -5,16 +5,6 @@
           @mouseover="hoveredit(1)" @mouseout="hoveredit(0)"></span></div>
         <div id="efficienct-radar" :style="echartstyle"></div>
         <div v-show="hidefromfalg" class="hideform" :style="formstyle">
-            <!-- <form> -->
-              <!-- <table border="1" cellpadding=0 cellspacing=0 style="color:#ffffff;"> -->
-                <!-- <tr><td>&nbsp;</td><td>指标一</td><td>指标二</td><td>指标三</td><td>指标四</td><td>指标五</td><td>指标六</td><td>指标七</td></tr>
-                <tr><td>河马鲜生</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr>
-                <tr><td>宁家鲜生</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr>
-                <tr><td>沃尔玛</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr> -->
-                <!-- <tr><td>等等</td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td><td><input type="number"></td></tr> -->
-              <!-- </table> -->
-              <!-- <button>确定</button> -->
-            <!-- </form> -->
             <form>
               <table border="1" cellpadding=0 cellspacing=0>
                 <tr>
@@ -22,7 +12,7 @@
                 </tr>
                 <tr v-for="(tr,index) in radardata.legnedlistobj" :key="index">
                   <td><input type="text" v-model="tr.title"  /></td>
-                  <td v-for="(td,index) in radardata.rowcolobj[index]" :key="index"><input type="number" v-model="td.value"></td>
+                  <td v-for="(td,index) in radardata.rowcolobj[index]" :key="index"><input type="number" v-model="td.targetValue"></td>
                 </tr>
               </table>
                <input @click.stop="submitcompetive" class="submit" type="button" readonly="readonly" value="确定" />
@@ -69,15 +59,20 @@ export default {
         legnedvalue: [],
         serieslist: [],
         yxismax: [],
-        legnedlistobj: [], //提交
-        yxisobj: [],
-        rowcolobj: []   //最终提交结果
+        legnedlistobj: [], //表格列
+        yxisobj: [], //表格行
+        rowcolobj: [] //最终提交结果
       }
     };
   },
   components: {},
   mounted: function() {
     this.$nextTick(function() {
+      this.initdata();
+    });
+  },
+  methods: {
+    initdata: function() {
       let that = this;
       this.axios
         .get(
@@ -85,6 +80,32 @@ export default {
         )
         .then(res => {
           if (res.data.data) {
+            if (res.data.data.length == 0) {
+              that.radardata = {
+                yxis: ["销售额", "订单量", "支付用户", "新增用户"], //分类值
+                yxislist: [
+                  { text: "销售额", max: 20000 },
+                  { text: "订单量", max: 3000 },
+                  { text: "支付用户", max: 3000 },
+                  { text: "新增用户", max: 3200 }
+                ],
+                legnedlist: ["宁家鲜生", "沃尔玛"],
+                legnedvalue: [
+                  "宁家鲜生"[(20000, 2000, 2000, 2000)],
+                  "沃尔玛"[(10000, 3000, 3000, 3200)]
+                ],
+                serieslist: [],
+                yxismax: {
+                  支付用户: 3000,
+                  新增用户: 3200,
+                  订单量: 3000,
+                  销售额: 20000
+                },
+                legnedlistobj: [{ title: "宁家鲜生" }, { title: "沃尔玛" }], //表格列
+                yxisobj: [{title:"销售额"},{title:"订单量"},{title:"支付用户"},{title:"新增用户"}], //表格行
+                rowcolobj: [] //最终提交结果
+              };
+            }
             let colorobj = [
               "rgb(192,87,96)",
               "rgb(186,126,182)",
@@ -95,6 +116,7 @@ export default {
               if (that.radardata.legnedlist.indexOf(value.businessName) == -1) {
                 that.radardata.legnedlist.push(value.businessName);
                 that.radardata.legnedlistobj.push({
+                  //表格用
                   title: value.businessName
                 });
               }
@@ -104,8 +126,7 @@ export default {
                   text: value.targetName,
                   max: that.radardata.yxismax[value.targetName]
                 });
-                that.radardata.yxisobj.push({ title: value.targetName });
-                // that.radardata.rowcolvalue.push({ value: "" });
+                that.radardata.yxisobj.push({ title: value.targetName }); //表格用
               }
             });
 
@@ -114,7 +135,7 @@ export default {
               that.radardata.rowcolobj[index] = [];
               that.radardata.yxis.forEach(function(val, ind) {
                 that.radardata.rowcolobj[index].push({
-                  value: "",
+                  targetValue: "",
                   businessName: value,
                   targetName: val
                 });
@@ -123,7 +144,7 @@ export default {
 
             that.radardata.yxis.forEach(function(value, index) {
               //获取指标最大值
-              that.radardata.yxismax[value] = [];
+              that.radardata.yxismax[value] = "";
               var max = 0;
               res.data.data.forEach(function(val, ind) {
                 if (value == val.targetName) {
@@ -132,6 +153,7 @@ export default {
                   }
                 }
               });
+              console.log(max)
               that.radardata.yxismax[value] = Number(max);
             });
             that.radardata.yxislist.forEach(function(value, index) {
@@ -154,7 +176,7 @@ export default {
                 areaStyle: {
                   normal: {
                     color: colorobj[index],
-                    opacity:0.4
+                    opacity: 0.4
                   }
                 },
                 symbolSize: 2.5,
@@ -171,38 +193,26 @@ export default {
                 }
               });
             });
+            // console.log(that.radardata);
             that.initleftecharts("efficienct-radar", that.radardata, colorobj);
           }
         })
         .catch(res => {});
-    });
-  },
-  methods: {
+    },
     //提交
     submitcompetive: function() {
       let array = [];
       console.log(this.radardata.rowcolobj);
-      // let param = JSON.stringify({
-      //   avgEfficiency: this.responseDate.avgEfficiency,
-      //   personEfficiency: this.responseDate.personEfficiency,
-      //   distributionRate: this.responseDate.distributionRate,
-      //   customerRate: this.responseDate.customerRate
-      // });
-      // axios({
-      //   method: "post",
-      //   url: "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
-      //   data: param
-      // }) .then(res => {
-      //     if (res.data.status == "SUCCESS") {
-      //       this.clickdit();
-      //       this.initdata();
-      //     }
-      //   });
+      this.radardata.rowcolobj.forEach(function(value, index) {
+        value.forEach(function(val, ind) {
+          array.push(val);
+        });
+      });
 
       this.axios
         .post(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/competition",
-          []
+          array
         )
         .then(res => {
           if (res.data.status == "SUCCESS") {

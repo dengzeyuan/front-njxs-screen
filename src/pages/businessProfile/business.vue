@@ -118,6 +118,7 @@ export default {
               symbol: "circle",
               smooth: true,
               data: this.valDate,
+              areaStyle: {opacity:0.4},
               label: {
                 show: true,
                 position: "top",
@@ -141,6 +142,7 @@ export default {
               symbol: "circle",
               smooth: true,
               data: this.valDate1,
+              areaStyle: {opacity:0.4},
               label: {
                 show: true,
                 position: "top",
@@ -164,6 +166,7 @@ export default {
               symbol: "circle",
               smooth: true,
               data: this.valDate2,
+               areaStyle: {opacity:0.4},
               label: {
                 show: true,
                 position: "top",
