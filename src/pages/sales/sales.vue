@@ -61,7 +61,7 @@ export default {
                     textStyle: {  
                         fontWeight: 'normal',              //标题颜色  
                         color: '#75becb',
-                        fontSize: Math.ceil(26 * this.baseScreenRate),
+                        fontSize: Math.ceil(22 * this.baseScreenRate),
                     },
                 },
                 tooltip : {
