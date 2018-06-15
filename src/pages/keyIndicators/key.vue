@@ -2,13 +2,13 @@
     <div class="content">
     <div class="main">
         <div class="textd1">
-            <div id="main1" style="width: 100%;height:40%"></div> 
+            <div id="main1" :style="lineNum" style="width: 100%;height:40%"></div> 
             <div class="table-data">
                 <table rules=rows>
-                    <tr class='trs'>
+                    <tr class='trs' :style="contentTitle">
                         <td>&nbsp;</td><td>线上</td><td>线下</td>
                     </tr>
-                    <tr v-for="(item,index) in textValue" :key='index'>
+                    <tr :style="contentText" v-for="(item,index) in textValue" :key='index'>
                         <td>{{item.name}}</td>
                         <td>{{item.onLineValue}}</td>
                         <td>{{item.underLineValue}}</td>
@@ -18,13 +18,13 @@
             </div>
         </div>
         <div class="textd2">
-           <div id="main2" style="width: 100%;height:40%"></div>
+           <div id="main2" :style="lineNum" style="width: 100%;height:40%"></div>
            <div class="table-data">
             <table rules=rows>
-                    <tr class='trs'>
+                    <tr class='trs' :style="contentTitle">
                         <td>&nbsp;</td><td>线上</td><td>线下</td>
                     </tr>
-                    <tr v-for="(item,index) in textValue1" :key='index'>
+                    <tr  :style="contentText" v-for="(item,index) in textValue1" :key='index'>
                         <td>{{item.name}}</td>
                         <td>{{item.onLineValue}}</td>
                         <td>{{item.underLineValue}}</td>
@@ -34,33 +34,33 @@
             </div>
         </div>
         <div class="textd3">
-           <div id="main3" style="width: 100%;height:40%"></div>
+           <div id="main3" :style="lineNum" style="width: 100%;height:40%"></div>
            <div class="table-data">
             <table rules=rows>
-                <tr class='trs'>
+                <tr class='trs' :style="contentTitle">
                     <td>&nbsp;</td><td>线上</td><td>线下</td>
                 </tr>
-                <tr>
+                <tr :style="contentText">
                     <td>无</td>
                     <td>无</td>
                     <td>无</td>
                 </tr>
-                <tr>
+                <tr :style="contentText">
                     <td>无</td>
                     <td>无</td>
                     <td>无</td>
                 </tr>
-                <tr>
+                <tr :style="contentText">
                     <td>无</td>
                     <td>无</td>
                     <td>无</td>
                 </tr>
-                <tr>
+                <tr :style="contentText">
                     <td>无</td>
                     <td>无</td>
                     <td>无</td>
                 </tr>
-                <tr>
+                <tr :style="contentText">
                     <td>无</td>
                     <td>无</td>
                     <td>无</td>
@@ -86,7 +86,20 @@ export default {
             topValuex: [],
             topValuex1: [],
             topValuey: [],
-            topValuey1: []
+            topValuey1: [],
+            contentTitle: {
+                fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
+                color: "#537F8C",
+            },
+            contentText: {
+                fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
+                color: "#fff",
+            },
+            lineNum: {
+                fontSize: Math.ceil(24 * this.baseScreenRate) + "px",
+                color: "#fff",
+            },
+
         }
     },
     mounted() {
@@ -131,7 +144,7 @@ export default {
                 //right:100,  //图例组件离右边的距离
                 orient : 'horizontal',  //布局  纵向布局 图例标记居文字的左边 vertical则反之
                 width:40,      //图行例组件的宽度,默认自适应
-                x : '50%',   //图例显示在右边
+                x : '60%',   //图例显示在右边
                 y: '40%',   //图例在垂直方向上面显示居中
                 itemWidth:5,  //图例标记的图形宽度
                 itemHeight:5, //图例标记的图形高度
@@ -143,7 +156,7 @@ export default {
             },
             graphic:{
                 type:'text',
-                left:'22%',
+                left:'23%',
                 top:'52%',
                 style:{
                     text:this.dateValue.name,
@@ -158,7 +171,7 @@ export default {
                     // name:'随访次数',  //系列名称
                     type:'pie',   //类型 pie表示饼图
                     center:['31%','60%'], //设置饼的原心坐标 不设置就会默认在中心的位置
-                    radius : ['35%', '45%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                    radius : ['55%', '45%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                     itemStyle : {  //图形样式
                         normal : { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
                             label : {  //饼图图形上的文本标签
@@ -211,7 +224,7 @@ export default {
             },
             graphic:{
                 type:'text',
-                left:'22%',
+                left:'23%',
                 top:'52%',
                 style:{
                     text:this.dateValue1.name,
@@ -226,7 +239,7 @@ export default {
                     // name:'随访次数',  //系列名称
                     type:'pie',   //类型 pie表示饼图
                     center:['31%','60%'], //设置饼的原心坐标 不设置就会默认在中心的位置
-                    radius : ['35%', '45%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                    radius : ['55%', '45%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                     itemStyle : {  //图形样式
                         normal : { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
                             label : {  //饼图图形上的文本标签
@@ -280,7 +293,7 @@ export default {
             },
             graphic:{
                 type:'text',
-                left:'22%',
+                left:'23%',
                 top:'452%',
                 style:{
                     text:'无',
@@ -295,7 +308,7 @@ export default {
                     // name:'随访次数',  //系列名称
                     type:'pie',   //类型 pie表示饼图
                     center:['31%','60%'], //设置饼的原心坐标 不设置就会默认在中心的位置
-                    radius : ['35%', '45%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                    radius : ['55%', '45%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                     itemStyle : {  //图形样式
                         normal : { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
                             label : {  //饼图图形上的文本标签
@@ -363,7 +376,6 @@ export default {
                     width: 100%;
                     height: 100%;
                     font-size: 10%;
-                    text-align: center;
                     color: #fff;
                     .trs{
                         color: #537F8C;
@@ -380,7 +392,6 @@ export default {
                     width: 100%;
                     height: 100%;
                     font-size: 10%;
-                    text-align: center;
                     color: #fff;
                     .trs{
                         color: #537F8C;
@@ -397,7 +408,6 @@ export default {
                     width: 100%;
                     height: 100%;
                     font-size: 10%;
-                    text-align: center;
                     color: #fff;
                     .trs{
                         color: #537F8C;

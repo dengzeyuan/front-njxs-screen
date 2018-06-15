@@ -11,8 +11,6 @@ import qs from 'qs';
 import echarts from 'echarts'
 import * as d3 from 'd3'
 
-import '../src/assets/css/base.css';
-
 Vue.config.productionTip = false
 Vue.prototype.axios = axios;
 Vue.prototype.$echarts = echarts;
