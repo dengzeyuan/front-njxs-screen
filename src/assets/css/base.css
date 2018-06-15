@@ -12,12 +12,19 @@
     color: #fff;
     font-size: 9%;
 }
-.el-table td, .el-table th{
+/* .el-table td, .el-table th{
     padding: 0;
-}
+} */
 .el-table--enable-row-hover .el-table__body tr:hover>td{
     background-color: none; 
 }
 .el-table--enable-row-hover .el-table__body tr:hover>td{
     background-color: none;
+}
+.el-input--mini .el-input__inner{
+    background: rgba(45, 44, 63, 1);
+    border-radius: 4px;
+    color:#7A7899;
+    border:1px solid #2D2C3F;
+    height: 22px;
 }
