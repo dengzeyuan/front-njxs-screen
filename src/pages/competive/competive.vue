@@ -58,7 +58,7 @@ export default {
         legnedlist: [],
         legnedvalue: [],
         serieslist: [],
-        yxismax: [],
+        yxismax: {},
         legnedlistobj: [], //表格列
         yxisobj: [], //表格行
         rowcolobj: [] //最终提交结果
@@ -153,9 +153,10 @@ export default {
                   }
                 }
               });
-              console.log(max)
+              // console.log(max)
               that.radardata.yxismax[value] = Number(max);
             });
+            console.log( that.radardata.yxismax)
             that.radardata.yxislist.forEach(function(value, index) {
               value.max = that.radardata.yxismax[value.text];
             });
