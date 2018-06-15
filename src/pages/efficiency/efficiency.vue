@@ -127,8 +127,12 @@ export default {
         .then(res => {
           if (res.data.data) {
             this.responseDate = res.data.data;
-            this.initleftecharts("main-first", res.data.data.distributionRate);
-            this.initleftecharts("main-two", res.data.data.customerRate);
+            let rate=[
+              { value: res.data.data.distributionRate, name: "配送及时率" },
+              { value: res.data.data.customerRate, name: "顾客满意度" }
+              ]
+            this.initleftecharts("main-first", res.data.data.distributionRate,rate);
+            this.initleftecharts("main-two", res.data.data.customerRate,rate);
           }
         });
     },
@@ -164,7 +168,7 @@ export default {
     hoveredit: function(num) {
       this.opacitys = num;
     },
-    initleftecharts: function(id, data) {
+    initleftecharts: function(id, data,rate) {
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.getElementById(id));
       // 指定图表的配置项和数据
@@ -218,10 +222,7 @@ export default {
                 show: false
               }
             },
-            data: [
-              { value: 335, name: "直接访问" },
-              { value: 310, name: "邮件营销" }
-            ]
+            data:rate
           }
         ]
       };
