@@ -1,18 +1,15 @@
 <template>
     <div class="content">
     <div class="main">
-        <div class="textd">
-        <div id="main1" style="width: 230px;height:132px"></div>
-            
+        <div class="textd1">
+        <div id="main1" style="width: 100%;height:40%"></div>        
             <div class="table-data">
                 <el-table
                 :data="textValue"
-                style="width: 100%;height:100%">
+                style="width: 100%">
                 <el-table-column
                     prop="name"
-                    height='30px'
                     align="center"
-                    width="120px"
                     >
                 </el-table-column>
                 <el-table-column
@@ -30,8 +27,8 @@
                 </el-table>
             </div>
         </div>
-        <div class="textd">
-           <div id="main2" style="width: 230px;height:132px"></div>
+        <div class="textd2">
+           <div id="main2" style="width: 100%;height:40%"></div>
             <div class="table-data">
                 <el-table
                 :data="textValue1"
@@ -60,11 +57,11 @@
                 </el-table>
             </div>
         </div>
-        <div class="textd">
-           <div id="main3" style="width: 230px;height:132px"></div>
+        <div class="textd3">
+           <div id="main3" style="width: 100%;height:40%"></div>
             <div class="table-data">
                 <el-table
-                :data="textValue3"
+                :data="textValue"
                 style="width:100%;height:100%">
                 <el-table-column
                     prop="name"
@@ -115,7 +112,6 @@ export default {
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/kpi/WEEK"
         )
         .then(res => {
-            console.log(res)
             this.topValue.push(res.data.data[0].onLineValue)
             this.topValue1.push(res.data.data[0].underLineValue)
             this.topValuex.push(res.data.data[1].onLineValue)
@@ -151,34 +147,34 @@ export default {
                 //right:100,  //图例组件离右边的距离
                 orient : 'horizontal',  //布局  纵向布局 图例标记居文字的左边 vertical则反之
                 width:40,      //图行例组件的宽度,默认自适应
-                x : 140,   //图例显示在右边
-                y: 60,   //图例在垂直方向上面显示居中
+                x : '50%',   //图例显示在右边
+                y: '35%',   //图例在垂直方向上面显示居中
                 itemWidth:5,  //图例标记的图形宽度
                 itemHeight:5, //图例标记的图形高度
                 data:['线上'+this.topValue,'线下'+this.topValue1],
                 textStyle:{    //图例文字的样式
                     color:'#fff',  //文字颜色
-                    fontSize:12,    //文字大小
+                    fontSize:11,    //文字大小
                 }
             },
             graphic:{
                 type:'text',
-                left:60,
-                top:73,
+                left:'15%',
+                top:'45%',
                 style:{
                     text:this.dateValue.name,
-                    textAlign:'left',
+                    // textAlign:'left',
                     fill:'#fff',
-                    width:50,
-                    height:50
-                }
+                    width:10,
+                    height:10
+                },
             },
             series : [ //系列列表
                 {
                     // name:'随访次数',  //系列名称
                     type:'pie',   //类型 pie表示饼图
-                    center:['32%','60%'], //设置饼的原心坐标 不设置就会默认在中心的位置
-                    radius : ['50%', '60%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                    center:['22%','50%'], //设置饼的原心坐标 不设置就会默认在中心的位置
+                    radius : ['35%', '45%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                     itemStyle : {  //图形样式
                         normal : { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
                             label : {  //饼图图形上的文本标签
@@ -219,34 +215,34 @@ export default {
                 //right:100,  //图例组件离右边的距离
                 orient : 'horizontal',  //布局  纵向布局 图例标记居文字的左边 vertical则反之
                 width:40,      //图行例组件的宽度,默认自适应
-                x : 140,   //图例显示在右边
-                y: 60,   //图例在垂直方向上面显示居中
+                x : '50%',   //图例显示在右边
+                y: '35%',   //图例在垂直方向上面显示居中
                 itemWidth:5,  //图例标记的图形宽度
                 itemHeight:5, //图例标记的图形高度
                 data:['线上'+this.topValuex,'线下'+this.topValuex1],
                 textStyle:{    //图例文字的样式
                     color:'#fff',  //文字颜色
-                    fontSize:12,    //文字大小
+                    fontSize:11,    //文字大小
                 }
             },
             graphic:{
                 type:'text',
-                left:60,
-                top:73,
+                left:'15%',
+                top:'45%',
                 style:{
                     text:this.dateValue1.name,
-                    textAlign:'left',
+                    // textAlign:'left',
                     fill:'#fff',
-                    width:50,
-                    height:50
-                }
+                    width:10,
+                    height:10
+                },
             },
             series : [ //系列列表
                 {
                     // name:'随访次数',  //系列名称
                     type:'pie',   //类型 pie表示饼图
-                    center:['32%','60%'], //设置饼的原心坐标 不设置就会默认在中心的位置
-                    radius : ['50%', '60%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                    center:['22%','50%'], //设置饼的原心坐标 不设置就会默认在中心的位置
+                    radius : ['35%', '45%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                     itemStyle : {  //图形样式
                         normal : { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
                             label : {  //饼图图形上的文本标签
@@ -278,11 +274,7 @@ export default {
         //使用刚指定的配置项和数据显示图表。        
         myChart2.setOption(option2);
 
-        })
-    .catch(res => {
-        console.log('请求失败')
-    })
-    //指定图表的配置项和数据
+         //指定图表的配置项和数据
         var myChart3 = this.$echarts.init(document.getElementById('main3'));
         // 指定图表的配置项和数据
         var option3 = {
@@ -292,41 +284,41 @@ export default {
                 //right:100,  //图例组件离右边的距离
                 orient : 'horizontal',  //布局  纵向布局 图例标记居文字的左边 vertical则反之
                 width:40,      //图行例组件的宽度,默认自适应
-                x : 140,   //图例显示在右边
-                y: 60,   //图例在垂直方向上面显示居中
+                x : '50%',   //图例显示在右边
+                y: '35%',   //图例在垂直方向上面显示居中
                 itemWidth:5,  //图例标记的图形宽度
                 itemHeight:5, //图例标记的图形高度
-                data:['线上'+'','线下'+''],
+                data:['线上'+this.topValue,'线下'+this.topValue1],
                 textStyle:{    //图例文字的样式
                     color:'#fff',  //文字颜色
-                    fontSize:12,    //文字大小
+                    fontSize:11,    //文字大小
                 }
             },
             graphic:{
                 type:'text',
-                left:60,
-                top:73,
+                left:'15%',
+                top:'45%',
                 style:{
-                    text:'用户数',
-                    textAlign:'left',
+                    text:this.dateValue.name,
+                    // textAlign:'left',
                     fill:'#fff',
-                    width:50,
-                    height:50
-                }
+                    width:10,
+                    height:10
+                },
             },
             series : [ //系列列表
                 {
                     // name:'随访次数',  //系列名称
                     type:'pie',   //类型 pie表示饼图
-                    center:['32%','60%'], //设置饼的原心坐标 不设置就会默认在中心的位置
-                    radius : ['50%', '60%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                    center:['22%','50%'], //设置饼的原心坐标 不设置就会默认在中心的位置
+                    radius : ['35%', '45%'],  //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                     itemStyle : {  //图形样式
                         normal : { //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
                             label : {  //饼图图形上的文本标签
                                 show : false  //平常不显示
                             },
                             labelLine : {     //标签的视觉引导线样式
-                                show : true  //平常不显示
+                                show : false  //平常不显示
                             }
                         },
                         emphasis : {   //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
@@ -341,8 +333,8 @@ export default {
                         }
                     },
                     data:[
-                        {value:30, name:'线上'+''},
-                        {value:10, name:'线下'+''},
+                        {value:30, name:'线上'+this.topValue},
+                        {value:10, name:'线下'+this.topValue1},
                     ]
                 }
             ]
@@ -350,6 +342,12 @@ export default {
 
         //使用刚指定的配置项和数据显示图表。        
         myChart3.setOption(option3);
+
+    })
+    .catch(res => {
+        console.log('请求失败')
+    })
+       
     },
     methods: {
         rowClass: function(row, rowIndex) {
@@ -372,24 +370,28 @@ export default {
         width: 100%;
         height: 100%;
         display: flex;
-        .textd{
+        .textd1{
             flex: 1;
+            .table-data {
+                 width: 100%;
+                 height: 60%;
+            }
         }
-        overflow: hidden;
+        .textd2{
+            flex: 1;
+            .table-data {
+                 width: 100%;
+                 height: 60%;
+            }
+        }
+        .textd3{
+            flex: 1;
+            .table-data {
+                 width: 100%;
+                 height: 60%;
+            }
+        }
         
-    }
-    .table-data{
-        width: 100%;
-        height: 100%;
-    }
-    .el-table{
-       color: #fff;
-    }
-    .el-table td, .el-table th{
-        padding: 0;
-    }
-    .el-table--enable-row-hover .el-table__body tr:hover>td{
-        background-color: none; 
     }
  </style>
 

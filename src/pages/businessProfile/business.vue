@@ -27,6 +27,8 @@ export default {
         });
         ress[0].singleList.map(val => {
           this.timeDate.push(val.date);
+          console.log('----11---')
+          console.log(this.timeDate)
           this.valDate.push(val.value.toFixed(2));
         });
         ress[1].singleList.map(val => {
@@ -115,7 +117,7 @@ export default {
             {
               name: "销售收入",
               type: "line",
-              stack: "总量",
+              // stack: "总量",
               symbol: "circle",
               smooth: true,
               data: this.valDate,
@@ -123,12 +125,22 @@ export default {
                 show: true,
                 position: "top",
                 color: "#fff"
+              },
+              itemStyle: {
+                normal: {
+                  color: "rgba(61, 122, 153, 0.7)"
+                }
+              },
+              lineStyle: {
+                normal: {
+                  color: "rgba(61, 122, 153, 1)"
+                }
               }
             },
             {
               name: "毛利",
               type: "line",
-              stack: "总量",
+              // stack: "总量",
               symbol: "circle",
               smooth: true,
               data: this.valDate1,
@@ -139,7 +151,7 @@ export default {
               },
               itemStyle: {
                 normal: {
-                  color: "rgba(221, 108, 81, 0.1)"
+                  color: "rgba(221, 108, 81, 0.7)"
                 }
               },
               lineStyle: {
@@ -151,7 +163,7 @@ export default {
             {
               name: "采购成本",
               type: "line",
-              stack: "总量",
+              // stack: "总量",
               symbol: "circle",
               smooth: true,
               data: this.valDate2,
@@ -162,7 +174,7 @@ export default {
               },
               itemStyle: {
                 normal: {
-                  color: "rgba(112, 106, 175, 0.1)"
+                  color: "rgba(112, 106, 175, 0.7)"
                 }
               },
               lineStyle: {
