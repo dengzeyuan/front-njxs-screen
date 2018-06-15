@@ -1,7 +1,7 @@
 <template>
     <div class = 'content'>
         <div class = 'namesDate'>
-            <el-select v-model="value"  size="mini" class="namechange" name="namechange">
+            <el-select v-model="value"  size="mini" class="namechange" @change="onSelectedDrug($event)" name="namechange">
                 <el-option
                     v-for="item in names"
                     :key="item.value"
@@ -35,16 +35,17 @@ export default {
             numDate:0
         }
     },
+    created: {
+        
+    },
     mounted() {
         this.axios
         .get(
           "http://suneee.dcp.weilian.cn/njxs-demo/operationData/saleRate/data/WEEK/0"
         )
         .then(res => {
-             console.log(res)
             res.data.data.dataCurrentWeek.map(val => {
                 this.timeDate.push(val.time)
-                console.log(this.timeDate)
                 this.amountDate.push(val.amount)
             })
             res.data.data.dataPreWeek.map(val => {
@@ -160,22 +161,22 @@ export default {
         })
     },
     methods: {
-
-        //  @change="onSelectedDrug($event)"
-        // onSelectedDrug(event) {  
-        //     //打印出绑定的对象  
-        //     // console.log(event);  
-        //     if(event == 1){
-        //         this.textData = 'QUARTER'
-        //         this.numDate = '1'
-        //     }else{
-        //         this.textData = 'WEEK'
-        //         this.numDate = '0'
-        //     }
-        // }
+         onSelectedDrug(event) {  
+            //打印出绑定的对象  
+            // console.log(event);  
+            if(event == 1){
+                this.textData = 'QUARTER'
+                this.numDate = '1'
+                console.log('11111')
+            }else{
+                this.textData = 'WEEK'
+                this.numDate = '0'
+                console.log('0000000')
+            }
+        }
     },
     watch: {
-
+      
     }
 }
 </script>
@@ -191,7 +192,7 @@ export default {
         //     border:1px solid #2D2C3F;
         // }
         .namesDate {
-            position: absolute;
+            position: fixed;
             right: 4%;
             top: 0;
             width: 75px;

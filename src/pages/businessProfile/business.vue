@@ -27,8 +27,6 @@ export default {
         });
         ress[0].singleList.map(val => {
           this.timeDate.push(val.date);
-          console.log('----11---')
-          console.log(this.timeDate)
           this.valDate.push(val.value.toFixed(2));
         });
         ress[1].singleList.map(val => {
@@ -51,7 +49,7 @@ export default {
             textStyle: {
               fontWeight: "normal", //标题颜色
               color: "#75becb",
-              fontSize: 12
+              fontSize: '80%'
             }
           },
           tooltip: {
@@ -63,7 +61,6 @@ export default {
               color: "#fff"
             },
             left: "right",
-            top: 20
           },
           xAxis: [
             {
@@ -83,7 +80,7 @@ export default {
                 lineStyle: {
                   color: "#75becb"
                   // width:1,//这里是为了突出显示加上的
-                }
+                },
               }
             }
           ],

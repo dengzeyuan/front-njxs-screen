@@ -12,9 +12,9 @@
     color: #fff;
     font-size: 9%;
 }
-/* .el-table td, .el-table th{
+.el-table td, .el-table th{
     padding: 0;
-} */
+}
 .el-table--enable-row-hover .el-table__body tr:hover>td{
     background-color: none; 
 }
