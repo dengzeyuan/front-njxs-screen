@@ -140,33 +140,23 @@ export default {
         distributionRate: this.responseDate.distributionRate,
         customerRate: this.responseDate.customerRate
       });
-      this.axios({
-        method: "post",
-        url: "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
-        data: param
-      }) .then(res => {
+
+      this.axios
+        .post(
+          "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
+          {
+            "avgEfficiency": String(this.responseDate.avgEfficiency),
+            "personEfficiency": String(this.responseDate.personEfficiency),
+            "distributionRate": String(this.responseDate.distributionRate),
+            "customerRate": String(this.responseDate.customerRate)
+          }
+        )
+        .then(res => {
           if (res.data.status == "SUCCESS") {
             this.clickdit();
             this.initdata();
           }
         });
-
-      // this.axios
-      //   .post(
-      //     "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
-      //     {
-      //       "avgEfficiency": String(this.responseDate.avgEfficiency),
-      //       "personEfficiency": String(this.responseDate.personEfficiency),
-      //       "distributionRate": String(this.responseDate.distributionRate),
-      //       "customerRate": String(this.responseDate.customerRate)
-      //     }
-      //   )
-      //   .then(res => {
-      //     if (res.data.status == "SUCCESS") {
-      //       this.clickdit();
-      //       this.initdata();
-      //     }
-      //   });
     },
     clickdit: function() {
       this.hidefromfalg = !this.hidefromfalg;
