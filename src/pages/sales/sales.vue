@@ -1,15 +1,15 @@
 <template>
     <div class = 'content'>
-        <div class = 'namesDate'>
-            <el-select v-model="value"  size="mini" class="namechange" @change="onSelectedDrug($event)" name="namechange">
-                <el-option
+        <!-- <div class = 'namesDate'> -->
+            <!-- <el-select v-model="value"  size="mini" class="namechange" @change="onSelectedDrug($event)" name="namechange"> -->
+                <!-- <el-option
                     v-for="item in names"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                 </el-option>
-            </el-select>
-        </div>
+            </el-select> -->
+        <!-- </div> -->
         <div id="saldata"></div>
     </div>
 </template>
@@ -17,17 +17,17 @@
 export default {
     data() {
         return {
-            names: [
-                {
-                    value: "1 ",
-                    label: "同比"
-                },
-                {
-                    value: "0",
-                    label: "环比"
-                }
-            ],
-            value: "同比",
+            // names: [
+            //     {
+            //         value: "1 ",
+            //         label: "同比"
+            //     },
+            //     {
+            //         value: "0",
+            //         label: "环比"
+            //     }
+            // ],
+            // value: "同比",
             timeDate: [],
             amountDate: [],
             amountDate1: [],

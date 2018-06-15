@@ -7,7 +7,6 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from './axios/axios.js';
 import qs from 'qs';
-// import '../src/assets/css/reset.css';
 import echarts from 'echarts'
 import * as d3 from 'd3'
 

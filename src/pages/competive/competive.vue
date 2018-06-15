@@ -3,7 +3,7 @@
         <div class="head"><h4 :style="headstyle">竞争力分析</h4>
         <span class="el-icon-more" style="cursor:pointer;" :style="{opacity:opacitys}" @click="clickdit()"
           @mouseover="hoveredit(1)" @mouseout="hoveredit(0)"></span></div>
-        <div id="efficienct-radar" :style="echartstyle"></div>
+        <div ref="efficienctRadar" id="efficienct-radar" :style="echartstyle"></div>
         <div v-show="hidefromfalg" class="hideform" :style="formstyle">
             <form>
               <table border="1" cellpadding=0 cellspacing=0>
@@ -62,7 +62,8 @@ export default {
         legnedlistobj: [], //表格列
         yxisobj: [], //表格行
         rowcolobj: [] //最终提交结果
-      }
+      },
+      cloneelement: ""
     };
   },
   components: {},
@@ -73,6 +74,9 @@ export default {
   },
   methods: {
     initdata: function() {
+      // if (this.cloneelement) {
+      //   this.$refs.efficienctRadar = this.cloneelement;
+      // }
       let that = this;
       this.axios
         .get(
@@ -102,7 +106,12 @@ export default {
                   销售额: 20000
                 },
                 legnedlistobj: [{ title: "宁家鲜生" }, { title: "沃尔玛" }], //表格列
-                yxisobj: [{title:"销售额"},{title:"订单量"},{title:"支付用户"},{title:"新增用户"}], //表格行
+                yxisobj: [
+                  { title: "销售额" },
+                  { title: "订单量" },
+                  { title: "支付用户" },
+                  { title: "新增用户" }
+                ], //表格行
                 rowcolobj: [] //最终提交结果
               };
             }
@@ -153,10 +162,8 @@ export default {
                   }
                 }
               });
-              // console.log(max)
               that.radardata.yxismax[value] = Number(max);
             });
-            console.log( that.radardata.yxismax)
             that.radardata.yxislist.forEach(function(value, index) {
               value.max = that.radardata.yxismax[value.text];
             });
@@ -194,7 +201,6 @@ export default {
                 }
               });
             });
-            // console.log(that.radardata);
             that.initleftecharts("efficienct-radar", that.radardata, colorobj);
           }
         })
@@ -203,7 +209,6 @@ export default {
     //提交
     submitcompetive: function() {
       let array = [];
-      console.log(this.radardata.rowcolobj);
       this.radardata.rowcolobj.forEach(function(value, index) {
         value.forEach(function(val, ind) {
           array.push(val);
@@ -217,6 +222,7 @@ export default {
         )
         .then(res => {
           if (res.data.status == "SUCCESS") {
+            // this.$refs.efficienctRadar = "";
             this.clickdit();
             this.initdata();
           }
@@ -229,7 +235,7 @@ export default {
       this.opacitys = num;
     },
     initleftecharts: function(id, radardata, colorobj) {
-      console.log(radardata);
+      this.$echarts.dispose(document.getElementById(id))
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.getElementById(id));
       // 指定图表的配置项和数据

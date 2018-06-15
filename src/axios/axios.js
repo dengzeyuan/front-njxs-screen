@@ -8,16 +8,16 @@ import qs from 'qs';
 //     return null;
 // }
 
-axios.defaults.withCredentials = true;
-var reg = new RegExp("(^|&)sessionId=([^&]*)(&|$|#)");
-var urls = window.location.search.substr(1).match(reg);
-var url = '';
-if (urls != null) {
-    url = decodeURIComponent(urls[2].split("#")[0]);
-} else {
-    url = '4c944608b74c45f8994dadb66590ccc7'
-}
-sessionStorage.setItem('sessionId', url);
+// axios.defaults.withCredentials = true;
+// var reg = new RegExp("(^|&)sessionId=([^&]*)(&|$|#)");
+// var urls = window.location.search.substr(1).match(reg);
+// var url = '';
+// if (urls != null) {
+//     url = decodeURIComponent(urls[2].split("#")[0]);
+// } else {
+//     url = '4c944608b74c45f8994dadb66590ccc7'
+// }
+// sessionStorage.setItem('sessionId', url);
 
 var $axios = axios.create({
     // baseURL: 'http://suneee.dcp.weilian.cn',
