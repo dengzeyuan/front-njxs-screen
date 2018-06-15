@@ -135,7 +135,7 @@ export default {
                 textStyle: {  
                     fontWeight: 'normal',              //标题颜色  
                     color: '#75becb',
-                    fontSize: 12,
+                    fontSize: Math.ceil(26 * this.baseScreenRate) + "px",
                 },
             },
             opcity: 0.4,
