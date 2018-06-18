@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-    <div class="main">
+    <div class="main" :style="mainstyle">
         <div class="textd1">
             <div id="main1" :style="lineNum" style="width: 100%;height:40%"></div> 
             <div class="table-data">
@@ -88,16 +88,21 @@ export default {
       topValuey: [],
       topValuey1: [],
       contentTitle: {
-        fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
+        fontSize: Math.ceil(18 * this.baseScreenRate) + "px",
         color: "#537F8C"
       },
       contentText: {
-        fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
+        fontSize: Math.ceil(18 * this.baseScreenRate) + "px",
         color: "#fff"
       },
       lineNum: {
         fontSize: Math.ceil(24 * this.baseScreenRate) + "px",
         color: "#fff"
+      },
+      mainstyle: {
+        paddingTop: Math.ceil(23 * this.baseScreenRate) + "px",
+        paddingLeft: "2%",
+        paddingRight: "2%"
       }
     };
   },
@@ -113,7 +118,6 @@ export default {
         // this.topValuey1.push(res.data.data[2].underLineValue)
         this.dateValue = res.data.data[0];
         this.dateValue1 = res.data.data[1];
-        // console.log(this.dateValue.singleList)
         this.dateValue.singleList.map(val => {
           this.textValue.push(val);
         });
@@ -128,78 +132,58 @@ export default {
         var option1 = {
           title: {
             text: "关键指标",
+            // left: Math.ceil(30 * this.baseScreenRate),
+            // top: Math.ceil(23 * this.baseScreenRate),
             textStyle: {
               fontWeight: "normal", //标题颜色
               color: "#75becb",
-              fontSize: Math.ceil(26 * this.baseScreenRate)
+              fontSize: Math.ceil(22 * this.baseScreenRate)
             }
           },
           opcity: 0.4,
           color: ["rgba(255, 114, 153, 0.7)", "rgba(255, 186, 78, 0.7)"], //手动设置每个图例的颜色
           legend: {
-            //图例组件
-            //right:100,  //图例组件离右边的距离
-            orient: "horizontal", //布局  纵向布局 图例标记居文字的左边 vertical则反之
-            width: 40, //图行例组件的宽度,默认自适应
-            x: "60%", //图例显示在右边
-            y: "40%", //图例在垂直方向上面显示居中
+            orient: "vertical",
+            left: "40%",
+            top: "45%",
             itemWidth: 5, //图例标记的图形宽度
             itemHeight: 5, //图例标记的图形高度
             data: ["线上" + this.topValue, "线下" + this.topValue1],
             textStyle: {
-              //图例文字的样式
               color: "#fff", //文字颜色
-              fontSize: 11 //文字大小
-            }
-          },
-          graphic: {
-            type: "text",
-            left: "25%",
-            top: "55%",
-            style: {
-              text: this.dateValue.name,
-              // textAlign:'left',
-              fill: "#fff",
-              width: "10%",
-              height: "10%"
+              fontSize: Math.ceil(18 * this.baseScreenRate)
             }
           },
           series: [
             //系列列表
             {
-              // name:'随访次数',  //系列名称
               type: "pie", //类型 pie表示饼图
-              center: ["31%", "60%"], //设置饼的原心坐标 不设置就会默认在中心的位置
-              radius: ["55%", "45%"], //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
-              itemStyle: {
-                //图形样式
-                normal: {
-                  //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                  label: {
-                    //饼图图形上的文本标签
-                    show: false //平常不显示
-                  },
-                  labelLine: {
-                    //标签的视觉引导线样式
-                    show: false //平常不显示
-                  }
-                },
-                emphasis: {
-                  //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                  label: {
-                    //饼图图形上的文本标签
-                    show: true,
-                    position: "center"
-                    // textStyle : {
-                    //     fontSize : '10',
-                    //     // fontWeight : 'bold'
-                    // }
-                  }
-                }
+              center: ["20%", "60%"], //设置饼的原心坐标 不设置就会默认在中心的位置
+              radius: ["45%", "55%"], //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+              label: {
+                position: "center",
+                color: "#fff"
               },
+              hoverAnimation: false,
               data: [
-                { value: this.topValue, name: "线上" + this.topValue },
-                { value: this.topValue1, name: "线下" + this.topValue1 }
+                {
+                  label: {
+                    formatter: "订单量",
+                    padding: [10, 0, 0, 0],
+                    textStyle: {
+                      fontSize: Math.ceil(18 * this.baseScreenRate)
+                    }
+                  },
+                  value: this.topValue,
+                  name: "线上" + this.topValue
+                },
+                {
+                  label: {
+                    show: false
+                  },
+                  value: this.topValue1,
+                  name: "线下" + this.topValue1
+                }
               ]
             }
           ]
@@ -214,69 +198,47 @@ export default {
         var option2 = {
           color: ["rgba(244, 54, 255, 0.7)", "rgba(255, 143, 216, 0.7)"], //手动设置每个图例的颜色
           legend: {
-            //图例组件
-            //right:100,  //图例组件离右边的距离
-            orient: "horizontal", //布局  纵向布局 图例标记居文字的左边 vertical则反之
-            width: 40, //图行例组件的宽度,默认自适应
-            x: "50%", //图例显示在右边
-            y: "40%", //图例在垂直方向上面显示居中
+            orient: "vertical",
+            left: "40%",
+            top: "45%",
             itemWidth: 5, //图例标记的图形宽度
             itemHeight: 5, //图例标记的图形高度
-            data: ["线上" + this.topValuex, "线下" + this.topValuex1],
             textStyle: {
-              //图例文字的样式
               color: "#fff", //文字颜色
-              fontSize: 11 //文字大小
-            }
-          },
-          graphic: {
-            type: "text",
-            left: "25%",
-            top: "55%",
-            style: {
-              text: this.dateValue1.name,
-            //   textAlign:'left',
-              fill: "#fff",
-              width: "10%",
-              height: "10%"
-            }
+              fontSize: Math.ceil(18 * this.baseScreenRate)
+            },
+            data: ["线上" + this.topValuex, "线下" + this.topValuex1]
           },
           series: [
             //系列列表
             {
-              // name:'随访次数',  //系列名称
               type: "pie", //类型 pie表示饼图
-              center: ["31%", "60%"], //设置饼的原心坐标 不设置就会默认在中心的位置
+              center: ["20%", "60%"], //设置饼的原心坐标 不设置就会默认在中心的位置
               radius: ["55%", "45%"], //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
-              itemStyle: {
-                //图形样式
-                normal: {
-                  //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                  label: {
-                    //饼图图形上的文本标签
-                    show: false //平常不显示
-                  },
-                  labelLine: {
-                    //标签的视觉引导线样式
-                    show: false //平常不显示
-                  }
-                },
-                emphasis: {
-                  //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                  label: {
-                    //饼图图形上的文本标签
-                    show: true,
-                    position: "center",
-                    textStyle: {
-                      fontSize: "10",
-                      fontWeight: "bold"
-                    }
-                  }
-                }
+              label: {
+                position: "center",
+                color: "#fff"
               },
+              hoverAnimation: false,
               data: [
-                { value: this.topValuex, name: "线上" + this.topValuex },
-                { value: this.topValuex1, name: "线下" + this.topValuex1 }
+                {
+                  label: {
+                    formatter: "客单价",
+                    padding: [10, 0, 0, 0],
+                    textStyle: {
+                      fontSize: Math.ceil(18 * this.baseScreenRate)
+                    }
+                  },
+                  value: this.topValuex,
+                  name: "线上" + this.topValuex
+                },
+                {
+                  label: {
+                    show: false
+                  },
+                  value: this.topValuex1,
+                  name: "线下" + this.topValuex1
+                }
               ]
             }
           ]
@@ -292,69 +254,47 @@ export default {
           color: ["rgba(74, 163, 112, 0.7)", "rgba(183, 201, 175, 0.7)"], //手动设置每个图例的颜色
           // effectOption: {backgroundColor: 'rgba(0, 0, 0, 0.2)'},
           legend: {
-            //图例组件
-            //right:100,  //图例组件离右边的距离
-            orient: "horizontal", //布局  纵向布局 图例标记居文字的左边 vertical则反之
-            width: 40, //图行例组件的宽度,默认自适应
-            x: "50%", //图例显示在右边
-            y: "40%", //图例在垂直方向上面显示居中
+            orient: "vertical",
+            left: "40%",
+            top: "45%",
             itemWidth: 5, //图例标记的图形宽度
             itemHeight: 5, //图例标记的图形高度
             data: ["线上" + "0", "线下" + "0"],
             textStyle: {
-              //图例文字的样式
               color: "#fff", //文字颜色
-              fontSize: 11 //文字大小
-            }
-          },
-          graphic: {
-            type: "text",
-            left: "23%",
-            top: "452%",
-            style: {
-              text: "无",
-              // textAlign:'left',
-              fill: "#fff",
-              width: 10,
-              height: 10
+              fontSize: Math.ceil(18 * this.baseScreenRate)
             }
           },
           series: [
             //系列列表
             {
-              // name:'随访次数',  //系列名称
               type: "pie", //类型 pie表示饼图
-              center: ["31%", "60%"], //设置饼的原心坐标 不设置就会默认在中心的位置
-              radius: ["55%", "45%"], //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
-              itemStyle: {
-                //图形样式
-                normal: {
-                  //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                  label: {
-                    //饼图图形上的文本标签
-                    show: false //平常不显示
-                  },
-                  labelLine: {
-                    //标签的视觉引导线样式
-                    show: false //平常不显示
-                  }
-                },
-                emphasis: {
-                  //normal 是图形在默认状态下的样式；emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
-                  label: {
-                    //饼图图形上的文本标签
-                    show: true,
-                    position: "center",
-                    textStyle: {
-                      fontSize: "10",
-                      fontWeight: "bold"
-                    }
-                  }
-                }
+              center: ["20%", "60%"], //设置饼的原心坐标 不设置就会默认在中心的位置
+              radius: ["45%", "55%"], //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+              label: {
+                position: "center",
+                color: "#fff"
               },
+              hoverAnimation: false,
               data: [
-                { value: "0", name: "线上" + "0" },
-                { value: "0", name: "线下" + "0" }
+                {
+                  label: {
+                    formatter: "用户数",
+                    padding: [10, 0, 0, 0],
+                    textStyle: {
+                      fontSize: Math.ceil(18 * this.baseScreenRate)
+                    }
+                  },
+                  value: "0",
+                  name: "线上" + "0"
+                },
+                {
+                  label: {
+                    show: false
+                  },
+                  value: "0",
+                  name: "线下" + "0"
+                }
               ]
             }
           ]
@@ -393,10 +333,15 @@ export default {
       table {
         width: 100%;
         height: 100%;
-        font-size: 10%;
         color: #fff;
         .trs {
           color: #537f8c;
+        }
+       tr > td:first-child {
+          width: 40%;
+        }
+        tr > td {
+          width: 30%;
         }
       }
     }
@@ -414,6 +359,12 @@ export default {
         .trs {
           color: #537f8c;
         }
+       tr > td:first-child {
+          width: 40%;
+        }
+        tr > td {
+          width: 30%;
+        }
       }
     }
   }
@@ -429,6 +380,12 @@ export default {
         color: #fff;
         .trs {
           color: #537f8c;
+        }
+        tr > td:first-child {
+          width: 40%;
+        }
+        tr > td {
+          width: 30%;
         }
       }
     }

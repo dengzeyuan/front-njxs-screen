@@ -28,7 +28,8 @@ export default {
   data() {
     return {
       headstyle: {
-        fontSize: Math.ceil(22 * this.baseScreenRate) + "px"
+        fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
+        fontWeight:"normal"
       },
       pagestyle: {
         paddingLeft: Math.ceil(40 * this.baseScreenRate) + "px",

@@ -2,39 +2,41 @@
   <div class="editecharts">
       <div class="leftside" :style="{paddingLeft:sideleftpad,paddingTop:sidetoppad}">
             <div class="manage" :style="manage">
-              <BusinessProfile/>
+              <BusinessProfile :timeRange="timeRange"/>
             </div>
             <div class="target" :style="target">
-                  <KeyIndicators/>
+                  <KeyIndicators :timeRange="timeRange"/>
             </div>
       </div>
       <div class="rightside" :style="rightside">
             <div class="sell" :style="sell">
-                  <Sales/>
+                  <Sales :timeRange="timeRange"/>
             </div>
             <div class="efficiency" :style="efficiency">
-                <efficiency />
+                <efficiency :timeRange="timeRange"/>
             </div>
             <div class="competive" :style="competive">
-                <competive />
+                <competive :timeRange="timeRange"/>
             </div>
       </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-import BusinessProfile from '../businessProfile/business.vue';
-import KeyIndicators from '../keyIndicators/key.vue';
-import Sales from '../sales/sales.vue';
+import BusinessProfile from "../businessProfile/business.vue";
+import KeyIndicators from "../keyIndicators/key.vue";
+import Sales from "../sales/sales.vue";
 import efficiency from "../efficiency/efficiency.vue";
-import competive from "../competive/competive.vue";export default {
+import competive from "../competive/competive.vue";
+export default {
+  props: ["timeRange"],
   data() {
     return {
       sideleftpad: Math.ceil(25 * this.baseScreenRate) + "px",
       sidetoppad: Math.ceil(25 * this.baseScreenRate) + "px",
       manage: {
-          height:Math.ceil(454 * this.baseScreenRate) + "px",
-          width:Math.ceil(1215 * this.baseScreenRate) + "px",
-        },
+        height: Math.ceil(454 * this.baseScreenRate) + "px",
+        width: Math.ceil(1215 * this.baseScreenRate) + "px"
+      },
       target: {
         height: Math.ceil(495 * this.baseScreenRate) + "px",
         width: Math.ceil(1215 * this.baseScreenRate) + "px",
@@ -75,7 +77,7 @@ import competive from "../competive/competive.vue";export default {
   width: 100%;
   height: 100%;
   display: flex;
-  background-color: #201F2D;
+  background-color: #201f2d;
   justify-content: center;
   .leftside,
   .rightside {
@@ -83,30 +85,19 @@ import competive from "../competive/competive.vue";export default {
   }
   //   左边
   .leftside {
-    // width: 59.64%;
+    .target,
     .manage {
-      // width: 100%;
       border: 1px solid #312f46;
-    }
-    .target {
-      // width: 100%;
-      border: 1px solid #312f46;
+      border-radius: 4px;
     }
   }
   .rightside {
-    // width: 40.36%;
     padding-right: 0.3%;
-    .sell {
-      // width: 100%;
-      border: 1px solid #312f46;
-    }
-    .efficiency {
-      // width: 100%;
-      border: 1px solid #312f46;
-    }
+    .sell,
+    .efficiency,
     .competive {
-      // width: 100%;
       border: 1px solid #312f46;
+      border-radius: 4px;
     }
   }
 }

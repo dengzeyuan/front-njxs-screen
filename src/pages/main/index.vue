@@ -1,31 +1,30 @@
 <template>
   <div class="page">
-    
-     <editecharts />
+     <editecharts :timeRange="timeRange" />
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import editecharts from "../editecharts/editecharts.vue";
 export default {
+  props: ["timeRange"],
   data() {
-    return {
-    }
+    return {};
   },
   components: {
-    editecharts,
+    editecharts
   }
-}
+};
 </script>
 
 <style scoped lang="less">
-.page{
-    display: flex;
-    flex: 1;
-    flex-basis: auto;
-    box-sizing: border-box;
-    min-width: 0;
-    height:100%;
+.page {
+  display: flex;
+  flex: 1;
+  flex-basis: auto;
+  box-sizing: border-box;
+  min-width: 0;
+  height: 100%;
 }
 .header {
   background-color: #b3c0d1;

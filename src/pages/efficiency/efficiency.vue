@@ -43,7 +43,8 @@ export default {
         paddingLeft: Math.ceil(67 * this.baseScreenRate) + "px"
       },
       headtitle: {
-        fontSize: Math.ceil(22 * this.baseScreenRate) + "px"
+        fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
+        fontWeight: "normal"
       },
       headstyle: {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
@@ -127,12 +128,26 @@ export default {
         .then(res => {
           if (res.data.data) {
             this.responseDate = res.data.data;
-            let rate=[
-              { value: res.data.data.distributionRate, name: "配送及时率" },
-              { value: res.data.data.customerRate, name: "顾客满意度" }
+            let rate = [
+              [
+                { value: res.data.data.distributionRate, name: "配送及时率" },
+                { value: 100, name: "" }
+              ],
+              [
+                { value: 100, name: "" },
+                { value: res.data.data.customerRate, name: "顾客满意度" }
               ]
-            this.initleftecharts("main-first", res.data.data.distributionRate,rate);
-            this.initleftecharts("main-two", res.data.data.customerRate,rate);
+            ];
+            this.initleftecharts(
+              "main-first",
+              res.data.data.distributionRate,
+              rate[0]
+            );
+            this.initleftecharts(
+              "main-two",
+              res.data.data.customerRate,
+              rate[1]
+            );
           }
         });
     },
@@ -149,10 +164,10 @@ export default {
         .post(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
           {
-            "avgEfficiency": String(this.responseDate.avgEfficiency),
-            "personEfficiency": String(this.responseDate.personEfficiency),
-            "distributionRate": String(this.responseDate.distributionRate),
-            "customerRate": String(this.responseDate.customerRate)
+            avgEfficiency: String(this.responseDate.avgEfficiency),
+            personEfficiency: String(this.responseDate.personEfficiency),
+            distributionRate: String(this.responseDate.distributionRate),
+            customerRate: String(this.responseDate.customerRate)
           }
         )
         .then(res => {
@@ -168,7 +183,7 @@ export default {
     hoveredit: function(num) {
       this.opacitys = num;
     },
-    initleftecharts: function(id, data,rate) {
+    initleftecharts: function(id, data, rate) {
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.getElementById(id));
       // 指定图表的配置项和数据
@@ -222,7 +237,7 @@ export default {
                 show: false
               }
             },
-            data:rate
+            data: rate
           }
         ]
       };

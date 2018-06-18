@@ -3,7 +3,6 @@
     <!-- <Header class="header"/> -->
     <div class="header" :style="headerheight">
       <span :style="headertitltstyle"> <span class="trigon" :style="trigonleft"></span>宁家鲜生运营数据展示<span class="trigon" :style="trigonright"></span></span>
-      
         <el-select v-model="value"  size="mini" class="timechange" name="timechange">
           <el-option
             v-for="item in options"
@@ -14,7 +13,7 @@
         </el-select>
    </div>
     <div class='container-home'>
-         <router-view></router-view> 
+         <router-view :timeRange="value"></router-view> 
     </div>
   </div>
 </template>
@@ -50,7 +49,7 @@ export default {
       },
       options: [
         {
-          value: "WEEK ",
+          value: "WEEK",
           label: "the week"
         },
         {
@@ -62,7 +61,7 @@ export default {
           label: "the quarter"
         }
       ],
-      value: "the week"
+      value: "WEEK"
     };
   },
   components: {
