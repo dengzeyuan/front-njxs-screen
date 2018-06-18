@@ -27,9 +27,10 @@
 export default {
   data() {
     return {
+      loading: "true",
       headstyle: {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
-        fontWeight:"normal"
+        fontWeight: "normal"
       },
       pagestyle: {
         paddingLeft: Math.ceil(40 * this.baseScreenRate) + "px",
@@ -84,27 +85,28 @@ export default {
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/competition"
         )
         .then(res => {
+          that.loading = false;
           if (res.data.data) {
             if (res.data.data.length == 0) {
               that.radardata = {
                 yxis: ["销售额", "订单量", "支付用户", "新增用户"], //分类值
                 yxislist: [
-                  { text: "销售额", max: 20000 },
-                  { text: "订单量", max: 3000 },
-                  { text: "支付用户", max: 3000 },
-                  { text: "新增用户", max: 3200 }
+                  { text: "销售额", max: 10000 },
+                  { text: "订单量", max: 10000 },
+                  { text: "支付用户", max: 10000 },
+                  { text: "新增用户", max: 10000 }
                 ],
                 legnedlist: ["宁家鲜生", "沃尔玛"],
                 legnedvalue: [
-                  "宁家鲜生"[(20000, 2000, 2000, 2000)],
-                  "沃尔玛"[(10000, 3000, 3000, 3200)]
+                  "宁家鲜生"[(2000, 3000, 4000, 5000)],
+                  "沃尔玛"[(40000, 5000, 6000, 7000)]
                 ],
                 serieslist: [],
                 yxismax: {
-                  支付用户: 3000,
-                  新增用户: 3200,
-                  订单量: 3000,
-                  销售额: 20000
+                  支付用户: 10000,
+                  新增用户: 10000,
+                  订单量: 10000,
+                  销售额: 10000
                 },
                 legnedlistobj: [{ title: "宁家鲜生" }, { title: "沃尔玛" }], //表格列
                 yxisobj: [
@@ -115,28 +117,46 @@ export default {
                 ], //表格行
                 rowcolobj: [] //最终提交结果
               };
+              that.initleftecharts(
+                "efficienct-radar",
+                that.radardata,
+                colorobj
+              );
+              return;
             }
+            that.radardata = {
+              yxis: [], //分类值
+              yxislist: [],
+              legnedlist: [],
+              legnedvalue: {},
+              serieslist: [],
+              yxismax: {},
+              legnedlistobj: [], //表格列
+              yxisobj: [], //表格行
+              rowcolobj: [] //最终提交结果
+            };
             let colorobj = [
               "rgb(192,87,96)",
               "rgb(186,126,182)",
               "rgb(105,98,164)"
             ];
             res.data.data.forEach(function(value, index) {
-              //获取指标和标识名称
+              //获取lenged显示
               if (that.radardata.legnedlist.indexOf(value.businessName) == -1) {
                 that.radardata.legnedlist.push(value.businessName);
                 that.radardata.legnedlistobj.push({
-                  //表格用
+                  //表格列
                   title: value.businessName
                 });
               }
+              //表格行title显示和radar图形每个指标显示
               if (that.radardata.yxis.indexOf(value.targetName) == -1) {
                 that.radardata.yxis.push(value.targetName);
                 that.radardata.yxislist.push({
                   text: value.targetName,
                   max: that.radardata.yxismax[value.targetName]
                 });
-                that.radardata.yxisobj.push({ title: value.targetName }); //表格用
+                that.radardata.yxisobj.push({ title: value.targetName }); //表格行
               }
             });
 
@@ -158,12 +178,12 @@ export default {
               var max = 0;
               res.data.data.forEach(function(val, ind) {
                 if (value == val.targetName) {
-                  if (max < val.targetValue) {
-                    max = val.targetValue;
+                  if (Number(max) < Number(val.targetValue)) {
+                    max = Number(val.targetValue);
                   }
                 }
               });
-              that.radardata.yxismax[value] = Number(max);
+              that.radardata.yxismax[value] = max;
             });
             that.radardata.yxislist.forEach(function(value, index) {
               value.max = that.radardata.yxismax[value.text];
@@ -209,13 +229,22 @@ export default {
     },
     //提交
     submitcompetive: function() {
-      let array = [];
+      this.clickdit();
+      this.loading = true;
+      let array = [],
+        that = this;
+      console.log(this.radardata);
+      console.log(this.radardata.rowcolobj);
       this.radardata.rowcolobj.forEach(function(value, index) {
+        value.forEach(function(val, ind) {
+          if(val.targetValue == ""){
+            val.targetValue = that.radardata.legnedvalue[val.businessName][ind];
+          }
+        });
         value.forEach(function(val, ind) {
           array.push(val);
         });
       });
-
       this.axios
         .post(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/competition",
@@ -224,7 +253,6 @@ export default {
         .then(res => {
           if (res.data.status == "SUCCESS") {
             // this.$refs.efficienctRadar = "";
-            this.clickdit();
             this.initdata();
           }
         });
@@ -236,7 +264,7 @@ export default {
       this.opacitys = num;
     },
     initleftecharts: function(id, radardata, colorobj) {
-      this.$echarts.dispose(document.getElementById(id))
+      this.$echarts.dispose(document.getElementById(id));
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.getElementById(id));
       // 指定图表的配置项和数据

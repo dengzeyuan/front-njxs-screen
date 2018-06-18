@@ -40,32 +40,11 @@
                 <tr class='trs' :style="contentTitle">
                     <td>&nbsp;</td><td>线上</td><td>线下</td>
                 </tr>
-                <tr :style="contentText">
-                    <td>无</td>
-                    <td>无</td>
-                    <td>无</td>
+                <tr  :style="contentText" v-for="(item,index) in textValue2" :key='index'>
+                    <td>{{item.name}}</td>
+                    <td>{{item.onLineValue}}</td>
+                    <td>{{item.underLineValue}}</td>
                 </tr>
-                <tr :style="contentText">
-                    <td>无</td>
-                    <td>无</td>
-                    <td>无</td>
-                </tr>
-                <tr :style="contentText">
-                    <td>无</td>
-                    <td>无</td>
-                    <td>无</td>
-                </tr>
-                <tr :style="contentText">
-                    <td>无</td>
-                    <td>无</td>
-                    <td>无</td>
-                </tr>
-                <tr :style="contentText">
-                    <td>无</td>
-                    <td>无</td>
-                    <td>无</td>
-                </tr>
-                
             </table>
             </div>
         </div>
@@ -81,7 +60,7 @@ export default {
       dateValue1: [],
       textValue1: [],
       topValue: [],
-      textValue3: [],
+      textValue2: [],
       topValue1: [],
       topValuex: [],
       topValuex1: [],
@@ -103,27 +82,64 @@ export default {
         paddingTop: Math.ceil(23 * this.baseScreenRate) + "px",
         paddingLeft: "2%",
         paddingRight: "2%"
-      }
+      },
+      onlineorder: "",
+      underlineorder: "",
+      onlineordervalue: 0,
+      underlineordervalue: 0,
+
+      onlinecustomer: "",
+      underlinecustomer: "",
+      onlinecustomervalue: 0,
+      underlinecustomervalue: 0,
+
+      onlineuser: "",
+      underlineuser: "",
+      onlineuservalue: 0,
+      underlineuservalue: 0
     };
   },
   mounted() {
+    var that = this;
     this.axios
       .get("http://suneee.dcp.weilian.cn/njxs-demo/operation/data/kpi/WEEK")
       .then(res => {
-        this.topValue.push(res.data.data[0].onLineValue);
-        this.topValue1.push(res.data.data[0].underLineValue);
-        this.topValuex.push(res.data.data[1].onLineValue);
-        this.topValuex1.push(res.data.data[1].underLineValue);
+        that.onlineorder = res.data.data[0].onLineRate;
+        that.underlineorder = res.data.data[0].underLineRate;
+        that.onlineordervalue = res.data.data[0].onLineValue;
+        that.underlineordervalue = res.data.data[0].underLineValue;
+
+        that.onlinecustomer = res.data.data[1].onLineRate;
+        that.underlinecustomer = res.data.data[1].underLineRate;
+        that.onlinecustomervalue = res.data.data[1].onLineValue;
+        that.underlinecustomervalue = res.data.data[1].underLineValue;
+
+        that.onlineuser = res.data.data[2].onLineRate + "%";
+        that.underlineuser = res.data.data[2].underLineRate + "%";
+        that.onlineuservalue = res.data.data[2].onLineValue;
+        that.underlineuservalue = res.data.data[2].underLineValue;
+
+        // this.topValue.push(res.data.data[0].onLineValue);
+        // this.topValue1.push(res.data.data[0].underLineValue);
+        // this.topValuex.push(res.data.data[1].onLineValue);
+        // this.topValuex1.push(res.data.data[1].underLineValue);
         // this.topValuey.push(res.data.data[2].onLineValue)
         // this.topValuey1.push(res.data.data[2].underLineValue)
-        this.dateValue = res.data.data[0];
-        this.dateValue1 = res.data.data[1];
-        this.dateValue.singleList.map(val => {
+        // this.dateValue = res.data.data[0];
+        // this.dateValue1 = res.data.data[1];
+        res.data.data[0].singleList.map(val => {
           this.textValue.push(val);
         });
-        this.dateValue1.singleList.map(val => {
+        res.data.data[1].singleList.map(val => {
           this.textValue1.push(val);
         });
+        res.data.data[2].singleList.map(val => {
+          this.textValue2.push(val);
+        });
+        this.textValue2 =this.textValue2.concat([
+          {name:"无",onLineValue:"无",underLineValue:"无"},
+          {name:"无",onLineValue:"无",underLineValue:"无"}
+          ])
         // this.lineName.push(this.dateValue.name)
 
         //指定图表的配置项和数据
@@ -148,7 +164,6 @@ export default {
             top: "45%",
             itemWidth: 5, //图例标记的图形宽度
             itemHeight: 5, //图例标记的图形高度
-            data: ["线上" + this.topValue, "线下" + this.topValue1],
             textStyle: {
               color: "#fff", //文字颜色
               fontSize: Math.ceil(18 * this.baseScreenRate)
@@ -174,15 +189,15 @@ export default {
                       fontSize: Math.ceil(18 * this.baseScreenRate)
                     }
                   },
-                  value: this.topValue,
-                  name: "线上" + this.topValue
+                  value: that.onlineordervalue,
+                  name: "线上" + that.onlineorder
                 },
                 {
                   label: {
                     show: false
                   },
-                  value: this.topValue1,
-                  name: "线下" + this.topValue1
+                  value: that.underlineordervalue,
+                  name: "线下" + that.underlineorder
                 }
               ]
             }
@@ -206,8 +221,7 @@ export default {
             textStyle: {
               color: "#fff", //文字颜色
               fontSize: Math.ceil(18 * this.baseScreenRate)
-            },
-            data: ["线上" + this.topValuex, "线下" + this.topValuex1]
+            }
           },
           series: [
             //系列列表
@@ -229,15 +243,15 @@ export default {
                       fontSize: Math.ceil(18 * this.baseScreenRate)
                     }
                   },
-                  value: this.topValuex,
-                  name: "线上" + this.topValuex
+                  value: that.onlinecustomervalue,
+                  name: "线上" + that.onlinecustomer
                 },
                 {
                   label: {
                     show: false
                   },
-                  value: this.topValuex1,
-                  name: "线下" + this.topValuex1
+                  value: that.underlinecustomervalue,
+                  name: "线下" + that.underlinecustomer
                 }
               ]
             }
@@ -259,7 +273,6 @@ export default {
             top: "45%",
             itemWidth: 5, //图例标记的图形宽度
             itemHeight: 5, //图例标记的图形高度
-            data: ["线上" + "0", "线下" + "0"],
             textStyle: {
               color: "#fff", //文字颜色
               fontSize: Math.ceil(18 * this.baseScreenRate)
@@ -285,15 +298,15 @@ export default {
                       fontSize: Math.ceil(18 * this.baseScreenRate)
                     }
                   },
-                  value: "0",
-                  name: "线上" + "0"
+                  value: that.onlineuservalue,
+                  name: "线上" + that.onlineuser
                 },
                 {
                   label: {
                     show: false
                   },
-                  value: "0",
-                  name: "线下" + "0"
+                  value: that.underlineuservalue,
+                  name: "线下" + that.underlineuser
                 }
               ]
             }
@@ -337,7 +350,7 @@ export default {
         .trs {
           color: #537f8c;
         }
-       tr > td:first-child {
+        tr > td:first-child {
           width: 40%;
         }
         tr > td {
@@ -359,7 +372,7 @@ export default {
         .trs {
           color: #537f8c;
         }
-       tr > td:first-child {
+        tr > td:first-child {
           width: 40%;
         }
         tr > td {

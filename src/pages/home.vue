@@ -78,6 +78,7 @@ export default {
   color:#7A7899;
   border:1px solid #2D2C3F;
 }
+.el-loading-mask{background:rgba(0,0,0,0.4)}
 </style>
 <style lang="less" scoped>
 .container {

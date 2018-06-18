@@ -39,6 +39,7 @@
 export default {
   data() {
     return {
+      loading:"true",
       contentleft: {
         paddingLeft: Math.ceil(67 * this.baseScreenRate) + "px"
       },
@@ -126,16 +127,18 @@ export default {
       this.axios
         .get("http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency")
         .then(res => {
+          this.loading=false;
           if (res.data.data) {
             this.responseDate = res.data.data;
+            // debugger
             let rate = [
               [
-                { value: res.data.data.distributionRate, name: "配送及时率" },
-                { value: 100, name: "" }
+                { value: 100, name: "" },
+                { value: res.data.data.distributionRate.slice(0,-1), name: "配送及时率" },
               ],
               [
+                { value: res.data.data.customerRate.slice(0,-1), name: "顾客满意度" },
                 { value: 100, name: "" },
-                { value: res.data.data.customerRate, name: "顾客满意度" }
               ]
             ];
             this.initleftecharts(
@@ -153,21 +156,23 @@ export default {
     },
     //提交
     submitefficty: function() {
-      let param = JSON.stringify({
-        avgEfficiency: this.responseDate.avgEfficiency,
-        personEfficiency: this.responseDate.personEfficiency,
-        distributionRate: this.responseDate.distributionRate,
-        customerRate: this.responseDate.customerRate
-      });
-
+      this.loading=true;
       this.axios
         .post(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
           {
-            avgEfficiency: String(this.responseDate.avgEfficiency),
-            personEfficiency: String(this.responseDate.personEfficiency),
-            distributionRate: String(this.responseDate.distributionRate),
-            customerRate: String(this.responseDate.customerRate)
+            avgEfficiency: /平/g.test(String(this.responseDate.avgEfficiency))?
+            this.responseDate.avgEfficiency:
+            this.responseDate.avgEfficiency+"/平",
+            personEfficiency: /人/g.test(String(this.responseDate.personEfficiency))?
+            this.responseDate.personEfficiency:
+            this.responseDate.personEfficiency+"/人",
+            distributionRate: /%/g.test(String(this.responseDate.distributionRate))?
+            this.responseDate.distributionRate:
+            this.responseDate.distributionRate+"%",
+            customerRate: /%/g.test(String(this.responseDate.customerRate))?
+            this.responseDate.customerRate:
+            this.responseDate.customerRate+"%"
           }
         )
         .then(res => {
@@ -201,7 +206,7 @@ export default {
           textStyle: {
             fontWeight: "normal",
             color: id == "main" ? "#49CDD9" : "#C551A3",
-            fontSize: Math.ceil(18 * this.baseScreenRate)
+            fontSize: Math.ceil(16 * this.baseScreenRate)
           }
         },
         series: [
