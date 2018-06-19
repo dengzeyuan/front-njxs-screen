@@ -13,7 +13,6 @@ export default {
   },
   data() {
     return {
-      // timeRan:this.timeRange,
       contentstyle: {
         paddingTop: Math.ceil(23 * this.baseScreenRate) + "px",
         paddingLeft: "2%",
@@ -32,28 +31,34 @@ export default {
   },
   methods: {
     initdata() {
+      let that = this;
       this.axios
         .get(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/situation/"+this.timeRange
         )
         .then(res => {
-          this.timeRan = "sdf";
+          that.textDate=[];
+          that.timeDate=[];
+          that.valDate=[];
+          that.valDate1=[];
+          that.valDate2=[];
           let ress = res.data.data;
           ress.map(val => {
-            this.textDate.push(val.name);
+            that.textDate.push(val.name);
           });
           ress[0].singleList.map(val => {
-            this.timeDate.push(val.date);
-            this.valDate.push(val.value.toFixed(2));
+            that.timeDate.push(val.date);
+            that.valDate.push(val.value.toFixed(2));
           });
           ress[1].singleList.map(val => {
-            this.valDate1.push(val.value.toFixed(2));
+            that.valDate1.push(val.value.toFixed(2));
           });
           ress[2].singleList.map(val => {
-            this.valDate2.push(val.value.toFixed(2));
+            that.valDate2.push(val.value.toFixed(2));
           });
           // 基于准备好的dom，初始化echarts实例
-          let myMain = this.$echarts.init(document.getElementById("main"));
+          that.$echarts.dispose(document.getElementById("main"));
+          let myMain = that.$echarts.init(document.getElementById("main"));
           // 指定图表的配置项和数据
           let option = {
             color: [
@@ -66,14 +71,14 @@ export default {
               textStyle: {
                 fontWeight: "normal", //标题颜色
                 color: "#75becb",
-                fontSize: Math.ceil(22 * this.baseScreenRate)
+                fontSize: Math.ceil(22 * that.baseScreenRate)
               }
             },
             tooltip: {
               trigger: "axis"
             },
             legend: {
-              data: this.textDate,
+              data: that.textDate,
               textStyle: {
                 color: "#fff"
               },
@@ -84,7 +89,7 @@ export default {
               {
                 type: "category",
                 boundaryGap: false,
-                data: this.timeDate,
+                data: that.timeDate,
                 splitLine: {
                   lineStyle: {
                     // 使用深浅的间隔色
@@ -137,7 +142,7 @@ export default {
                 symbol: "circle",
                 smooth: true,
                 smoothMonotone: "none",
-                data: this.valDate,
+                data: that.valDate,
                 areaStyle: { opacity: 0.4 },
                 label: {
                   show: true,
@@ -161,7 +166,7 @@ export default {
                 // stack: "总量",
                 symbol: "circle",
                 smooth: true,
-                data: this.valDate1,
+                data: that.valDate1,
                 areaStyle: { opacity: 0.4 },
                 label: {
                   show: true,
@@ -185,11 +190,11 @@ export default {
                 // stack: "总量",
                 symbol: "circle",
                 smooth: true,
-                data: this.valDate2,
+                data: that.valDate2,
                 areaStyle: { opacity: 0.4 },
                 label: {
                   show: true,
-                  position: "top",
+                  position: "bottom",
                   color: "#fff"
                 },
                 itemStyle: {

@@ -5,7 +5,7 @@
               <BusinessProfile :timeRange="timeRange"/>
             </div>
             <div class="target" :style="target">
-                  <KeyIndicators :timeRange="timeRange"/>
+              <KeyIndicators :timeRange="timeRange"/>
             </div>
       </div>
       <div class="rightside" :style="rightside">

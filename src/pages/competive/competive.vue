@@ -5,17 +5,21 @@
           @mouseover="hoveredit(1)" @mouseout="hoveredit(0)"></span></div>
         <div ref="efficienctRadar" id="efficienct-radar" :style="echartstyle"></div>
         <div v-show="hidefromfalg" class="hideform" :style="formstyle">
+            <!-- <table>行：</table> -->
             <form>
+              <div style="margin-bottom:1%"><span style="font-size:0.8em">行:</span><input type="number" v-model="rownumber" style="width:20%;" />
+              <span style="padding-left:5%;font-size:0.8em">列:</span><input type="number" v-model="colnumber" style="width:20%;" />
+              <span class="addrow" @click="addrowcol(rownumber,colnumber)">确定</span></div>
               <table border="1" cellpadding=0 cellspacing=0>
                 <tr>
-                  <td>&nbsp;</td><td v-for="(y,index) in radardata.yxisobj" :key="index"><input type="text" v-model="y.title" /></td>
+                  <td>&nbsp;</td><td v-for="(y,index) in radardata.yxisobj" :key="index"><input type="text" v-model="y.title" @change="changeyxisobj(radardata,y,index)"/></td>
                 </tr>
-                <tr v-for="(tr,index) in radardata.legnedlistobj" :key="index">
-                  <td><input type="text" v-model="tr.title"  /></td>
-                  <td v-for="(td,index) in radardata.rowcolobj[index]" :key="index"><input type="number" v-model="td.targetValue"></td>
+                <tr v-for="(tr,inde) in radardata.legnedlistobj" :key="inde">
+                  <td><input type="text" v-model="tr.title"  @change="changelegned(radardata,tr,inde)"/></td>
+                  <td v-for="(td,index) in radardata.rowcolobj[inde]" :key="index"><input type="number" v-model="td.targetValue" @change="changevalue(radardata,td,index)"></td>
                 </tr>
               </table>
-               <input @click.stop="submitcompetive" class="submit" type="button" readonly="readonly" value="确定" />
+              <input @click.stop="submitcompetive" class="submit" type="button" readonly="readonly" value="确定" />
             </form>
             <span class="closeform el-icon-close" @click="clickdit()"></span>
         </div>
@@ -27,6 +31,8 @@
 export default {
   data() {
     return {
+      rownumber: 0,
+      colnumber: 0,
       loading: "true",
       headstyle: {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
@@ -75,10 +81,175 @@ export default {
     });
   },
   methods: {
-    initdata: function() {
-      // if (this.cloneelement) {
-      //   this.$refs.efficienctRadar = this.cloneelement;
+    addrowcol: function(row, col) {
+      var row = Number(row);
+      var col = Number(col);
+      let legendlength = this.radardata.legnedlistobj.length;
+      // let rows = this.radardata.legnedlistobj.length + Number(row);
+      let maxcol = 0;
+      for (let i = 0; i < this.radardata.rowcolobj.length; i++) {
+        if (maxcol < this.radardata.rowcolobj[i].length) {
+          maxcol = this.radardata.rowcolobj[i].length;
+        }
+      }
+      // let collength=maxcol;
+      // let collength = this.radardata.rowcolobj[0];
+      if (this.radardata.legnedlistobj.slice(0, row).length < row) {
+        for (let i = legendlength; i < row; i++) {
+          this.radardata.legnedlistobj.push({
+            title: ""
+          });
+          this.radardata.rowcolobj[i] = [];
+        }
+      } else {
+        this.radardata.legnedlistobj = this.radardata.legnedlistobj.slice(
+          0,
+          row
+        );
+        this.radardata.rowcolobj = this.radardata.rowcolobj.slice(0, row);
+      }
+
+      if (maxcol < col) {
+        this.radardata.yxisobj = this.radardata.yxisobj.slice(0, col);
+        for (let i = this.radardata.yxisobj.length; i < col; i++) {
+          this.radardata.yxisobj.push({
+            title: ""
+          });
+        }
+        for (let j = 0; j < row; j++) {
+          if (this.radardata.rowcolobj[j].length == 0) {
+            for (let i = 0; i < col; i++) {
+              this.radardata.rowcolobj[j].push({
+                targetValue: "",
+                businessName: "",
+                targetName: ""
+              });
+            }
+          } else {
+            for (let i = this.radardata.rowcolobj[j].length; i < col; i++) {
+              this.radardata.rowcolobj[j].push({
+                targetValue: "",
+                businessName: "",
+                targetName: ""
+              });
+            }
+          }
+        }
+      } else {
+        this.radardata.yxisobj = this.radardata.yxisobj.slice(0, col);
+        for (let j = 0; j < row; j++) {
+          if (this.radardata.rowcolobj[j].length == 0) {
+            for (let i = 0; i < col; i++) {
+              this.radardata.rowcolobj[j].push({
+                targetValue: "",
+                businessName: "",
+                targetName: ""
+              });
+            }
+          } else {
+            this.radardata.rowcolobj[j] = this.radardata.rowcolobj[j].slice(
+              0,
+              col
+            );
+          }
+        }
+        // this.radardata.rowcolobj = this.radardata.rowcolobj.slice(0, col);
+      }
+
+      // if (!col) {
+      //   for (let i = legendlength; i < rows; i++) {
+      //     this.radardata.legnedlistobj.push({
+      //       title: i
+      //     });
+      //     this.radardata.rowcolobj[i] = [];
+      //   }
+      //   var max = 0;
+      //   this.radardata.rowcolobj.forEach(function(value, index) {
+      //     if (value.length > max) {
+      //       max = value.length;
+      //     }
+      //   });
+      //   this.radardata.rowcolobj.forEach(function(value, index) {
+      //     if (value.length !== max) {
+      //       for (let i = 0; i < max; i++) {
+      //         value.push({
+      //           targetValue: index + "-" + i,
+      //           businessName: index,
+      //           targetName: index + "-" + i
+      //         });
+      //       }
+      //     }
+      //   });
+      // } else if (!row) {
+      //   this.radardata.rowcolobj.forEach(function(value, index) {
+      //     for (let i = value.length; i < Number(col); i++) {
+      //       value.push({
+      //         targetValue: index + "-" + i,
+      //         businessName: i,
+      //         targetName: index + "-" + i
+      //       });
+      //     }
+      //   });
       // }
+      // for(let i=row;i>this.radardata.legnedlistobj.length;i--){debugger
+      //   this.radardata.rowcolobj[i]=[]
+      //    this.radardata.rowcolobj[i].push({
+      //                 targetValue: valu.targetValue,
+      //                 businessName: value,
+      //                 targetName: val
+      //               })
+      //   //  that.radardata.rowcolobj[index].push({
+      //   //               targetValue: valu.targetValue,
+      //   //               businessName: value,
+      //   //               targetName: val
+      //   //             });
+
+      // }
+    },
+    changevalue: function(radardata, va, index) {
+      this.radardata.rowcolobj.forEach(function(val, ind) {
+        val.forEach(function(vas, ins) {
+          if (ins == index && va.businessName == vas.businessName) {
+            vas.targetName = radardata.yxis[index];
+          }
+        });
+      });
+    },
+    changeyxisobj: function(radardata, y, index) {
+      var businessName = "";
+      this.radardata.rowcolobj.forEach(function(val, ind) {
+        val.forEach(function(vas, ins) {
+          if (vas.businessName !== "") {
+            businessName = vas.businessName;
+          }
+          // if(vas.businessName !== ""){
+          //   businessName = vas.businessName;
+          // }
+          if (ins == index) {
+            if (y.title == "") {
+              vas.targetName = "";
+            } else {
+              vas.targetName = y.title;
+              vas.businessName = businessName;
+            }
+          }
+        });
+      });
+    },
+    changelegned: function(radardata, tr, index) {
+      this.radardata.rowcolobj[index].forEach(function(val, ind) {
+        // if (index == ind) {
+        // val.forEach(function(vas, ins) {
+        if (tr.title == "") {
+          val.businessName = "";
+        } else {
+          val.businessName = tr.title;
+        }
+        // });
+        // }
+      });
+    },
+    initdata: function() {
       let that = this;
       this.axios
         .get(
@@ -86,6 +257,7 @@ export default {
         )
         .then(res => {
           that.loading = false;
+          var res = res;
           if (res.data.data) {
             if (res.data.data.length == 0) {
               that.radardata = {
@@ -99,7 +271,7 @@ export default {
                 legnedlist: ["宁家鲜生", "沃尔玛"],
                 legnedvalue: [
                   "宁家鲜生"[(2000, 3000, 4000, 5000)],
-                  "沃尔玛"[(40000, 5000, 6000, 7000)]
+                  "沃尔玛"[(4000, 5000, 6000, 7000)]
                 ],
                 serieslist: [],
                 yxismax: {
@@ -115,114 +287,215 @@ export default {
                   { title: "支付用户" },
                   { title: "新增用户" }
                 ], //表格行
-                rowcolobj: [] //最终提交结果
+                rowcolobj: [
+                  [
+                    {
+                      targetValue: 2000,
+                      businessName: "宁家鲜生",
+                      targetName: "销售额"
+                    },
+                    {
+                      targetValue: 3000,
+                      businessName: "宁家鲜生",
+                      targetName: "订单量"
+                    },
+                    {
+                      targetValue: 4000,
+                      businessName: "宁家鲜生",
+                      targetName: "支付用户"
+                    },
+                    {
+                      targetValue: 5000,
+                      businessName: "宁家鲜生",
+                      targetName: "新增用户"
+                    }
+                  ],
+                  [
+                    {
+                      targetValue: 4000,
+                      businessName: "沃尔玛",
+                      targetName: "销售额"
+                    },
+                    {
+                      targetValue: 5000,
+                      businessName: "沃尔玛",
+                      targetName: "销售额"
+                    },
+                    {
+                      targetValue: 6000,
+                      businessName: "沃尔玛",
+                      targetName: "销售额"
+                    },
+                    {
+                      targetValue: 7000,
+                      businessName: "沃尔玛",
+                      targetName: "销售额"
+                    }
+                  ]
+                ] //最终提交结果
               };
+              let colorobj = [
+                "rgb(192,87,96)",
+                "rgb(186,126,182)",
+                "rgb(105,98,164)"
+              ];
+              // that.radardata.legnedlist.forEach(function(value, index) {
+              //   //获取分类下的所有指标值
+              //   // that.radardata.legnedvalue[value] = [];
+              //   // res.data.data.forEach(function(val, ind) {
+              //   //   if (val.businessName == value) {
+              //   //     that.radardata.legnedvalue[value].push(
+              //   //       Number(val.targetValue)
+              //   //     );
+              //   //   }
+              //   // });
+              //   // debugger
+              //   that.radardata.serieslist.push({
+              //     name: value,
+              //     value: that.radardata.legnedvalue[value],
+              //     areaStyle: {
+              //       normal: {
+              //         color: colorobj[index],
+              //         opacity: 0.4
+              //       }
+              //     },
+              //     symbolSize: 2.5,
+              //     itemStyle: {
+              //       normal: {
+              //         borderColor: colorobj[index],
+              //         borderWidth: 2.5
+              //       }
+              //     },
+              //     lineStyle: {
+              //       normal: {
+              //         opacity: 0.5
+              //       }
+              //     }
+              //   });
+              // });
               that.initleftecharts(
                 "efficienct-radar",
                 that.radardata,
                 colorobj
               );
-              return;
+            } else {
+              that.radardata = {
+                yxis: [], //分类值
+                yxislist: [],
+                legnedlist: [],
+                legnedvalue: {},
+                serieslist: [],
+                yxismax: {},
+                legnedlistobj: [], //表格列
+                yxisobj: [], //表格行
+                rowcolobj: []
+              };
+              let colorobj = [
+                "rgb(192,87,96)",
+                "rgb(186,126,182)",
+                "rgb(105,98,164)"
+              ];
+              res.data.data.forEach(function(value, index) {
+                //获取lenged显示
+                if (
+                  that.radardata.legnedlist.indexOf(value.businessName) == -1
+                ) {
+                  that.radardata.legnedlist.push(value.businessName);
+                  that.radardata.legnedlistobj.push({
+                    //表格列
+                    title: value.businessName
+                  });
+                }
+                //表格行title显示和radar图形每个指标显示
+                if (that.radardata.yxis.indexOf(value.targetName) == -1) {
+                  that.radardata.yxis.push(value.targetName);
+                  that.radardata.yxislist.push({
+                    text: value.targetName,
+                    max: that.radardata.yxismax[value.targetName]
+                  });
+                  that.radardata.yxisobj.push({ title: value.targetName }); //表格行
+                }
+              });
+
+              //根据行和列计算table中的二维数据,并且添加分类和指标放在最后提交使用
+              that.radardata.legnedlist.forEach(function(value, index) {
+                that.radardata.rowcolobj[index] = [];
+                that.radardata.yxis.forEach(function(val, ind) {
+                  res.data.data.forEach(function(valu, inde) {
+                    if (valu.targetName == val && valu.businessName == value) {
+                      that.radardata.rowcolobj[index].push({
+                        targetValue: valu.targetValue,
+                        businessName: value,
+                        targetName: val
+                      });
+                      // break;
+                    }
+                  });
+                  // that.radardata.rowcolobj[index].push({
+                  //   targetValue: "",
+                  //   businessName: value,
+                  //   targetName: val
+                  // });
+                });
+              });
+
+              that.radardata.yxis.forEach(function(value, index) {
+                //获取指标最大值
+                that.radardata.yxismax[value] = "";
+                var max = 0;
+                res.data.data.forEach(function(val, ind) {
+                  if (value == val.targetName) {
+                    if (Number(max) < Number(val.targetValue)) {
+                      max = Number(val.targetValue);
+                    }
+                  }
+                });
+                that.radardata.yxismax[value] = max;
+              });
+              that.radardata.yxislist.forEach(function(value, index) {
+                value.max = that.radardata.yxismax[value.text];
+              });
+              // let color
+              that.radardata.legnedlist.forEach(function(value, index) {
+                //获取分类下的所有指标值
+                that.radardata.legnedvalue[value] = [];
+                res.data.data.forEach(function(val, ind) {
+                  if (val.businessName == value) {
+                    that.radardata.legnedvalue[value].push(
+                      Number(val.targetValue)
+                    );
+                  }
+                });
+                // debugger
+                that.radardata.serieslist.push({
+                  name: value,
+                  value: that.radardata.legnedvalue[value],
+                  areaStyle: {
+                    normal: {
+                      color: colorobj[index],
+                      opacity: 0.4
+                    }
+                  },
+                  symbolSize: 2.5,
+                  itemStyle: {
+                    normal: {
+                      borderColor: colorobj[index],
+                      borderWidth: 2.5
+                    }
+                  },
+                  lineStyle: {
+                    normal: {
+                      opacity: 0.5
+                    }
+                  }
+                });
+              });
+              that.initleftecharts(
+                "efficienct-radar",
+                that.radardata,
+                colorobj
+              );
             }
-            that.radardata = {
-              yxis: [], //分类值
-              yxislist: [],
-              legnedlist: [],
-              legnedvalue: {},
-              serieslist: [],
-              yxismax: {},
-              legnedlistobj: [], //表格列
-              yxisobj: [], //表格行
-              rowcolobj: [] //最终提交结果
-            };
-            let colorobj = [
-              "rgb(192,87,96)",
-              "rgb(186,126,182)",
-              "rgb(105,98,164)"
-            ];
-            res.data.data.forEach(function(value, index) {
-              //获取lenged显示
-              if (that.radardata.legnedlist.indexOf(value.businessName) == -1) {
-                that.radardata.legnedlist.push(value.businessName);
-                that.radardata.legnedlistobj.push({
-                  //表格列
-                  title: value.businessName
-                });
-              }
-              //表格行title显示和radar图形每个指标显示
-              if (that.radardata.yxis.indexOf(value.targetName) == -1) {
-                that.radardata.yxis.push(value.targetName);
-                that.radardata.yxislist.push({
-                  text: value.targetName,
-                  max: that.radardata.yxismax[value.targetName]
-                });
-                that.radardata.yxisobj.push({ title: value.targetName }); //表格行
-              }
-            });
-
-            //根据行和列计算table中的二维数据,并且添加分类和指标放在最后提交使用
-            that.radardata.legnedlist.forEach(function(value, index) {
-              that.radardata.rowcolobj[index] = [];
-              that.radardata.yxis.forEach(function(val, ind) {
-                that.radardata.rowcolobj[index].push({
-                  targetValue: "",
-                  businessName: value,
-                  targetName: val
-                });
-              });
-            });
-
-            that.radardata.yxis.forEach(function(value, index) {
-              //获取指标最大值
-              that.radardata.yxismax[value] = "";
-              var max = 0;
-              res.data.data.forEach(function(val, ind) {
-                if (value == val.targetName) {
-                  if (Number(max) < Number(val.targetValue)) {
-                    max = Number(val.targetValue);
-                  }
-                }
-              });
-              that.radardata.yxismax[value] = max;
-            });
-            that.radardata.yxislist.forEach(function(value, index) {
-              value.max = that.radardata.yxismax[value.text];
-            });
-            // let color
-            that.radardata.legnedlist.forEach(function(value, index) {
-              //获取分类下的所有指标值
-              that.radardata.legnedvalue[value] = [];
-              res.data.data.forEach(function(val, ind) {
-                if (val.businessName == value) {
-                  that.radardata.legnedvalue[value].push(
-                    Number(val.targetValue)
-                  );
-                }
-              });
-              that.radardata.serieslist.push({
-                name: value,
-                value: that.radardata.legnedvalue[value],
-                areaStyle: {
-                  normal: {
-                    color: colorobj[index],
-                    opacity: 0.4
-                  }
-                },
-                symbolSize: 2.5,
-                itemStyle: {
-                  normal: {
-                    borderColor: colorobj[index],
-                    borderWidth: 2.5
-                  }
-                },
-                lineStyle: {
-                  normal: {
-                    opacity: 0.5
-                  }
-                }
-              });
-            });
-            that.initleftecharts("efficienct-radar", that.radardata, colorobj);
           }
         })
         .catch(res => {});
@@ -236,19 +509,45 @@ export default {
       console.log(this.radardata);
       console.log(this.radardata.rowcolobj);
       this.radardata.rowcolobj.forEach(function(value, index) {
+        // value.forEach(function(val, ind) {
+        // if (val.targetValue == "") {
+        //   val.targetValue = that.radardata.legnedvalue[val.businessName][ind];
+        // }
+        // });
+        let flag = false;
         value.forEach(function(val, ind) {
-          if(val.targetValue == ""){
-            val.targetValue = that.radardata.legnedvalue[val.businessName][ind];
+          if (
+            val.businessName !== "" ||
+            val.targetName !== "" ||
+            val.targetValue !== ""
+          ) {
+            flag = true;
           }
         });
-        value.forEach(function(val, ind) {
-          array.push(val);
-        });
+        if (!flag) {
+          value = null;
+        } else {
+          value.forEach(function(val, ind) {
+            array.push(val);
+          });
+        }
       });
+
+      let newvalue = [];
+      array.forEach(function(value, index) {
+        if (
+          value.businessName !== "" ||
+          value.targetValue !== "" ||
+          value.targetName !== ""
+        ) {
+          newvalue.push(value);
+        }
+      });
+
       this.axios
         .post(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/competition",
-          array
+          newvalue
         )
         .then(res => {
           if (res.data.status == "SUCCESS") {
@@ -356,6 +655,23 @@ export default {
 </script>
 
 <style scoped lang="less">
+.addrow {
+  margin-left: 5%;
+  font-size: 0.08em;
+  padding: 0px 10px;
+   height: 20px;
+  line-height: 20px;
+   display: inline-block;
+}
+.addrow:hover {
+  background-color: #537f8c;
+   font-size: 0.08em;
+  color: #fff;
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  padding: 0px 10px;
+}
 .efficiency-page {
   padding-right: 10px;
   width: 100%;

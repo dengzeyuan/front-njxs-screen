@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      enable: this.timeRange == "QUARTER"?false:true,
+      enable: this.timeRange == "QUARTER" ? false : true,
       headstyle: {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
         paddingLeft: Math.ceil(40 * this.baseScreenRate) + "px",
@@ -150,26 +150,6 @@ export default {
         },
         series: [
           {
-            name: "当前数据",
-            type: "bar",
-            data: this.amountDate,
-            barWidth: 12, //柱宽
-            itemStyle: {
-              normal: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: "#FECC44"
-                  },
-                  {
-                    offset: 1,
-                    color: "#EC6783"
-                  }
-                ])
-              }
-            }
-          },
-          {
             name: "比较数据",
             type: "bar",
             data: this.amountDate1,
@@ -184,6 +164,26 @@ export default {
                   {
                     offset: 1,
                     color: "#5D27A0"
+                  }
+                ])
+              }
+            }
+          },
+          {
+            name: "当前数据",
+            type: "bar",
+            data: this.amountDate,
+            barWidth: 12, //柱宽
+            itemStyle: {
+              normal: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "#FECC44"
+                  },
+                  {
+                    offset: 1,
+                    color: "#EC6783"
                   }
                 ])
               }

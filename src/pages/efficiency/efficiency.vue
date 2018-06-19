@@ -22,10 +22,10 @@
         <div v-show="hidefromfalg" class="hideform" :style="formstyle">
             <form action="" ref="forms" novalidate>
               <table border="1" cellpadding=0 cellspacing=0 style="color:#ffffff;">
-                <tr><td>坪效</td><td><input name="avgEfficiency" type="number" v-model="responseDate.avgEfficiency"></td></tr>
-                <tr><td>人效</td><td><input name="personEfficiency" type="number" v-model="responseDate.personEfficiency"></td></tr>
-                <tr><td>配送及时率</td><td><input name="distributionRate" type="number" v-model="responseDate.distributionRate"></td></tr>
-                <tr><td>客户满意度</td><td><input name="customerRate" type="number" v-model="responseDate.customerRate"></td></tr>
+                <tr><td>坪效</td><td><input name="avgEfficiency" type="text" v-model="responseDate.avgEfficiency"></td></tr>
+                <tr><td>人效</td><td><input name="personEfficiency" type="text" v-model="responseDate.personEfficiency"></td></tr>
+                <tr><td>配送及时率</td><td><input name="distributionRate" type="text" v-model="responseDate.distributionRate"></td></tr>
+                <tr><td>客户满意度</td><td><input name="customerRate" type="text" v-model="responseDate.customerRate"></td></tr>
               </table>
               <input @click.stop="submitefficty" class="submit" type="button" readonly="readonly" value="确定" />
             </form>
@@ -124,12 +124,14 @@ export default {
   methods: {
     //初始化
     initdata() {
+      var that=this;
       this.axios
         .get("http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency")
         .then(res => {
-          this.loading=false;
+          that.loading=false;
           if (res.data.data) {
-            this.responseDate = res.data.data;
+            that.responseDate = res.data.data;
+            console.log(that.responseDate)
             // debugger
             let rate = [
               [
@@ -141,12 +143,12 @@ export default {
                 { value: 100, name: "" },
               ]
             ];
-            this.initleftecharts(
+            that.initleftecharts(
               "main-first",
               res.data.data.distributionRate,
               rate[0]
             );
-            this.initleftecharts(
+            that.initleftecharts(
               "main-two",
               res.data.data.customerRate,
               rate[1]
