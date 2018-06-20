@@ -8,7 +8,7 @@ export default {
   props: ["timeRange"],
   watch: {
     timeRange: function(val) {
-       this.initdata()
+      this.initdata();
     }
   },
   data() {
@@ -27,34 +27,35 @@ export default {
     };
   },
   mounted() {
-    this.initdata()
+    this.initdata();
   },
   methods: {
     initdata() {
       let that = this;
       this.axios
         .get(
-          "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/situation/"+this.timeRange
+          "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/situation/" +
+            this.timeRange
         )
         .then(res => {
-          that.textDate=[];
-          that.timeDate=[];
-          that.valDate=[];
-          that.valDate1=[];
-          that.valDate2=[];
+          that.textDate = [];
+          that.timeDate = [];
+          that.valDate = [];
+          that.valDate1 = [];
+          that.valDate2 = [];
           let ress = res.data.data;
           ress.map(val => {
             that.textDate.push(val.name);
           });
           ress[0].singleList.map(val => {
             that.timeDate.push(val.date);
-            that.valDate.push(val.value.toFixed(2));
+            that.valDate.push(val.value);
           });
           ress[1].singleList.map(val => {
-            that.valDate1.push(val.value.toFixed(2));
+            that.valDate1.push(val.value);
           });
           ress[2].singleList.map(val => {
-            that.valDate2.push(val.value.toFixed(2));
+            that.valDate2.push(val.value);
           });
           // 基于准备好的dom，初始化echarts实例
           that.$echarts.dispose(document.getElementById("main"));
@@ -75,7 +76,7 @@ export default {
               }
             },
             tooltip: {
-              trigger: "axis"
+              trigger: "axis",
             },
             legend: {
               data: that.textDate,
@@ -87,6 +88,26 @@ export default {
             },
             xAxis: [
               {
+                axisLabel: {
+                  show: true,
+                  interval: function(index, value) {
+                    if (that.timeRange == "WEEK") {
+                      return true;
+                    }
+                    if (that.timeRange == "MONTH") {
+                      if (index % 4 == 0) {
+                        return true;
+                      }
+                      return false;
+                    }
+                    if (that.timeRange == "QUARTER") {
+                      if (index % 14 == 0) {
+                        return true;
+                      }
+                      return false;
+                    }
+                  }
+                },
                 type: "category",
                 boundaryGap: false,
                 data: that.timeDate,
@@ -109,20 +130,19 @@ export default {
             ],
             yAxis: [
               {
+                name: "单位(元)",
                 type: "value",
                 splitLine: {
                   lineStyle: {
-                    // 使用深浅的间隔色
-                    color: ["#21202E"]
+                    color: "#21202E"
                   }
                 },
                 nameTextStyle: {
-                  color: ["#21202E"]
+                  color: "#75becb"
                 },
                 axisLine: {
                   lineStyle: {
                     color: "#75becb"
-                    // width:1,//这里是为了突出显示加上的
                   }
                 }
               }
@@ -147,7 +167,24 @@ export default {
                 label: {
                   show: true,
                   position: "top",
-                  color: "#fff"
+                  color: "#fff",
+                  formatter: function(d) {
+                    if (that.timeRange == "WEEK") {
+                      return d.data;
+                    }
+                    if (that.timeRange == "MONTH") {
+                      if (d.dataIndex % 4 == 0) {
+                        return d.data;
+                      }
+                      return "";
+                    }
+                    if (that.timeRange == "QUARTER") {
+                      if (d.dataIndex % 14 == 0) {
+                        return d.data;
+                      }
+                      return "";
+                    }
+                  }
                 },
                 itemStyle: {
                   normal: {
@@ -171,7 +208,24 @@ export default {
                 label: {
                   show: true,
                   position: "top",
-                  color: "#fff"
+                  color: "#fff",
+                  formatter: function(d) {
+                    if (that.timeRange == "WEEK") {
+                      return d.data;
+                    }
+                    if (that.timeRange == "MONTH") {
+                      if (d.dataIndex % 4 == 0) {
+                        return d.data;
+                      }
+                      return "";
+                    }
+                    if (that.timeRange == "QUARTER") {
+                      if (d.dataIndex % 14 == 0) {
+                        return d.data;
+                      }
+                      return "";
+                    }
+                  }
                 },
                 itemStyle: {
                   normal: {
@@ -195,7 +249,24 @@ export default {
                 label: {
                   show: true,
                   position: "bottom",
-                  color: "#fff"
+                  color: "#fff",
+                  formatter: function(d) {
+                    if (that.timeRange == "WEEK") {
+                      return d.data;
+                    }
+                    if (that.timeRange == "MONTH") {
+                      if (d.dataIndex % 4 == 0) {
+                        return d.data;
+                      }
+                      return "";
+                    }
+                    if (that.timeRange == "QUARTER") {
+                      if (d.dataIndex % 14 == 0) {
+                        return d.data;
+                      }
+                      return "";
+                    }
+                  }
                 },
                 itemStyle: {
                   normal: {

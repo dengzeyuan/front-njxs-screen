@@ -1,5 +1,5 @@
 <template>
-  <div class="editecharts">
+  <div class="editecharts" >
       <div class="leftside" :style="{paddingLeft:sideleftpad,paddingTop:sidetoppad}">
             <div class="manage" :style="manage">
               <BusinessProfile :timeRange="timeRange"/>
@@ -13,10 +13,10 @@
                   <Sales :timeRange="timeRange"/>
             </div>
             <div class="efficiency" :style="efficiency">
-                <efficiency :timeRange="timeRange"/>
+                <efficiency :timeRange="timeRange" :role="role" />
             </div>
             <div class="competive" :style="competive">
-                <competive :timeRange="timeRange"/>
+                <competive :timeRange="timeRange" :role="role" />
             </div>
       </div>
   </div>
@@ -31,6 +31,7 @@ export default {
   props: ["timeRange"],
   data() {
     return {
+      role: this.$route.params.id,
       sideleftpad: Math.ceil(25 * this.baseScreenRate) + "px",
       sidetoppad: Math.ceil(25 * this.baseScreenRate) + "px",
       manage: {
@@ -68,10 +69,14 @@ export default {
     BusinessProfile,
     KeyIndicators,
     Sales
+  },
+  mounted: function() {
+    this.$nextTick(function() {
+      // window.innerWidth
+    });
   }
 };
 </script>
-
 <style scoped lang="less">
 .editecharts {
   width: 100%;
@@ -99,6 +104,31 @@ export default {
       border: 1px solid #312f46;
       border-radius: 4px;
     }
+  }
+}
+</style>
+<style>
+@media (max-width: 750px) {
+  .editecharts {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: #201f2d;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* flex-direction: column; */
+  }
+  .leftside,
+  .rightside {
+    width: 100%;
+    height: 100%;
+  }
+  .leftside .target,
+  .leftside .manage,
+  .rightside .sell,
+  .rightside .efficiency,
+  .rightside .competive {
+    width: 100% !important;
   }
 }
 </style>

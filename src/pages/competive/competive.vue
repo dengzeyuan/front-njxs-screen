@@ -2,9 +2,9 @@
   <div class="efficiency-page" :style="pagestyle">
         <div class="head"><h4 :style="headstyle">竞争力分析</h4>
         <span class="el-icon-more" style="cursor:pointer;" :style="{opacity:opacitys}" @click="clickdit()"
-          @mouseover="hoveredit(1)" @mouseout="hoveredit(0)"></span></div>
+          @mouseover="hoveredit(1)" @mouseout="hoveredit(0)" v-if="role=='manage'"></span></div>
         <div ref="efficienctRadar" id="efficienct-radar" :style="echartstyle"></div>
-        <div v-show="hidefromfalg" class="hideform" :style="formstyle">
+        <div v-show="hidefromfalg" class="hideform" :style="formstyle" v-if="role=='manage'">
             <!-- <table>行：</table> -->
             <form>
               <div style="margin-bottom:1%"><span style="font-size:0.8em">行:</span><input type="number" v-model="rownumber" style="width:20%;" />
@@ -29,6 +29,7 @@
 
 <script type="text/ecmascript-6">
 export default {
+  props: ["role"],
   data() {
     return {
       rownumber: 0,
@@ -153,58 +154,7 @@ export default {
             );
           }
         }
-        // this.radardata.rowcolobj = this.radardata.rowcolobj.slice(0, col);
       }
-
-      // if (!col) {
-      //   for (let i = legendlength; i < rows; i++) {
-      //     this.radardata.legnedlistobj.push({
-      //       title: i
-      //     });
-      //     this.radardata.rowcolobj[i] = [];
-      //   }
-      //   var max = 0;
-      //   this.radardata.rowcolobj.forEach(function(value, index) {
-      //     if (value.length > max) {
-      //       max = value.length;
-      //     }
-      //   });
-      //   this.radardata.rowcolobj.forEach(function(value, index) {
-      //     if (value.length !== max) {
-      //       for (let i = 0; i < max; i++) {
-      //         value.push({
-      //           targetValue: index + "-" + i,
-      //           businessName: index,
-      //           targetName: index + "-" + i
-      //         });
-      //       }
-      //     }
-      //   });
-      // } else if (!row) {
-      //   this.radardata.rowcolobj.forEach(function(value, index) {
-      //     for (let i = value.length; i < Number(col); i++) {
-      //       value.push({
-      //         targetValue: index + "-" + i,
-      //         businessName: i,
-      //         targetName: index + "-" + i
-      //       });
-      //     }
-      //   });
-      // }
-      // for(let i=row;i>this.radardata.legnedlistobj.length;i--){debugger
-      //   this.radardata.rowcolobj[i]=[]
-      //    this.radardata.rowcolobj[i].push({
-      //                 targetValue: valu.targetValue,
-      //                 businessName: value,
-      //                 targetName: val
-      //               })
-      //   //  that.radardata.rowcolobj[index].push({
-      //   //               targetValue: valu.targetValue,
-      //   //               businessName: value,
-      //   //               targetName: val
-      //   //             });
-
-      // }
     },
     changevalue: function(radardata, va, index) {
       this.radardata.rowcolobj.forEach(function(val, ind) {
@@ -339,40 +289,6 @@ export default {
                 "rgb(186,126,182)",
                 "rgb(105,98,164)"
               ];
-              // that.radardata.legnedlist.forEach(function(value, index) {
-              //   //获取分类下的所有指标值
-              //   // that.radardata.legnedvalue[value] = [];
-              //   // res.data.data.forEach(function(val, ind) {
-              //   //   if (val.businessName == value) {
-              //   //     that.radardata.legnedvalue[value].push(
-              //   //       Number(val.targetValue)
-              //   //     );
-              //   //   }
-              //   // });
-              //   // debugger
-              //   that.radardata.serieslist.push({
-              //     name: value,
-              //     value: that.radardata.legnedvalue[value],
-              //     areaStyle: {
-              //       normal: {
-              //         color: colorobj[index],
-              //         opacity: 0.4
-              //       }
-              //     },
-              //     symbolSize: 2.5,
-              //     itemStyle: {
-              //       normal: {
-              //         borderColor: colorobj[index],
-              //         borderWidth: 2.5
-              //       }
-              //     },
-              //     lineStyle: {
-              //       normal: {
-              //         opacity: 0.5
-              //       }
-              //     }
-              //   });
-              // });
               that.initleftecharts(
                 "efficienct-radar",
                 that.radardata,
@@ -659,13 +575,13 @@ export default {
   margin-left: 5%;
   font-size: 0.08em;
   padding: 0px 10px;
-   height: 20px;
+  height: 20px;
   line-height: 20px;
-   display: inline-block;
+  display: inline-block;
 }
 .addrow:hover {
   background-color: #537f8c;
-   font-size: 0.08em;
+  font-size: 0.08em;
   color: #fff;
   display: inline-block;
   height: 20px;

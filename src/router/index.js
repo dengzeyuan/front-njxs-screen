@@ -18,7 +18,11 @@ export default new Router({
           name: 'index',
           component: resolve => require(['../pages/main/index.vue'], resolve),
         },
-       
+        {
+          path: '/index/:id',
+          name: 'index',
+          component: resolve => require(['../pages/main/index.vue'], resolve),
+        },
       ]
     }
   ]

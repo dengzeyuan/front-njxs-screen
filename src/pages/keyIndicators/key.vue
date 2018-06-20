@@ -93,16 +93,19 @@ export default {
       underlineorder: "",
       onlineordervalue: 0,
       underlineordervalue: 0,
+      ordername: "",
 
       onlinecustomer: "",
       underlinecustomer: "",
       onlinecustomervalue: 0,
       underlinecustomervalue: 0,
+      customername: "",
 
       onlineuser: "",
       underlineuser: "",
       onlineuservalue: 0,
-      underlineuservalue: 0
+      underlineuservalue: 0,
+      uservaluename: ""
     };
   },
   mounted() {
@@ -121,16 +124,19 @@ export default {
           that.underlineorder = res.data.data[0].underLineRate;
           that.onlineordervalue = res.data.data[0].onLineValue;
           that.underlineordervalue = res.data.data[0].underLineValue;
+          that.ordername = res.data.data[0].name;
 
           that.onlinecustomer = res.data.data[1].onLineRate;
           that.underlinecustomer = res.data.data[1].underLineRate;
           that.onlinecustomervalue = res.data.data[1].onLineValue;
           that.underlinecustomervalue = res.data.data[1].underLineValue;
+          that.customername = res.data.data[1].name;
 
-          that.onlineuser = res.data.data[2].onLineRate + "%";
-          that.underlineuser = res.data.data[2].underLineRate + "%";
+          that.onlineuser = res.data.data[2].onLineRate;
+          that.underlineuser = res.data.data[2].underLineRate;
           that.onlineuservalue = res.data.data[2].onLineValue;
           that.underlineuservalue = res.data.data[2].underLineValue;
+          that.uservaluename = res.data.data[2].name;
           this.textValue = [];
           res.data.data[0].singleList.map(val => {
             this.textValue.push(val);
@@ -139,14 +145,17 @@ export default {
           res.data.data[1].singleList.map(val => {
             this.textValue1.push(val);
           });
-          this.textValue2 = [];
+          that.textValue2 = [];
           res.data.data[2].singleList.map(val => {
-            this.textValue2.push(val);
+            that.textValue2.push(val);
           });
-          this.textValue2 = this.textValue2.concat([
-            { name: "无", onLineValue: "无", underLineValue: "无" },
-            { name: "无", onLineValue: "无", underLineValue: "无" }
-          ]);
+          for (let i = 0; i < 6 - that.textValue2.length; i++) {
+            that.textValue2.push({
+              name: "无",
+              onLineValue: "无",
+              underLineValue: "无"
+            });
+          }
           // this.lineName.push(this.dateValue.name)
 
           //指定图表的配置项和数据
@@ -174,7 +183,8 @@ export default {
               textStyle: {
                 color: "#fff", //文字颜色
                 fontSize: Math.ceil(18 * this.baseScreenRate)
-              }
+              },
+              selectedMode: false
             },
             series: [
               //系列列表
@@ -187,10 +197,11 @@ export default {
                   color: "#fff"
                 },
                 hoverAnimation: false,
+                legendHoverLink: false,
                 data: [
                   {
                     label: {
-                      formatter: "订单量",
+                      formatter: that.ordername,
                       padding: [10, 0, 0, 0],
                       textStyle: {
                         fontSize: Math.ceil(18 * this.baseScreenRate)
@@ -228,7 +239,8 @@ export default {
               textStyle: {
                 color: "#fff", //文字颜色
                 fontSize: Math.ceil(18 * this.baseScreenRate)
-              }
+              },
+              selectedMode: false
             },
             series: [
               //系列列表
@@ -241,10 +253,11 @@ export default {
                   color: "#fff"
                 },
                 hoverAnimation: false,
+                legendHoverLink: false,
                 data: [
                   {
                     label: {
-                      formatter: "客单价",
+                      formatter: that.customername,
                       padding: [10, 0, 0, 0],
                       textStyle: {
                         fontSize: Math.ceil(18 * this.baseScreenRate)
@@ -283,7 +296,8 @@ export default {
               textStyle: {
                 color: "#fff", //文字颜色
                 fontSize: Math.ceil(18 * this.baseScreenRate)
-              }
+              },
+              selectedMode: false
             },
             series: [
               //系列列表
@@ -296,10 +310,11 @@ export default {
                   color: "#fff"
                 },
                 hoverAnimation: false,
+                legendHoverLink: false,
                 data: [
                   {
                     label: {
-                      formatter: "用户数",
+                      formatter: that.uservaluename,
                       padding: [10, 0, 0, 0],
                       textStyle: {
                         fontSize: Math.ceil(18 * this.baseScreenRate)
@@ -360,6 +375,9 @@ export default {
         }
         tr > td {
           width: 30%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }
@@ -382,6 +400,9 @@ export default {
         }
         tr > td {
           width: 30%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }
@@ -404,6 +425,9 @@ export default {
         }
         tr > td {
           width: 30%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }

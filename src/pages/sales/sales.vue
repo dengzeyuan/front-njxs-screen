@@ -56,10 +56,12 @@ export default {
       ],
       value: "0",
       timeDate: [],
+      timeDate2: [],
       amountDate: [],
       amountDate1: [],
       textData: "WEEK",
-      numDate: 0
+      numDate: 0,
+      toolipform: {}
       // disabled:true
     };
   },
@@ -68,6 +70,7 @@ export default {
   },
   methods: {
     initdata() {
+      var that = this;
       this.axios
         .get(
           "http://suneee.dcp.weilian.cn/njxs-demo/operationData/saleRate/data/" +
@@ -76,17 +79,29 @@ export default {
             this.value
         )
         .then(res => {
-          this.timeDate = [];
-          this.amountDate = [];
-          this.amountDate1 = [];
+          // debugger;
+          that.toolipform["dataCurrentWeek"] = [];
+          that.toolipform["dataPreWeek"] = [];
+          that.toolipform["dataCurrentValue"] = [];
+          that.toolipform["dataPreValue"] = [];
+
+          that.timeDate = [];
+          that.amountDate = [];
+          that.amountDate1 = [];
           res.data.data.dataCurrentWeek.map(val => {
-            this.timeDate.push(val.time);
-            this.amountDate.push(val.amount);
+            that.timeDate.push(val.time);
+            that.amountDate.push(val.amount);
+            that.toolipform["dataCurrentWeek"].push(val.time);
+            that.toolipform["dataCurrentValue"].push(val.amount);
           });
           res.data.data.dataPreWeek.map(val => {
-            this.amountDate1.push(val.amount);
+            that.amountDate1.push(val.amount);
+            that.timeDate2.push(val.time);
+            that.toolipform["dataPreWeek"].push(val.time);
+            that.toolipform["dataPreValue"].push(val.amount);
           });
-          this.initbar();
+
+          that.initbar(that.toolipform);
         })
         .catch(res => {
           console.log("请求失败");
@@ -98,7 +113,30 @@ export default {
       let myMain = this.$echarts.init(doc);
       let option = {
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
+          formatter: function(d) {
+            // return "werwer"
+            for (let i = 0; i < data.dataCurrentWeek.length; i++) {
+              if (data.dataCurrentWeek[i] == d[0].name) {
+                return (
+                  "<div>" +
+                  data.dataCurrentWeek[i] +
+                  ":" +
+                  data.dataCurrentValue[i] +
+                  "<br />" +
+                  data.dataPreWeek[i] +
+                  ":" +
+                  data.dataPreValue[i] +
+                  "</div>"
+                );
+              }
+            }
+            // data.dataCurrentWeek.forEach(function(value, index) {
+            //   if (value == d[0].name) {
+            //    return "<div>"+data.dataCurrentWeek[index]+":"+data.dataCurrentValue[index]+"<br />"+data.dataPreWeek[index]+":"+data.dataPreValue[index]+"</div>"
+            //   }
+            // });
+          }
         },
         xAxis: [
           {

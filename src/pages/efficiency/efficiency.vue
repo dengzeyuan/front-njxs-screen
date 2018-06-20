@@ -3,7 +3,7 @@
         <div class="head" :style="headstyle">
             <h4 :style="headtitle">经营效率</h4>
             <span class="el-icon-more" style="cursor:pointer;" :style="{opacity:opacitys}"
-            @click="clickdit()" @mouseover="hoveredit(1)"   @mouseout="hoveredit(0)"></span>
+            @click="clickdit()" @mouseover="hoveredit(1)"   @mouseout="hoveredit(0)" v-if="role=='manage'"></span>
         </div>
         <div class="content-left" :style="contentleft">
             <div :style="contentTitle">线下</div>
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div v-show="hidefromfalg" class="hideform" :style="formstyle">
+        <div v-if="role=='manage'" v-show="hidefromfalg" class="hideform" :style="formstyle">
             <form action="" ref="forms" novalidate>
               <table border="1" cellpadding=0 cellspacing=0 style="color:#ffffff;">
                 <tr><td>坪效</td><td><input name="avgEfficiency" type="text" v-model="responseDate.avgEfficiency"></td></tr>
@@ -37,6 +37,7 @@
 
 <script type="text/ecmascript-6">
 export default {
+  props:["role"],
   data() {
     return {
       loading:"true",
