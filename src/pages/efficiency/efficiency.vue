@@ -1,5 +1,5 @@
 <template>
-  <div class="efficiency-page" :style="pagestyle">
+  <div class="efficiency-page" :style="pagestyle" v-loading="loading">
         <div class="head" :style="headstyle">
             <h4 :style="headtitle">经营效率</h4>
             <span class="el-icon-more" style="cursor:pointer;" :style="{opacity:opacitys}"
@@ -132,8 +132,6 @@ export default {
           that.loading=false;
           if (res.data.data) {
             that.responseDate = res.data.data;
-            console.log(that.responseDate)
-            // debugger
             let rate = [
               [
                 { value: 100, name: "" },

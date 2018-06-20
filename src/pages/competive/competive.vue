@@ -1,5 +1,5 @@
 <template>
-  <div class="efficiency-page" :style="pagestyle">
+  <div class="efficiency-page" :style="pagestyle" v-loading="loading">
         <div class="head"><h4 :style="headstyle">竞争力分析</h4>
         <span class="el-icon-more" style="cursor:pointer;" :style="{opacity:opacitys}" @click="clickdit()"
           @mouseover="hoveredit(1)" @mouseout="hoveredit(0)" v-if="role=='manage'"></span></div>
@@ -32,6 +32,7 @@ export default {
   props: ["role"],
   data() {
     return {
+      loading:true,
       rownumber: 0,
       colnumber: 0,
       loading: "true",

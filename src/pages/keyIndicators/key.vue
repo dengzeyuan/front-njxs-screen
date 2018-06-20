@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-    <div class="main" :style="mainstyle">
+    <div class="main" :style="mainstyle" v-loading="loading">
         <div class="textd1">
             <div id="main1" :style="lineNum" style="width: 100%;height:40%"></div> 
             <div class="table-data">
@@ -60,6 +60,7 @@ export default {
   },
   data() {
     return {
+      loading:true,
       dateValue: [],
       textValue: [],
       dateValue1: [],
@@ -119,6 +120,7 @@ export default {
             this.timeRange
         )
         .then(res => {
+          that.loading=false;
           var pieradius=window.innerWidth<756?["38%", "45%"]:["45%", "55%"]//饼图半径
           var pielabelfontsize=window.innerWidth<756?16:18;
           that.onlineorder = res.data.data[0].onLineRate;

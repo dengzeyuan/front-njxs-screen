@@ -1,5 +1,5 @@
 <template>
-    <div class="content"  :style="contentstyle">
+    <div class="content"  :style="contentstyle" v-loading="loading">
          <div id = 'main'> </div>
     </div>
 </template>
@@ -13,6 +13,7 @@ export default {
   },
   data() {
     return {
+      loading:"true",
       contentstyle: {
         paddingTop: Math.ceil(23 * this.baseScreenRate) + "px",
         paddingLeft: "2%",
@@ -38,6 +39,7 @@ export default {
             this.timeRange
         )
         .then(res => {
+          that.loading=false;
           that.textDate = [];
           that.timeDate = [];
           that.valDate = [];

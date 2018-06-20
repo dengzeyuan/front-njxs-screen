@@ -1,5 +1,5 @@
 <template>
-    <div class = 'content' :style="pagestyle">
+    <div class = 'content' :style="pagestyle" v-loading="loading">
         <div class="head" :style="headstyle">
             <h4 :style="headtitle">销售同环化</h4>
             <el-select v-model="value" :disabled="enable" size="mini" class="namechange" @change="initdata(value)" name="namechange">
@@ -30,6 +30,7 @@ export default {
   },
   data() {
     return {
+      loading:true,
       enable: this.timeRange == "QUARTER" ? false : true,
       headstyle: {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
@@ -70,6 +71,7 @@ export default {
   },
   methods: {
     initdata() {
+      this.loading=true;
       var that = this;
       this.axios
         .get(
@@ -79,7 +81,7 @@ export default {
             this.value
         )
         .then(res => {
-          // debugger;
+          that.loading=false;
           that.toolipform["dataCurrentWeek"] = [];
           that.toolipform["dataPreWeek"] = [];
           that.toolipform["dataCurrentValue"] = [];
@@ -115,27 +117,27 @@ export default {
         tooltip: {
           trigger: "axis",
           formatter: function(d) {
-            // return "werwer"
+            function comdify(n){
+　　var re=/\d{1,3}(?=(\d{3})+$)/g;
+　　var n1=n.replace(/^(\d+)((\.\d+)?)$/,function(s,s1,s2){return s1.replace(re,"$&,")+s2;});
+　　return n1;
+}
+
             for (let i = 0; i < data.dataCurrentWeek.length; i++) {
               if (data.dataCurrentWeek[i] == d[0].name) {
                 return (
                   "<div>" +
                   data.dataCurrentWeek[i] +
                   ":" +
-                  data.dataCurrentValue[i] +
+                  comdify(String(data.dataCurrentValue[i]))+
                   "<br />" +
                   data.dataPreWeek[i] +
                   ":" +
-                  data.dataPreValue[i] +
+                  comdify(String(data.dataPreValue[i]))  +
                   "</div>"
                 );
               }
             }
-            // data.dataCurrentWeek.forEach(function(value, index) {
-            //   if (value == d[0].name) {
-            //    return "<div>"+data.dataCurrentWeek[index]+":"+data.dataCurrentValue[index]+"<br />"+data.dataPreWeek[index]+":"+data.dataPreValue[index]+"</div>"
-            //   }
-            // });
           }
         },
         xAxis: [
@@ -160,27 +162,27 @@ export default {
           }
         ],
         yAxis: [
-          {
+           {
+            name: "单位(元)",
+            nameGap :"5",
             type: "value",
             splitLine: {
               lineStyle: {
-                // 使用深浅的间隔色
-                color: ["#21202E"]
+                color: "#21202E"
               }
             },
             nameTextStyle: {
-              color: ["#21202E"]
+              color: "#75becb"
             },
             axisLine: {
               lineStyle: {
                 color: "#75becb"
-                // width:1,//这里是为了突出显示加上的
               }
             }
           }
         ],
         grid: {
-          top: "4%",
+          top: "15%",
           left: "2%",
           right: "4%",
           bottom: "3%",
