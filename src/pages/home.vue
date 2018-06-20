@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <!-- <Header class="header"/> -->
-    <div class="header" :style="headerheight">
+    <!-- pc -->
+    <div class="header" :style="headerheight" v-if="!screenmin">
       <span :style="headertitltstyle"> <span class="trigon" :style="trigonleft"></span>宁家鲜生运营数据展示<span class="trigon" :style="trigonright"></span></span>
         <el-select v-model="value"  size="mini" class="timechange" name="timechange">
           <el-option
@@ -12,7 +13,23 @@
           </el-option>
         </el-select>
    </div>
+
+<!-- 移动 -->
+    <div class="header" :style="headerheight" v-if="screenmin">
+       宁家鲜生运营数据展示
+   </div>
     <div class='container-home'>
+         <!-- 移动 -->
+          <div class="minitimeRange" v-if="screenmin">
+            <el-select v-model="value"  size="mini" class="timechange" name="timechange">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+          </div>
          <router-view :timeRange="value"></router-view> 
     </div>
   </div>
@@ -24,11 +41,14 @@
 export default {
   data() {
     return {
+      screenmin: window.innerWidth < 756 ? true : false,
+      screenwidth: 0,
       headertitltstyle: {
         fontSize: Math.ceil(36 * this.baseScreenRate) + "px",
         height: "100%"
       },
       headerheight: {
+        // height:window.innerWidth>750?Math.ceil(64 * this.baseScreenRate) + "px":Math.ceil(80 * this.baseScreenRate) + "px",
         height: Math.ceil(64 * this.baseScreenRate) + "px",
         lineHeight: Math.ceil(64 * this.baseScreenRate) + "px"
       },
@@ -72,15 +92,50 @@ export default {
 };
 </script>
 <style>
-.timechange .el-input>input[name="timechange"]{
+.timechange .el-input > input[name="timechange"] {
   background: rgba(45, 44, 63, 1);
   border-radius: 4px;
-  color:#7A7899;
-  border:1px solid #2D2C3F;
+  color: #7a7899;
+  border: 1px solid #2d2c3f;
 }
-.el-loading-mask{background:rgba(0,0,0,0.4)}
+.el-loading-mask {
+  background: rgba(0, 0, 0, 0.4);
+}
 </style>
+
 <style lang="less" scoped>
+@media (max-width: 756px) {
+  div.container{
+     width:100%;
+    height: auto;
+    min-width: 0px;
+  }
+  div.container .header {
+    height: 0.8rem;
+    line-height: 0.8rem;
+    background: rgba(26, 26, 41, 1);
+    color: #ffffff;
+    font-size: 0.34rem;
+  }
+  .minitimeRange {
+    width: 100%;
+    min-width: 0px;
+    background: rgba(26, 26, 41, 1);
+    padding-right:0.3rem;
+  }
+  .timechange {
+    float: right;
+    width: 1.57rem;
+    padding: 0.23rem 0;
+  }
+  .container-home {
+    width:100%;
+    height: auto;
+    min-width: 0px;
+    flex-flow: column;
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;

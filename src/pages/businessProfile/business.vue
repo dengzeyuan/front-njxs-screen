@@ -293,6 +293,11 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@media (max-width: 756px) {
+  .manage .content{
+    padding:0 !important;
+  }
+}
 .content {
   width: 100%;
   height: 100%;

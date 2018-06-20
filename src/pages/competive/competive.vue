@@ -479,6 +479,7 @@ export default {
       this.opacitys = num;
     },
     initleftecharts: function(id, radardata, colorobj) {
+      var radarradius=window.innerWidth<756?200:120 
       this.$echarts.dispose(document.getElementById(id));
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.getElementById(id));
@@ -504,8 +505,8 @@ export default {
             textStyle: {
               color: "red"
             },
-            center: ["50%", "50%"],
-            radius: Math.ceil(120 * this.baseScreenRate),
+            center:["50%","50%"],
+            radius: Math.ceil(radarradius * this.baseScreenRate),
             startAngle: 90,
             splitNumber: 3,
             name: {
@@ -571,6 +572,18 @@ export default {
 </script>
 
 <style scoped lang="less">
+@media (max-width: 756px) {
+  .competive .efficiency-page{
+    padding:0 !important;
+    .head{
+      padding-left:0 !important;
+    }
+  }
+  #efficienct-radar{
+    width:100% !important;
+    height:95% !important;
+  }
+}
 .addrow {
   margin-left: 5%;
   font-size: 0.08em;

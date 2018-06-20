@@ -258,6 +258,29 @@ export default {
 </script>
 
 <style scoped lang="less">
+@media (max-width: 756px) {
+  .efficiency .efficiency-page{
+    padding:0 !important;
+    .head{
+      padding-left:0 !important;
+    }
+  }
+  .contentsecond{
+    padding-top:0px !important;
+  }
+  .contentfirst{
+    height: 0px;
+  }
+  .content-right{
+    padding:0 !important;
+  }
+  #main-two,
+  #main-first{
+    width:1.2rem !important;
+    height:1.2rem !important;
+  }
+}
+
 .efficiency-page {
   position: relative;
   // padding-right: 10px;

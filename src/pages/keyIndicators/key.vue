@@ -13,7 +13,6 @@
                         <td>{{item.onLineValue}}</td>
                         <td>{{item.underLineValue}}</td>
                     </tr>
-                    
                 </table>
             </div>
         </div>
@@ -120,6 +119,8 @@ export default {
             this.timeRange
         )
         .then(res => {
+          var pieradius=window.innerWidth<756?["38%", "45%"]:["45%", "55%"]//饼图半径
+          var pielabelfontsize=window.innerWidth<756?16:18;
           that.onlineorder = res.data.data[0].onLineRate;
           that.underlineorder = res.data.data[0].underLineRate;
           that.onlineordervalue = res.data.data[0].onLineValue;
@@ -182,7 +183,7 @@ export default {
               itemHeight: 5, //图例标记的图形高度
               textStyle: {
                 color: "#fff", //文字颜色
-                fontSize: Math.ceil(18 * this.baseScreenRate)
+                fontSize: Math.ceil(pielabelfontsize * this.baseScreenRate)
               },
               selectedMode: false
             },
@@ -191,7 +192,7 @@ export default {
               {
                 type: "pie", //类型 pie表示饼图
                 center: ["20%", "60%"], //设置饼的原心坐标 不设置就会默认在中心的位置
-                radius: ["45%", "55%"], //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                radius: pieradius, //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                 label: {
                   position: "center",
                   color: "#fff"
@@ -204,7 +205,7 @@ export default {
                       formatter: that.ordername,
                       padding: [10, 0, 0, 0],
                       textStyle: {
-                        fontSize: Math.ceil(18 * this.baseScreenRate)
+                        fontSize: Math.ceil(pielabelfontsize * this.baseScreenRate)
                       }
                     },
                     value: that.onlineordervalue,
@@ -238,7 +239,7 @@ export default {
               itemHeight: 5, //图例标记的图形高度
               textStyle: {
                 color: "#fff", //文字颜色
-                fontSize: Math.ceil(18 * this.baseScreenRate)
+                fontSize: Math.ceil(pielabelfontsize * this.baseScreenRate)
               },
               selectedMode: false
             },
@@ -247,7 +248,7 @@ export default {
               {
                 type: "pie", //类型 pie表示饼图
                 center: ["20%", "60%"], //设置饼的原心坐标 不设置就会默认在中心的位置
-                radius: ["55%", "45%"], //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                radius: pieradius, //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                 label: {
                   position: "center",
                   color: "#fff"
@@ -260,7 +261,7 @@ export default {
                       formatter: that.customername,
                       padding: [10, 0, 0, 0],
                       textStyle: {
-                        fontSize: Math.ceil(18 * this.baseScreenRate)
+                        fontSize: Math.ceil(pielabelfontsize * this.baseScreenRate)
                       }
                     },
                     value: that.onlinecustomervalue,
@@ -295,7 +296,7 @@ export default {
               itemHeight: 5, //图例标记的图形高度
               textStyle: {
                 color: "#fff", //文字颜色
-                fontSize: Math.ceil(18 * this.baseScreenRate)
+                fontSize: Math.ceil(pielabelfontsize * this.baseScreenRate)
               },
               selectedMode: false
             },
@@ -304,7 +305,7 @@ export default {
               {
                 type: "pie", //类型 pie表示饼图
                 center: ["20%", "60%"], //设置饼的原心坐标 不设置就会默认在中心的位置
-                radius: ["45%", "55%"], //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
+                radius: pieradius, //饼图的半径,第一项是内半径,第二项是外半径,内半径为0就是真的饼,不是环形
                 label: {
                   position: "center",
                   color: "#fff"
@@ -317,7 +318,7 @@ export default {
                       formatter: that.uservaluename,
                       padding: [10, 0, 0, 0],
                       textStyle: {
-                        fontSize: Math.ceil(18 * this.baseScreenRate)
+                        fontSize: Math.ceil(pielabelfontsize * this.baseScreenRate)
                       }
                     },
                     value: that.onlineuservalue,
@@ -349,6 +350,26 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@media (max-width: 756px) {
+ .content>.main{
+   padding:0 !important;
+ }
+ table tr{
+   font-size:0.16rem !important;
+ }
+ table tr td:first-child{
+   max-width: 1.11rem;
+    overflow: hidden;
+    flex-grow: 0;
+    flex-basis: 40%;
+ }
+  table tr td{
+    max-width:0.6rem;
+        overflow: hidden;
+    flex-grow: 0;
+    flex-basis: 40%;
+  }
+}
 .content {
   width: 100%;
   height: 100%;

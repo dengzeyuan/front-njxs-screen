@@ -16,11 +16,18 @@ Vue.prototype.$echarts = echarts;
 Vue.prototype.$d3 = d3;
 Vue.use(ElementUI);
 
-var basePercent = "100%"
-var baseWidthRate = window.innerWidth/1920;
-var baseHeightRate = window.innerHeight/1080;
-var baseScreenRate = (baseWidthRate>baseHeightRate)?baseHeightRate:baseWidthRate;
-Vue.prototype.baseScreenRate = baseScreenRate;
+if (window.innerWidth > 756) {
+  var basePercent = "100%"
+  var baseWidthRate = window.innerWidth / 1920;
+  var baseHeightRate = window.innerHeight / 1080;
+  var baseScreenRate = (baseWidthRate > baseHeightRate) ? baseHeightRate : baseWidthRate;
+  Vue.prototype.baseScreenRate = baseScreenRate;
+} else {
+  var basePercent = "100%"
+  var baseWidthRate = window.innerWidth / 750;
+  document.documentElement.style.fontSize = 100 * baseWidthRate + 'px';
+  Vue.prototype.baseScreenRate = baseWidthRate;
+}
 
 new Vue({
   el: '#app',

@@ -1,6 +1,6 @@
 <template>
   <div class="editecharts" >
-      <div class="leftside" :style="{paddingLeft:sideleftpad,paddingTop:sidetoppad}">
+      <div class="leftside" :style="{paddingLeft:sideleftpad,paddingTop:sidetoppad}" v-if="!screenmin">
             <div class="manage" :style="manage">
               <BusinessProfile :timeRange="timeRange"/>
             </div>
@@ -8,7 +8,7 @@
               <KeyIndicators :timeRange="timeRange"/>
             </div>
       </div>
-      <div class="rightside" :style="rightside">
+      <div class="rightside" :style="rightside" v-if="!screenmin">
             <div class="sell" :style="sell">
                   <Sales :timeRange="timeRange"/>
             </div>
@@ -18,6 +18,23 @@
             <div class="competive" :style="competive">
                 <competive :timeRange="timeRange" :role="role" />
             </div>
+      </div>
+      <div class="miniscreen" v-if="screenmin">
+              <div class="manage" :style="manage">
+                <BusinessProfile :timeRange="timeRange"/>
+              </div>
+              <div class="target" :style="target">
+                <KeyIndicators :timeRange="timeRange"/>
+              </div>
+              <div class="sell" :style="sell">
+                    <Sales :timeRange="timeRange"/>
+              </div>
+              <div class="efficiency" :style="efficiency">
+                  <efficiency :timeRange="timeRange" :role="role" />
+              </div>
+              <div class="competive" :style="competive">
+                  <competive :timeRange="timeRange" :role="role" />
+              </div>   
       </div>
   </div>
 </template>
@@ -31,6 +48,7 @@ export default {
   props: ["timeRange"],
   data() {
     return {
+      screenmin: window.innerWidth < 756 ? true : false,
       role: this.$route.params.id,
       sideleftpad: Math.ceil(25 * this.baseScreenRate) + "px",
       sidetoppad: Math.ceil(25 * this.baseScreenRate) + "px",
@@ -69,15 +87,51 @@ export default {
     BusinessProfile,
     KeyIndicators,
     Sales
-  },
-  mounted: function() {
-    this.$nextTick(function() {
-      // window.innerWidth
-    });
   }
 };
 </script>
 <style scoped lang="less">
+@media (max-width: 756px) {
+  .page .editecharts {
+    width: 100%;
+    height: auto;
+    min-height: 0px;
+    padding: 0 0.3rem;
+    background: rgba(26, 26, 41, 1);
+    display: block;
+    margin-top: -1px;
+    padding-bottom:0.5rem;
+  }
+
+  .manage,
+  .target,
+  .sell,
+  .efficiency,
+  .competive {
+    width: 100% !important;
+    padding: 0.25rem 0.3rem !important;
+    background-color: #21202e;
+  }
+  .target,
+  .sell,
+  .efficiency,
+  .competive {
+    margin-top: 0.29rem !important;
+  }
+  .target {
+    height: 5.02rem !important;
+  }
+  .sell {
+    height: 3.99rem !important;
+  }
+  .efficiency {
+    height: 3rem !important;
+  }
+  .competive {
+    height: 7.04rem !important;
+  }
+}
+
 .editecharts {
   width: 100%;
   height: 100%;
@@ -104,31 +158,6 @@ export default {
       border: 1px solid #312f46;
       border-radius: 4px;
     }
-  }
-}
-</style>
-<style>
-@media (max-width: 750px) {
-  .editecharts {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    background-color: #201f2d;
-    justify-content: center;
-    flex-wrap: wrap;
-    /* flex-direction: column; */
-  }
-  .leftside,
-  .rightside {
-    width: 100%;
-    height: 100%;
-  }
-  .leftside .target,
-  .leftside .manage,
-  .rightside .sell,
-  .rightside .efficiency,
-  .rightside .competive {
-    width: 100% !important;
   }
 }
 </style>

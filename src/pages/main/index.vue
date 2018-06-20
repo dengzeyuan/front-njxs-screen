@@ -18,6 +18,15 @@ export default {
 </script>
 
 <style scoped lang="less">
+@media (max-width: 756px) {
+  .container-home .page{
+    display: block;
+    flex:inherit;
+    height: auto;
+    min-width: 0px;
+    width: 100%;
+  }
+}
 .page {
   display: flex;
   flex: 1;

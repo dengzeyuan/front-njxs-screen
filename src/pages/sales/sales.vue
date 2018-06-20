@@ -253,6 +253,14 @@ export default {
 }
 </style>
 <style lang="less" scoped>
+@media (max-width: 756px) {
+  .sell .content{
+    padding:0 !important;
+    .head{
+      padding-left:0 !important;
+    }
+  }
+}
 .content {
   width: 100%;
   height: 100%;
