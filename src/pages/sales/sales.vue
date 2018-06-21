@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      loading:true,
+      loading: true,
       enable: this.timeRange == "QUARTER" ? false : true,
       headstyle: {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     initdata() {
-      this.loading=true;
+      this.loading = true;
       var that = this;
       this.axios
         .get(
@@ -81,7 +81,7 @@ export default {
             this.value
         )
         .then(res => {
-          that.loading=false;
+          that.loading = false;
           that.toolipform["dataCurrentWeek"] = [];
           that.toolipform["dataPreWeek"] = [];
           that.toolipform["dataCurrentValue"] = [];
@@ -117,11 +117,13 @@ export default {
         tooltip: {
           trigger: "axis",
           formatter: function(d) {
-            function comdify(n){
-　　var re=/\d{1,3}(?=(\d{3})+$)/g;
-　　var n1=n.replace(/^(\d+)((\.\d+)?)$/,function(s,s1,s2){return s1.replace(re,"$&,")+s2;});
-　　return n1;
-}
+            function comdify(n) {
+              var re = /\d{1,3}(?=(\d{3})+$)/g;
+              var n1 = n.replace(/^(\d+)((\.\d+)?)$/, function(s, s1, s2) {
+                return s1.replace(re, "$&,") + s2;
+              });
+              return n1;
+            }
 
             for (let i = 0; i < data.dataCurrentWeek.length; i++) {
               if (data.dataCurrentWeek[i] == d[0].name) {
@@ -129,11 +131,11 @@ export default {
                   "<div>" +
                   data.dataCurrentWeek[i] +
                   ":" +
-                  comdify(String(data.dataCurrentValue[i]))+
+                  comdify(String(data.dataCurrentValue[i])) +
                   "<br />" +
                   data.dataPreWeek[i] +
                   ":" +
-                  comdify(String(data.dataPreValue[i]))  +
+                  comdify(String(data.dataPreValue[i])) +
                   "</div>"
                 );
               }
@@ -162,9 +164,9 @@ export default {
           }
         ],
         yAxis: [
-           {
+          {
             name: "单位(元)",
-            nameGap :"5",
+            nameGap: "5",
             type: "value",
             splitLine: {
               lineStyle: {
@@ -256,10 +258,10 @@ export default {
 </style>
 <style lang="less" scoped>
 @media (max-width: 756px) {
-  .sell .content{
-    padding:0 !important;
-    .head{
-      padding-left:0 !important;
+  .sell .content {
+    padding: 0 !important;
+    .head {
+      padding-left: 0 !important;
     }
   }
 }
