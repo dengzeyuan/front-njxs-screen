@@ -99,7 +99,7 @@ export default {
   border: 1px solid #2d2c3f;
 }
 .el-loading-mask {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4) !important;
 }
 </style>
 
