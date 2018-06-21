@@ -7,8 +7,8 @@
         </div>
         <div class="content-left" :style="contentleft">
             <div :style="contentTitle">线下</div>
-            <div class="contentfirst" :style="contentfirst"><span :style="leftContent">坪效</span><span :style="leftContent">{{responseDate.avgEfficiency}}</span></div>
-            <div class="contentsecond" :style="contentsecond"><span :style="leftContent">人效</span><span :style="leftContent">{{responseDate.personEfficiency}}</span></div>
+            <div class="contentfirst" :style="contentfirst"><span :style="leftContent">坪效</span><span :style="leftContent">{{responseDate.avgEfficiency+" 元/平"}}</span></div>
+            <div class="contentsecond" :style="contentsecond"><span :style="leftContent">人效</span><span :style="leftContent">{{responseDate.personEfficiency+" 元/人"}}</span></div>
         </div>
         <div class="content-right" :style="cententRight">
             <div :style="contentTitle">线下</div>
@@ -22,10 +22,10 @@
         <div v-if="role=='manage'" v-show="hidefromfalg" class="hideform" :style="formstyle">
             <form action="" ref="forms" novalidate>
               <table border="1" cellpadding=0 cellspacing=0 style="color:#ffffff;">
-                <tr><td>坪效</td><td><input name="avgEfficiency" type="text" v-model="responseDate.avgEfficiency"></td></tr>
-                <tr><td>人效</td><td><input name="personEfficiency" type="text" v-model="responseDate.personEfficiency"></td></tr>
-                <tr><td>配送及时率</td><td><input name="distributionRate" type="text" v-model="responseDate.distributionRate"></td></tr>
-                <tr><td>客户满意度</td><td><input name="customerRate" type="text" v-model="responseDate.customerRate"></td></tr>
+                <tr><td>坪效</td><td><input name="avgEfficiency" type="number" v-model="responseDate.avgEfficiency">元/平</td></tr>
+                <tr><td>人效</td><td><input name="personEfficiency" type="number" v-model="responseDate.personEfficiency">元/人</td></tr>
+                <tr><td>配送及时率</td><td><input name="distributionRate" type="number" v-model="responseDate.distributionRate">%</td></tr>
+                <tr><td>客户满意度</td><td><input name="customerRate" type="number" v-model="responseDate.customerRate">%</td></tr>
               </table>
               <input @click.stop="submitefficty" class="submit" type="button" readonly="readonly" value="确定" />
             </form>
@@ -134,22 +134,22 @@ export default {
             that.responseDate = res.data.data;
             let rate = [
               [
-                { value: 100, name: "" },
-                { value: res.data.data.distributionRate.slice(0,-1), name: "配送及时率" },
+                { value: 100-Number(res.data.data.distributionRate), name: "" },
+                { value: res.data.data.distributionRate, name: "配送及时率" },
               ],
               [
-                { value: res.data.data.customerRate.slice(0,-1), name: "顾客满意度" },
-                { value: 100, name: "" },
+                { value: 100-Number(res.data.data.customerRate), name: "" },
+                { value: res.data.data.customerRate, name: "客户满意度" },
               ]
             ];
             that.initleftecharts(
               "main-first",
-              res.data.data.distributionRate,
+              res.data.data.distributionRate+"%",
               rate[0]
             );
             that.initleftecharts(
               "main-two",
-              res.data.data.customerRate,
+              res.data.data.customerRate+"%",
               rate[1]
             );
           }
@@ -162,18 +162,22 @@ export default {
         .post(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
           {
-            avgEfficiency: /平/g.test(String(this.responseDate.avgEfficiency))?
-            this.responseDate.avgEfficiency:
-            this.responseDate.avgEfficiency+"/平",
-            personEfficiency: /人/g.test(String(this.responseDate.personEfficiency))?
-            this.responseDate.personEfficiency:
-            this.responseDate.personEfficiency+"/人",
-            distributionRate: /%/g.test(String(this.responseDate.distributionRate))?
-            this.responseDate.distributionRate:
-            this.responseDate.distributionRate+"%",
-            customerRate: /%/g.test(String(this.responseDate.customerRate))?
-            this.responseDate.customerRate:
-            this.responseDate.customerRate+"%"
+            avgEfficiency:this.responseDate.avgEfficiency,
+            //  /平/g.test(String(this.responseDate.avgEfficiency))?
+            // this.responseDate.avgEfficiency:
+            // this.responseDate.avgEfficiency,
+            personEfficiency:this.responseDate.personEfficiency,
+            //  /人/g.test(String(this.responseDate.personEfficiency))?
+            // this.responseDate.personEfficiency:
+            // this.responseDate.personEfficiency+"/人",
+            distributionRate:this.responseDate.distributionRate,
+            //  /%/g.test(String(this.responseDate.distributionRate))?
+            // this.responseDate.distributionRate:
+            // this.responseDate.distributionRate+"%",
+            customerRate: this.responseDate.customerRate,
+            // /%/g.test(String(this.responseDate.customerRate))?
+            // this.responseDate.customerRate:
+            // this.responseDate.customerRate+"%"
           }
         )
         .then(res => {
@@ -407,6 +411,7 @@ export default {
             background: none;
             color: #ffffff;
             border: 0;
+            width:60%;
           }
         }
       }
