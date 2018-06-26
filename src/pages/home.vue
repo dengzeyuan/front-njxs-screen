@@ -3,7 +3,8 @@
     <!-- <Header class="header"/> -->
     <!-- pc -->
     <div class="header" :style="headerheight" v-if="!screenmin">
-      <span :style="headertitltstyle"> <span class="trigon" :style="trigonleft"></span>宁家鲜生运营数据展示<span class="trigon" :style="trigonright"></span></span>
+      <span :style="headertitltstyle"> <span class="trigon" :style="trigonleft"></span>宁家鲜生经营分析<span class="trigon" :style="trigonright"></span></span>
+        <span class="el-icon-arrow-left" @click="changetimeRange('add')"></span>
         <el-select v-model="value"  size="mini" class="timechange" name="timechange">
           <el-option
             v-for="item in options"
@@ -12,6 +13,7 @@
             :value="item.value">
           </el-option>
         </el-select>
+        <span class="el-icon-arrow-right" @click="changetimeRange('del')" v-show="deldisabled"></span>
    </div>
 
 <!-- 移动 -->
@@ -21,6 +23,7 @@
     <div class='container-home'>
          <!-- 移动 -->
           <div class="minitimeRange" v-if="screenmin">
+            <span class="el-icon-arrow-left" @click="changetimeRange('add')"></span>
             <el-select v-model="value"  size="mini" class="timechange" name="timechange">
                 <el-option
                   v-for="item in options"
@@ -29,8 +32,9 @@
                   :value="item.value">
                 </el-option>
               </el-select>
+              <span class="el-icon-arrow-right" @click="changetimeRange('del')" v-show="deldisabled"></span>
           </div>
-         <router-view :timeRange="value"></router-view> 
+         <router-view :timeRange="{time:value,change:timevalue}" ></router-view> 
     </div>
   </div>
 </template>
@@ -41,6 +45,7 @@
 export default {
   data() {
     return {
+      deldisabled:true,
       screenmin: window.innerWidth < 756 ? true : false,
       screenwidth: 0,
       headertitltstyle: {
@@ -81,13 +86,29 @@ export default {
           label: "the quarter"
         }
       ],
-      value: "WEEK"
+      value: "WEEK",
+      timevalue: "1",
     };
   },
   components: {
     // Header
     // Left,
     // editecharts
+  },
+  methods: {
+    changetimeRange: function(flag) {
+        if (flag == "add") {
+           this.timevalue++;
+           this.deldisabled=true;
+        } else {
+          if(this.timevalue>0){
+            this.timevalue--;
+            if(this.timevalue==0){
+              this.deldisabled=false;
+            }
+          }
+        }
+    }
   }
 };
 </script>
@@ -105,8 +126,8 @@ export default {
 
 <style lang="less" scoped>
 @media (max-width: 756px) {
-  div.container{
-     width:100%;
+  div.container {
+    width: 100%;
     height: auto;
     min-width: 0px;
   }
@@ -121,15 +142,39 @@ export default {
     width: 100%;
     min-width: 0px;
     background: rgba(26, 26, 41, 1);
-    padding-right:0.3rem;
+    padding-right: 0.3rem;
+    position: relative;
+    .el-icon-arrow-left {
+      display: inline-block;
+      height: 50%;
+      position: absolute;
+      top: 30%;
+      cursor: pointer;
+      color: #c0c4cc;
+      width: 0.1rem;
+      right: 2.8rem;
+      font-size: 0.4em;
+    }
+    .el-icon-arrow-right {
+      display: inline-block;
+      height: 50%;
+      position: absolute;
+      top: 30%;
+      cursor: pointer;
+      color: #c0c4cc;
+      width: 0.3rem;
+      right: 0.3rem;
+      font-size: 0.4em;
+    }
   }
   .timechange {
     float: right;
     width: 1.57rem;
     padding: 0.23rem 0;
+    margin-right: 0.5rem;
   }
   .container-home {
-    width:100%;
+    width: 100%;
     height: auto;
     min-width: 0px;
     flex-flow: column;
@@ -155,6 +200,28 @@ export default {
     flex-shrink: 0;
     text-align: center;
     position: relative;
+    .el-icon-arrow-left {
+      display: inline-block;
+      width: 1%;
+      height: 50%;
+      position: absolute;
+      right: 15%;
+      top: 36%;
+      cursor: pointer;
+      background: #282737;
+      color: #c0c4cc;
+    }
+    .el-icon-arrow-right {
+      display: inline-block;
+      width: 1%;
+      height: 50%;
+      position: absolute;
+      right: 2%;
+      top: 36%;
+      cursor: pointer;
+      background: #282737;
+      color: #c0c4cc;
+    }
     span {
       display: inline-block;
       width: 42.23%;
@@ -182,7 +249,7 @@ export default {
       position: absolute;
       right: 4%;
       top: 0;
-      width: 128px;
+      width: 10%;
     }
   }
   .container-home {

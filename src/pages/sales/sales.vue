@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-  props: ["timeRange"],
+  props: ["timeRange","timeRangevalue"],
   watch: {
     timeRange: function(val) {
       if (val == "QUARTER") {
@@ -36,7 +36,7 @@ export default {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
         paddingLeft: Math.ceil(40 * this.baseScreenRate) + "px",
         paddingRight: Math.ceil(20 * this.baseScreenRate) + "px",
-        marginBottom: Math.ceil(10 * this.baseScreenRate) + "px"
+        marginBottom: Math.ceil(10 * this.baseScreenRate) + "px",
       },
       headtitle: {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
@@ -76,9 +76,9 @@ export default {
       this.axios
         .get(
           "http://suneee.dcp.weilian.cn/njxs-demo/operationData/saleRate/data/" +
-            this.timeRange +
+            this.timeRange.time +
             "/" +
-            this.value
+            this.value+"/"+this.timeRange.change
         )
         .then(res => {
           that.loading = false;
@@ -187,7 +187,7 @@ export default {
           top: "15%",
           left: "2%",
           right: "4%",
-          bottom: "3%",
+          bottom: "5%",
           containLabel: true
         },
         series: [

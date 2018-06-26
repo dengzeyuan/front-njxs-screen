@@ -1,51 +1,81 @@
 <template>
     <div class="content">
     <div class="main" :style="mainstyle" v-loading="loading">
-        <div class="textd1">
-            <div id="main1" :style="lineNum" style="width: 100%;height:40%"></div> 
+        <div><h4 :style="headstyle">关键指标</h4></div>
+        <div style="display:flex;flex-direction:row;width:100%;height:100%;">
+          <div class="textd1">
+              <div id="head1" :style="lineNum" style="width: 100%;height:40%">
+                <div class="head">
+                  <div class="head-left">{{ordername}}</div>
+                  <div class="head-right">
+                    <div class="top"><span>线上</span><span>线下</span></div>
+                    <div class="bottom"><span>{{onlineordervalue}}</span><span>{{underlineordervalue}}</span></div>
+                  </div>
+                </div>
+              </div> 
+              <div class="table-data">
+                  <table rules=rows>
+                      <!-- <tr class='trs' :style="contentTitle">
+                          <td>&nbsp;</td><td>线上</td><td>线下</td>
+                      </tr> -->
+                      <tr :style="contentText" v-for="(item,index) in textValue" :key='index'>
+                          <td>{{item.name}}</td>
+                          <td>{{item.totalValue}}</td>
+                          <td>{{item.unit}}</td>
+                      </tr>
+                  </table>
+              </div>
+          </div>
+          <div class="textd2">
+              <div id="head2" :style="lineNum" style="width: 100%;height:40%">
+                <div class="head">
+                  <div class="head-left">{{customername}}</div>
+                  <div class="head-right">
+                    <div class="top"><span>线上</span><span>线下</span></div>
+                    <div class="bottom"><span>{{onlinecustomervalue}}</span><span>{{underlinecustomervalue}}</span></div>
+                  </div>
+                </div>
+              </div>
+            <!-- <div id="main2" :style="lineNum" style="width: 100%;height:40%"></div> -->
             <div class="table-data">
-                <table rules=rows>
-                    <tr class='trs' :style="contentTitle">
-                        <td>&nbsp;</td><td>线上</td><td>线下</td>
-                    </tr>
-                    <tr :style="contentText" v-for="(item,index) in textValue" :key='index'>
-                        <td>{{item.name}}</td>
-                        <td>{{item.onLineValue}}</td>
-                        <td>{{item.underLineValue}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="textd2">
-           <div id="main2" :style="lineNum" style="width: 100%;height:40%"></div>
-           <div class="table-data">
-            <table rules=rows>
-                    <tr class='trs' :style="contentTitle">
-                        <td>&nbsp;</td><td>线上</td><td>线下</td>
-                    </tr>
-                    <tr  :style="contentText" v-for="(item,index) in textValue1" :key='index'>
-                        <td>{{item.name}}</td>
-                        <td>{{item.onLineValue}}</td>
-                        <td>{{item.underLineValue}}</td>
-                    </tr>
-                    
-                </table>
-            </div>
-        </div>
-        <div class="textd3">
-           <div id="main3" :style="lineNum" style="width: 100%;height:40%"></div>
-           <div class="table-data">
-            <table rules=rows>
-                <tr class='trs' :style="contentTitle">
-                    <td>&nbsp;</td><td>线上</td><td>线下</td>
-                </tr>
-                <tr  :style="contentText" v-for="(item,index) in textValue2" :key='index'>
-                    <td>{{item.name}}</td>
-                    <td>{{item.onLineValue}}</td>
-                    <td>{{item.underLineValue}}</td>
-                </tr>
-            </table>
-            </div>
+              <table rules=rows>
+                      <!-- <tr class='trs' :style="contentTitle">
+                          <td>&nbsp;</td><td>线上</td><td>线下</td>
+                      </tr> -->
+                      <tr  :style="contentText" v-for="(item,index) in textValue1" :key='index'>
+                          <td>{{item.name}}</td>
+                          <td>{{item.totalValue}}</td>
+                          <td>{{item.unit}}</td>
+                      </tr>
+                      
+                  </table>
+              </div>
+          </div>
+          <div class="textd3">
+              <div id="head3" :style="lineNum" style="width: 100%;height:40%">
+                <div class="head">
+                  <div class="head-left">{{uservaluename}}</div>
+                  <div class="head-right">
+                    <div class="top"><span>线上</span><span>线下</span></div>
+                    <div class="bottom"><span>{{onlineuservalue}}</span>
+                    <span>{{underlineuservalue}}</span></div>
+                  </div>
+                </div>
+              </div>          
+            <!-- <div id="main3" :style="lineNum" style="width: 100%;height:40%"></div> -->
+            <div class="table-data">
+              <table rules=rows>
+                  <!-- <tr class='trs' :style="contentTitle">
+                      <td>&nbsp;</td><td>线上</td><td>线下</td>
+                  </tr> -->
+                  <tr  :style="contentText" v-for="(item,index) in textValue2" :key='index'>
+                      <td>{{item.name}}</td>
+                      <td>{{item.totalValue}}</td>
+                      <td>{{item.unit}}</td>
+                  </tr>
+              </table>
+              </div>
+          </div>
         </div>
     </div>
     </div>    
@@ -60,7 +90,7 @@ export default {
   },
   data() {
     return {
-      loading:true,
+      loading: true,
       dateValue: [],
       textValue: [],
       dateValue1: [],
@@ -72,6 +102,11 @@ export default {
       topValuex1: [],
       topValuey: [],
       topValuey1: [],
+      headstyle: {
+        fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
+        fontWeight: "normal",
+        color: "#75becb"
+      },
       contentTitle: {
         fontSize: Math.ceil(18 * this.baseScreenRate) + "px",
         color: "#537F8C"
@@ -81,13 +116,14 @@ export default {
         color: "#fff"
       },
       lineNum: {
-        fontSize: Math.ceil(24 * this.baseScreenRate) + "px",
+        fontSize: Math.ceil(18 * this.baseScreenRate) + "px",
         color: "#fff"
       },
       mainstyle: {
         paddingTop: Math.ceil(23 * this.baseScreenRate) + "px",
         paddingLeft: "2%",
-        paddingRight: "2%"
+        paddingRight: "2%",
+        paddingBottom:"2%"
       },
       onlineorder: "",
       underlineorder: "",
@@ -112,51 +148,108 @@ export default {
     this.initdata();
   },
   methods: {
+    formattitleunit(val) {
+      if (val.name == "销售额") {
+        val.onLineValue = val.onLineValue + "元";
+        val.underLineValue = val.underLineValue + "元";
+      }
+      if (val.name == "订单量") {
+        val.onLineValue = val.onLineValue + "个";
+        val.underLineValue = val.underLineValue + "个";
+      }
+      if (val.name == "客单价") {
+        val.onLineValue = val.onLineValue + "元";
+        val.underLineValue = val.underLineValue + "元";
+      }
+    },
+    formatunit(val) {
+      if (
+        val.name.indexOf("销售额") !== -1 ||
+        val.name.indexOf("利额") !== -1
+      ) {
+        val["unit"] = "元";
+      }
+      if (val.name.indexOf("用户") !== -1) {
+        val["unit"] = "人";
+      }
+      if (val.name.indexOf("订单量") !== -1) {
+        val["unit"] = "个";
+      }
+      if (val.name.substr(-1) == "率") {
+        val["unit"] = "%";
+        if (val["totalValue"] > 0) {
+          val["totalValue"] = parseInt(val["totalValue"] * 100);
+        }
+      }
+      if (val.name.indexOf("天数") !== -1) {
+        val["unit"] = "天";
+      }
+
+      //最后清理数据
+      if (val.totalValue == "-") {
+        val["unit"] = "-";
+      }
+
+      //给经营效率使用
+      if (val.name == "配送及时率") {
+        this.$emit("sendrate", val.totalValue);
+      }
+    },
     initdata() {
       var that = this;
       this.axios
         .get(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/kpi/" +
-            this.timeRange
+            this.timeRange.time +
+            "/" +
+            this.timeRange.change
         )
         .then(res => {
-          that.loading=false;
-          var pieradius=window.innerWidth<756?["38%", "45%"]:["45%", "55%"]//饼图半径
-          var pielabelfontsize=window.innerWidth<756?16:18;
+          that.loading = false;
+          var pieradius =
+            window.innerWidth < 756 ? ["38%", "45%"] : ["45%", "55%"]; //饼图半径
+          var pielabelfontsize = window.innerWidth < 756 ? 16 : 18;
+          that.formattitleunit(res.data.data[0]);
           that.onlineorder = res.data.data[0].onLineRate;
           that.underlineorder = res.data.data[0].underLineRate;
           that.onlineordervalue = res.data.data[0].onLineValue;
           that.underlineordervalue = res.data.data[0].underLineValue;
           that.ordername = res.data.data[0].name;
 
+          that.formattitleunit(res.data.data[1]);
           that.onlinecustomer = res.data.data[1].onLineRate;
           that.underlinecustomer = res.data.data[1].underLineRate;
           that.onlinecustomervalue = res.data.data[1].onLineValue;
           that.underlinecustomervalue = res.data.data[1].underLineValue;
           that.customername = res.data.data[1].name;
 
+          that.formattitleunit(res.data.data[2]);
           that.onlineuser = res.data.data[2].onLineRate;
           that.underlineuser = res.data.data[2].underLineRate;
           that.onlineuservalue = res.data.data[2].onLineValue;
           that.underlineuservalue = res.data.data[2].underLineValue;
           that.uservaluename = res.data.data[2].name;
+
           this.textValue = [];
           res.data.data[0].singleList.map(val => {
+            that.formatunit(val);
             this.textValue.push(val);
           });
           this.textValue1 = [];
           res.data.data[1].singleList.map(val => {
+            that.formatunit(val);
             this.textValue1.push(val);
           });
           that.textValue2 = [];
           res.data.data[2].singleList.map(val => {
+            that.formatunit(val);
             that.textValue2.push(val);
           });
-          for (let i = 0; i < 6 - that.textValue2.length; i++) {
+          for (let i = 0; i < 5 - that.textValue2.length; i++) {
             that.textValue2.push({
               name: "无",
-              onLineValue: "无",
-              underLineValue: "无"
+              onLineValue: "0",
+              underLineValue: "0"
             });
           }
           // this.lineName.push(this.dateValue.name)
@@ -207,7 +300,9 @@ export default {
                       formatter: that.ordername,
                       padding: [10, 0, 0, 0],
                       textStyle: {
-                        fontSize: Math.ceil(pielabelfontsize * this.baseScreenRate)
+                        fontSize: Math.ceil(
+                          pielabelfontsize * this.baseScreenRate
+                        )
                       }
                     },
                     value: that.onlineordervalue,
@@ -226,7 +321,7 @@ export default {
           };
 
           //使用刚指定的配置项和数据显示图表。
-          myChart1.setOption(option1);
+          // myChart1.setOption(option1);
 
           //指定图表的配置项和数据
           var myChart2 = this.$echarts.init(document.getElementById("main2"));
@@ -263,7 +358,9 @@ export default {
                       formatter: that.customername,
                       padding: [10, 0, 0, 0],
                       textStyle: {
-                        fontSize: Math.ceil(pielabelfontsize * this.baseScreenRate)
+                        fontSize: Math.ceil(
+                          pielabelfontsize * this.baseScreenRate
+                        )
                       }
                     },
                     value: that.onlinecustomervalue,
@@ -282,7 +379,7 @@ export default {
           };
 
           //使用刚指定的配置项和数据显示图表。
-          myChart2.setOption(option2);
+          // myChart2.setOption(option2);
 
           //指定图表的配置项和数据
           var myChart3 = this.$echarts.init(document.getElementById("main3"));
@@ -320,7 +417,9 @@ export default {
                       formatter: that.uservaluename,
                       padding: [10, 0, 0, 0],
                       textStyle: {
-                        fontSize: Math.ceil(pielabelfontsize * this.baseScreenRate)
+                        fontSize: Math.ceil(
+                          pielabelfontsize * this.baseScreenRate
+                        )
                       }
                     },
                     value: that.onlineuservalue,
@@ -339,7 +438,7 @@ export default {
           };
 
           //使用刚指定的配置项和数据显示图表。
-          myChart3.setOption(option3);
+          // myChart3.setOption(option3);
         })
         .catch(res => {
           console.log("请求失败");
@@ -353,21 +452,21 @@ export default {
 </script>
 <style lang="less" scoped>
 @media (max-width: 756px) {
- .content>.main{
-   padding:0 !important;
- }
- table tr{
-   font-size:0.16rem !important;
- }
- table tr td:first-child{
-   max-width: 1.11rem;
+  .content > .main {
+    padding: 0 !important;
+  }
+  table tr {
+    font-size: 0.16rem !important;
+  }
+  table tr td:first-child {
+    max-width: 1.11rem;
     overflow: hidden;
     flex-grow: 0;
     flex-basis: 40%;
- }
-  table tr td{
-    max-width:0.6rem;
-        overflow: hidden;
+  }
+  table tr td {
+    max-width: 0.6rem;
+    overflow: hidden;
     flex-grow: 0;
     flex-basis: 40%;
   }
@@ -377,82 +476,117 @@ export default {
   height: 100%;
   overflow: hidden;
 }
+.main .textd1,
+.main .textd2,
+.main .textd3 {
+  flex: 1;
+  #head1,
+  #head2,
+  #head3 {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    .head {
+      padding: 10px 0;
+      height: 50%;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      background-color: #28263e;
+      .head-left {
+        width: 33%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid rgb(11,22,33);
+        color: #75becb;
+      }
+      .head-right {
+        width: 66%;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        flex-wrap: wrap;
+        flex-direction: row;
+        .bottom,
+        .top {
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+          span {
+            width: 50%;
+            text-align: left;
+            padding-left: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+        .bottom span:first-child {
+          color: #35abd8;
+        }
+        .bottom span:last-child {
+          color: #b50fc9;
+        }
+      }
+    }
+  }
+  .table-data {
+    width: 100%;
+    height: 60%;
+    table {
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      .trs {
+        color: #537f8c;
+      }
+      tr > td:first-child {
+        width: 40%;
+        color: #fff;
+        padding-left: 5%;
+        text-align: left;
+      }
+      tr > td {
+        width: 30%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #75becb;
+        text-align: right;
+      }
+      tr td:last-child {
+        padding-right: 6%;
+        text-align: right;
+      }
+      tr {
+        border-bottom: 1px solid transparent;
+      }
+      tr:nth-child(odd) {
+        background-color: #28263e;
+      }
+    }
+  }
+}
 .main {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   .textd1 {
-    flex: 1;
-    .table-data {
-      width: 100%;
-      height: 60%;
-      table {
-        width: 100%;
-        height: 100%;
-        color: #fff;
-        .trs {
-          color: #537f8c;
-        }
-        tr > td:first-child {
-          width: 40%;
-        }
-        tr > td {
-          width: 30%;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-      }
+    #head1 {
+      padding-right: 5%;
     }
   }
   .textd2 {
-    flex: 1;
-    .table-data {
-      width: 100%;
-      height: 60%;
-      table {
-        width: 100%;
-        height: 100%;
-        font-size: 10%;
-        color: #fff;
-        .trs {
-          color: #537f8c;
-        }
-        tr > td:first-child {
-          width: 40%;
-        }
-        tr > td {
-          width: 30%;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-      }
+    #head2 {
+      padding-left: 2.5%;
+      padding-right: 2.5%;
     }
   }
   .textd3 {
-    flex: 1;
-    .table-data {
-      width: 100%;
-      height: 60%;
-      table {
-        width: 100%;
-        height: 100%;
-        font-size: 10%;
-        color: #fff;
-        .trs {
-          color: #537f8c;
-        }
-        tr > td:first-child {
-          width: 40%;
-        }
-        tr > td {
-          width: 30%;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-      }
+    #head3 {
+      padding-left: 5%;
     }
   }
 }

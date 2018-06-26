@@ -1,6 +1,6 @@
 <template>
     <div class="content"  :style="contentstyle" v-loading="loading">
-         <div id = 'main'> </div>
+         <div id = 'main' style="box-shadow:none;border:0px;"> </div>
     </div>
 </template>
 <script>
@@ -27,8 +27,10 @@ export default {
       valDate2: []
     };
   },
-  mounted() {
-    this.initdata();
+   mounted() {
+    this.$nextTick(function() {
+      this.initdata();
+    });
   },
   methods: {
     initdata() {
@@ -36,7 +38,7 @@ export default {
       this.axios
         .get(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/situation/" +
-            this.timeRange
+            this.timeRange.time+"/"+ this.timeRange.change
         )
         .then(res => {
           that.loading=false;
@@ -93,16 +95,16 @@ export default {
                 axisLabel: {
                   show: true,
                   interval: function(index, value) {
-                    if (that.timeRange == "WEEK") {
+                    if (that.timeRange.time == "WEEK") {
                       return true;
                     }
-                    if (that.timeRange == "MONTH") {
+                    if (that.timeRange.time == "MONTH") {
                       if (index % 4 == 0) {
                         return true;
                       }
                       return false;
                     }
-                    if (that.timeRange == "QUARTER") {
+                    if (that.timeRange.time == "QUARTER") {
                       if (index % 14 == 0) {
                         return true;
                       }
@@ -171,16 +173,16 @@ export default {
                   position: "top",
                   color: "#fff",
                   formatter: function(d) {
-                    if (that.timeRange == "WEEK") {
+                    if (that.timeRange.time == "WEEK") {
                       return d.data;
                     }
-                    if (that.timeRange == "MONTH") {
+                    if (that.timeRange.time == "MONTH") {
                       if (d.dataIndex % 4 == 0) {
                         return d.data;
                       }
                       return "";
                     }
-                    if (that.timeRange == "QUARTER") {
+                    if (that.timeRange.time == "QUARTER") {
                       if (d.dataIndex % 14 == 0) {
                         return d.data;
                       }
@@ -212,16 +214,16 @@ export default {
                   position: "top",
                   color: "#fff",
                   formatter: function(d) {
-                    if (that.timeRange == "WEEK") {
+                    if (that.timeRange.time == "WEEK") {
                       return d.data;
                     }
-                    if (that.timeRange == "MONTH") {
+                    if (that.timeRange.time == "MONTH") {
                       if (d.dataIndex % 4 == 0) {
                         return d.data;
                       }
                       return "";
                     }
-                    if (that.timeRange == "QUARTER") {
+                    if (that.timeRange.time == "QUARTER") {
                       if (d.dataIndex % 14 == 0) {
                         return d.data;
                       }
@@ -253,16 +255,16 @@ export default {
                   position: "bottom",
                   color: "#fff",
                   formatter: function(d) {
-                    if (that.timeRange == "WEEK") {
+                    if (that.timeRange.time == "WEEK") {
                       return d.data;
                     }
-                    if (that.timeRange == "MONTH") {
+                    if (that.timeRange.time == "MONTH") {
                       if (d.dataIndex % 4 == 0) {
                         return d.data;
                       }
                       return "";
                     }
-                    if (that.timeRange == "QUARTER") {
+                    if (that.timeRange.time == "QUARTER") {
                       if (d.dataIndex % 14 == 0) {
                         return d.data;
                       }

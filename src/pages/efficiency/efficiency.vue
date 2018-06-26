@@ -6,16 +6,22 @@
             @click="clickdit()" @mouseover="hoveredit(1)"   @mouseout="hoveredit(0)" v-if="role=='manage'"></span>
         </div>
         <div class="content-left" :style="contentleft">
-            <div :style="contentTitle">线下</div>
-            <div class="contentfirst" :style="contentfirst"><span :style="leftContent">坪效</span><span :style="leftContent">{{responseDate.avgEfficiency+" 元/平"}}</span></div>
-            <div class="contentsecond" :style="contentsecond"><span :style="leftContent">人效</span><span :style="leftContent">{{responseDate.personEfficiency+" 元/人"}}</span></div>
+            <!-- <div :style="contentTitle">线下</div> -->
+            <div class="contentfirst" :style="contentfirst">
+              <span :style="leftContent">坪效</span>
+              <span :style="leftContent">{{responseDate.avgEfficiency+" 元/平"}}</span>
+            </div>
+            <div class="contentsecond" :style="contentsecond">
+              <span :style="leftContent">人效</span>
+              <span :style="leftContent">{{responseDate.personEfficiency+" 元/人"}}</span>
+            </div>
         </div>
         <div class="content-right" :style="cententRight">
-            <div :style="contentTitle">线下</div>
-            <div class="contentfirst" :style="contentfirst"><span :style="sendrate">配送及时率</span><span :style="customer">客户满意度</span></div>
-            <div class="contentfirst">
-                <span><div id="main-first" :style="echartstyle"></div></span>
-                <span><div id="main-two" :style="echartstyle"></div></span>
+            <!-- <div :style="contentTitle">线下</div> -->
+            <div class="contentfirst" :style="rightcontentfirst"><span :style="sendrate">配送及时率</span><span :style="customer">客户满意度</span></div>
+            <div class="contentfirst" style="height:79%;">
+                <span style="height:96%;"><div id="main-first" :style="echartstyle"></div></span>
+                <span style="height:96%;"><div id="main-two" :style="echartstyle"></div></span>
             </div>
         </div>
 
@@ -37,12 +43,12 @@
 
 <script type="text/ecmascript-6">
 export default {
-  props:["role"],
+  props: ["role", "propsendrate"],
   data() {
     return {
-      loading:"true",
+      loading: "true",
       contentleft: {
-        paddingLeft: Math.ceil(67 * this.baseScreenRate) + "px"
+        // paddingLeft: Math.ceil(67 * this.baseScreenRate) + "px"
       },
       headtitle: {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
@@ -52,7 +58,7 @@ export default {
         fontSize: Math.ceil(22 * this.baseScreenRate) + "px",
         height: Math.ceil(22 * this.baseScreenRate) + "px",
         paddingLeft: Math.ceil(40 * this.baseScreenRate) + "px",
-        marginBottom: Math.ceil(10 * this.baseScreenRate) + "px"
+        marginBottom: Math.ceil(15 * this.baseScreenRate) + "px"
       },
       pagestyle: {
         paddingTop: Math.ceil(23 * this.baseScreenRate) + "px"
@@ -64,7 +70,8 @@ export default {
       },
       leftContent: {
         fontSize: Math.ceil(20 * this.baseScreenRate) + "px",
-        textAlign: "right"
+        textAlign: "right",
+        float: "left"
       },
       rightContent: {
         fontSize: Math.ceil(20 * this.baseScreenRate) + "px",
@@ -81,22 +88,31 @@ export default {
         textAlign: "center"
         // width:Math.ceil(100 * this.baseScreenRate) + "px",
       },
+      rightcontentfirst: {
+        color: "#537F8C",
+        height: Math.ceil(19 * this.baseScreenRate) + "px",
+        height: "20%"
+      },
       contentfirst: {
         color: "#537F8C",
         height: Math.ceil(19 * this.baseScreenRate) + "px"
       },
       contentsecond: {
+        minHeight: Math.ceil(19 * this.baseScreenRate) + "px",
         fontSize: Math.ceil(24 * this.baseScreenRate) + "px",
         color: "#537F8C",
-        paddingTop: Math.ceil(45 * this.baseScreenRate) + "px"
+        paddingTop: Math.ceil(45 * this.baseScreenRate) + "px",
+        clear: "both"
       },
       cententRight: {
         paddingRight: Math.ceil(50 * this.baseScreenRate) + "px"
       },
       echartstyle: {
-        width: Math.ceil(77 * this.baseScreenRate) + "px",
-        height: Math.ceil(77 * this.baseScreenRate) + "px",
-        margin: "0 auto"
+        // width: Math.ceil(120 * this.baseScreenRate) + "px",
+        // height: Math.ceil(120 * this.baseScreenRate) + "px",
+        margin: "0 auto",
+        height: "100%",
+        width: "100%"
       },
       formstyle: {
         fontSize: Math.ceil(24 * this.baseScreenRate) + "px",
@@ -125,31 +141,35 @@ export default {
   methods: {
     //初始化
     initdata() {
-      var that=this;
+      var that = this;
       this.axios
         .get("http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency")
         .then(res => {
-          that.loading=false;
+          that.loading = false;
           if (res.data.data) {
             that.responseDate = res.data.data;
             let rate = [
               [
-                { value: 100-Number(res.data.data.distributionRate), name: "" },
-                { value: res.data.data.distributionRate, name: "配送及时率" },
+                {
+                  value: 100 - Number(res.data.data.distributionRate),
+                  name: ""
+                },
+                { value: res.data.data.distributionRate, name: "配送及时率" }
               ],
               [
-                { value: 100-Number(res.data.data.customerRate), name: "" },
-                { value: res.data.data.customerRate, name: "客户满意度" },
+                { value: 100 - Number(res.data.data.customerRate), name: "" },
+                { value: res.data.data.customerRate, name: "客户满意度" }
               ]
             ];
             that.initleftecharts(
               "main-first",
-              res.data.data.distributionRate+"%",
+              // res.data.data.distributionRate + "%",
+              that.propsendrate + "%",
               rate[0]
             );
             that.initleftecharts(
               "main-two",
-              res.data.data.customerRate+"%",
+              res.data.data.customerRate + "%",
               rate[1]
             );
           }
@@ -157,24 +177,24 @@ export default {
     },
     //提交
     submitefficty: function() {
-      this.loading=true;
+      this.loading = true;
       this.axios
         .post(
           "http://suneee.dcp.weilian.cn/njxs-demo/operation/data/efficiency",
           {
-            avgEfficiency:this.responseDate.avgEfficiency,
+            avgEfficiency: this.responseDate.avgEfficiency,
             //  /平/g.test(String(this.responseDate.avgEfficiency))?
             // this.responseDate.avgEfficiency:
             // this.responseDate.avgEfficiency,
-            personEfficiency:this.responseDate.personEfficiency,
+            personEfficiency: this.responseDate.personEfficiency,
             //  /人/g.test(String(this.responseDate.personEfficiency))?
             // this.responseDate.personEfficiency:
             // this.responseDate.personEfficiency+"/人",
-            distributionRate:this.responseDate.distributionRate,
+            distributionRate: this.responseDate.distributionRate,
             //  /%/g.test(String(this.responseDate.distributionRate))?
             // this.responseDate.distributionRate:
             // this.responseDate.distributionRate+"%",
-            customerRate: this.responseDate.customerRate,
+            customerRate: this.responseDate.customerRate
             // /%/g.test(String(this.responseDate.customerRate))?
             // this.responseDate.customerRate:
             // this.responseDate.customerRate+"%"
@@ -234,7 +254,8 @@ export default {
                   ],
             name: "访问来源",
             type: "pie",
-            radius: ["60%", "80%"],
+            center: ["50%", "50%"],
+            radius: ["70%", "85%"],
             avoidLabelOverlap: false,
             hoverAnimation: false,
             label: {
@@ -261,25 +282,28 @@ export default {
 
 <style scoped lang="less">
 @media (max-width: 756px) {
-  .efficiency .efficiency-page{
-    padding:0 !important;
-    .head{
-      padding-left:0 !important;
+  .efficiency .efficiency-page {
+    padding: 0 !important;
+    .head {
+      padding-left: 0 !important;
     }
   }
-  .contentsecond{
-    padding-top:0px !important;
+  .contentsecond {
+    padding-top: 0px !important;
   }
-  .contentfirst{
+  .contentfirst {
     height: 0px;
   }
-  .content-right{
-    padding:0 !important;
+  .content-left {
+    justify-content: space-around !important;
+  }
+  .content-right {
+    padding: 0 !important;
   }
   #main-two,
-  #main-first{
-    width:1.2rem !important;
-    height:1.2rem !important;
+  #main-first {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
   }
 }
 
@@ -306,7 +330,9 @@ export default {
     width: 40%;
     height: 80%;
     float: left;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     .contentfirst {
       span:first-child {
         color: #ffffff;
@@ -340,7 +366,7 @@ export default {
   }
   .content-right {
     max-width: 60%;
-    width: 50%;
+    width: 55%;
     height: 80%;
     float: right;
     text-align: center;
@@ -411,7 +437,7 @@ export default {
             background: none;
             color: #ffffff;
             border: 0;
-            width:60%;
+            width: 60%;
           }
         }
       }

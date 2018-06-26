@@ -1,11 +1,31 @@
 <template>
   <div class="efficiency-page" :style="pagestyle" v-loading="loading">
         <div class="head"><h4 :style="headstyle">竞争力分析</h4>
-        <span class="el-icon-more" style="cursor:pointer;" :style="{opacity:opacitys}" @click="clickdit()"
-          @mouseover="hoveredit(1)" @mouseout="hoveredit(0)" v-if="role=='manage'"></span></div>
-        <div ref="efficienctRadar" id="efficienct-radar" :style="echartstyle"></div>
+            <span class="el-icon-more" style="cursor:pointer;" :style="{opacity:opacitys}" @click="clickdit()"
+            @mouseover="hoveredit(1)" @mouseout="hoveredit(0)" v-if="role=='manage'"></span>
+        </div>
+        <div style="display:flex;width:100%;height:100%;">
+          <div ref="efficienctRadar" id="efficienct-radar" :style="echartstyle"></div>
+          <div style="height:90%;width:50%;position:relative;">
+                    <div  class="hideform" :style="formstyletwo">
+                        <div class="line"></div>
+                        <form style="width:100%;">
+                          <table border="0" cellpadding=0 cellspacing=0 :style="tablerightstyle">
+                            <tr>
+                              <td>&nbsp;</td><td v-for="(y,index) in radardata.yxisobj" :key="index">{{y.title}}</td>
+                            </tr>
+                            <tr v-for="(tr,inde) in radardata.legnedlistobj" :key="inde" class="colortd">
+                              <td>{{tr.title}}</td>
+                              <td v-for="(td,index) in radardata.rowcolobj[inde]" :key="index">{{td.targetValue}}</td>
+                            </tr>
+                          </table>
+                        </form>
+                    </div>
+          </div>
+        </div>
         <div v-show="hidefromfalg" class="hideform" :style="formstyle" v-if="role=='manage'">
             <!-- <table>行：</table> -->
+            <div class="line"></div>
             <form>
               <div style="margin-bottom:1%"><span style="font-size:0.8em">行:</span><input type="number" v-model="rownumber" style="width:20%;" />
               <span style="padding-left:5%;font-size:0.8em">列:</span><input type="number" v-model="colnumber" style="width:20%;" />
@@ -32,7 +52,7 @@ export default {
   props: ["role"],
   data() {
     return {
-      loading:true,
+      loading: true,
       rownumber: 0,
       colnumber: 0,
       loading: "true",
@@ -47,17 +67,23 @@ export default {
       echartstyle: {
         // width: Math.ceil(77 * this.baseScreenRate) + "px",
         // height: Math.ceil(77 * this.baseScreenRate) + "px"
-        width: "80%",
-        height: "90%",
-        margin: "0 auto"
+        width: "50%",
+        height: "90%"
+        // margin: "0 auto"
         // marginTop: "-5%"
       },
       formstyle: {
         fontSize: Math.ceil(24 * this.baseScreenRate) + "px",
         paddingTop: Math.ceil(30 * this.baseScreenRate) + "px"
       },
+      formstyletwo: {
+        fontSize: Math.ceil(18 * this.baseScreenRate) + "px"
+      },
       submitefficty: {
         padding: "1% 2%",
+        fontSize: Math.ceil(18 * this.baseScreenRate) + "px"
+      },
+      tablerightstyle: {
         fontSize: Math.ceil(18 * this.baseScreenRate) + "px"
       },
       opacitys: 0,
@@ -286,10 +312,17 @@ export default {
                 ] //最终提交结果
               };
               let colorobj = [
-                "rgb(192,87,96)",
-                "rgb(186,126,182)",
-                "rgb(105,98,164)"
+                "#0074ff",
+                "#ffde00",
+                "#f93c40",
+                "#11c5d3",
+                "#653cbb",
+                "#ff8400"
+                // "rgb(192,87,96)",
+                // "rgb(186,126,182)",
+                // "rgb(105,98,164)"
               ];
+              colorobj = colorobj.concat(that.$d3.schemeCategory10);
               that.initleftecharts(
                 "efficienct-radar",
                 that.radardata,
@@ -307,11 +340,19 @@ export default {
                 yxisobj: [], //表格行
                 rowcolobj: []
               };
+              // console.log(that.$d3.schemeCategory10);
               let colorobj = [
-                "rgb(192,87,96)",
-                "rgb(186,126,182)",
-                "rgb(105,98,164)"
+                "#0074ff",
+                "#ffde00",
+                "#f93c40",
+                "#11c5d3",
+                "#653cbb",
+                "#ff8400"
+                // "rgb(192,87,96)",
+                // "rgb(186,126,182)",
+                // "rgb(105,98,164)"
               ];
+              colorobj = colorobj.concat(that.$d3.schemeCategory10);
               res.data.data.forEach(function(value, index) {
                 //获取lenged显示
                 if (
@@ -383,30 +424,32 @@ export default {
                     );
                   }
                 });
-                // debugger
                 that.radardata.serieslist.push({
                   name: value,
                   value: that.radardata.legnedvalue[value],
                   areaStyle: {
                     normal: {
                       color: colorobj[index],
-                      opacity: 0.4
+                      opacity: 0.2
                     }
                   },
-                  symbolSize: 2.5,
+                  symbolSize: 0,
                   itemStyle: {
                     normal: {
                       borderColor: colorobj[index],
-                      borderWidth: 2.5
+                      borderWidth: 2
                     }
                   },
                   lineStyle: {
                     normal: {
-                      opacity: 0.5
+                      opacity: 0.2
                     }
                   }
                 });
               });
+              // that.radardata.rowcolobj.forEach(function(v,i){
+              //   debugger
+              // })
               that.initleftecharts(
                 "efficienct-radar",
                 that.radardata,
@@ -423,8 +466,6 @@ export default {
       this.loading = true;
       let array = [],
         that = this;
-      console.log(this.radardata);
-      console.log(this.radardata.rowcolobj);
       this.radardata.rowcolobj.forEach(function(value, index) {
         // value.forEach(function(val, ind) {
         // if (val.targetValue == "") {
@@ -480,13 +521,16 @@ export default {
       this.opacitys = num;
     },
     initleftecharts: function(id, radardata, colorobj) {
-      var radarradius=window.innerWidth<756?200:120 
+      var radarradius = window.innerWidth < 756 ? 180 : 120;
       this.$echarts.dispose(document.getElementById(id));
       // 基于准备好的dom，初始化echarts实例
       var myChart = this.$echarts.init(document.getElementById(id));
       // 指定图表的配置项和数据
       var option = {
         color: colorobj,
+        tooltip: {
+          trigger: "axis"
+        },
         legend: {
           show: true,
           icon: "circle",
@@ -506,10 +550,12 @@ export default {
             textStyle: {
               color: "red"
             },
-            center:["50%","50%"],
-            radius: Math.ceil(radarradius * this.baseScreenRate),
+            center: ["50%", "50%"],
+            // radius: Math.ceil(radarradius * this.baseScreenRate),
+            radius: "50%",
             startAngle: 90,
-            splitNumber: 3,
+            splitNumber: 0, //间隔
+            nameGap:5,
             name: {
               formatter: "{value}",
               textStyle: {
@@ -528,36 +574,40 @@ export default {
                 ]
               }
             },
-            axisLine: {
-              lineStyle: {
-                color: "#4C545C"
-              }
-            },
-            axisLine: {
-              lineStyle: {
-                type: "dashed",
-                color: "#4C545C",
-                width: Math.ceil(5 * this.baseScreenRate)
-              }
-            },
-            splitLine: {
-              lineStyle: {
-                type: "dashed",
-                color: "#4C545C",
-                width: Math.ceil(5 * this.baseScreenRate)
-              }
-            }
+            // axisLine: {
+            //   lineStyle: {
+            //     type: "dashed",
+            //     color: "#4C545C",
+            //     width: Math.ceil(5 * this.baseScreenRate)
+            //   }
+            // },
+            axisLine: false
+            // splitLine: {
+            //   lineStyle: {
+            //     type: "dashed",
+            //     color: "#4C545C",
+            //     width: Math.ceil(5 * this.baseScreenRate)
+            //   }
+            // }
           }
         ],
         series: [
           {
             name: "雷达图",
             type: "radar",
+            tooltip: {
+              trigger: "item"
+            },
             itemStyle: {
               emphasis: {
                 lineStyle: {
-                  width: 4
+                  width: 2
                 }
+              }
+            },
+            emphasis: {
+              areaStyle: {
+                opacity: 0.3
               }
             },
             data: radardata.serieslist
@@ -574,15 +624,15 @@ export default {
 
 <style scoped lang="less">
 @media (max-width: 756px) {
-  .competive .efficiency-page{
-    padding:0 !important;
-    .head{
-      padding-left:0 !important;
+  .competive .efficiency-page {
+    padding: 0 !important;
+    .head {
+      padding-left: 0 !important;
     }
   }
-  #efficienct-radar{
-    width:100% !important;
-    height:95% !important;
+  #efficienct-radar {
+    width: 100% !important;
+    height: 95% !important;
   }
 }
 .addrow {
@@ -611,6 +661,7 @@ export default {
   overflow: hidden;
   background-color: #21202e;
   position: relative;
+
   .head {
     width: 100%;
     max-height: 10%;
@@ -622,15 +673,27 @@ export default {
     }
   }
   .hideform {
-    position: absolute;
-    display: flex;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
+    // position: absolute;
+    // display: flex;
+    // top: 0;
+    // left: 0;
+    // right: 0;
+    // bottom: 0;
+    // z-index: 1;
     background-color: #21202e;
+    padding-left: 5%;
+    width: 100%;
+    height: 100%;
     //   padding-top:5%;
+    .line {
+      position: absolute;
+      left: 0;
+      top: 10%;
+      bottom: 10%;
+      width: 1px;
+      background: #6943d3;
+      opacity: 0.3;
+    }
     span {
       color: #ffffff;
       margin-right: 10px;
@@ -641,6 +704,7 @@ export default {
       height: 100%;
       min-height: 0;
       margin: 0 auto;
+      position: relative;
       table {
         width: 100%;
         min-height: 0%;
@@ -648,6 +712,15 @@ export default {
         flex-wrap: wrap;
         flex-direction: column;
         color: #ffffff;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(0, -50%);
+        border-left: 1px solid #38355b;
+        border-top: 1px solid #38355b;
+        tr:nth-child(odd) {
+          background-color: #28263e;
+        }
         tr {
           height: 20%;
           width: 100%;
@@ -663,12 +736,22 @@ export default {
             text-overflow: ellipsis;
             flex-shrink: 1;
             flex-grow: 1;
+            border-bottom: 1px solid #38355b;
+            border-right: 1px solid #38355b;
+            padding: 4% 0;
+            padding-left: 1%;
           }
         }
         input {
           background: none;
           color: #ffffff;
           border: 0;
+        }
+        .colortd td{
+          color:#75becb
+        }
+        .colortd td:first-child{
+          color:#fff;
         }
       }
       .submit {
